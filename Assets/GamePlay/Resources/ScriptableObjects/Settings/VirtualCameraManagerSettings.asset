@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2602502aa52eb46309d69c9a16ccee65, type: 3}
+  m_Name: VirtualCameraManagerSettings
+  m_EditorClassIdentifier: 
+  CameraDatas:
+  - ID: 0
+    Camera: {fileID: 736113716638890866, guid: e3b72efcd989341ebb97c16c6e047702, type: 3}
+    FollowData:
+      IsFollowing: 1
+      Type: 0
+  - ID: 1
+    Camera: {fileID: 736113716638890866, guid: 7ecf7410d86af45b4919d1af4b4892e8, type: 3}
+    FollowData:
+      IsFollowing: 1
+      Type: 1
+  DefaultCamera: 0
