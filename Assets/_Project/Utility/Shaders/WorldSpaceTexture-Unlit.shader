@@ -5,6 +5,7 @@
         _MainTex ("Main Tex", 2D) = "white" {}
         _GridSize ("Grid Size", float) = 1
         _Offset ("Offset", vector) = (0,0,0,0)
+        _Colour ("Tint", Color) = (1,1,1,1)
     }
     SubShader
     {
@@ -47,6 +48,7 @@
 
             sampler2D _MainTex;
             fixed _GridSize;
+            fixed4 _Colour;
 
             fixed4 frag (v2f i) : SV_Target
             {
@@ -54,7 +56,7 @@
 
                 fixed4 col = tex2D(_MainTex, uv);
 
-                return col;
+                return col * _Colour;
             }
             ENDCG 
         }

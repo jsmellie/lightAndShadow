@@ -6,7 +6,8 @@ using System.Collections;
 public class StageLoader : SingletonBehaviour<StageLoader>
 {
     
-    public delegate void OnStageLoadingCompleted(LevelLoadingErrorCodes loadingError);
+    public delegate void OnStageLoadingCompletedDelegate(Zones zone, int stageIndex, LevelLoadingErrorCodes loadingError);
+    public delegate void OnStageUnloadingCompletedDelegate(LevelLoadingErrorCodes loadingErrorCodes);
     private const string _loadingScreenPath = "Prefabs/Popups/LoadingScreen";
 
     private const string _stageNameFormat = "{0}_Stage{1}";
@@ -14,21 +15,61 @@ public class StageLoader : SingletonBehaviour<StageLoader>
     private const string _completionPopupName = "StageCompleted";
     private GameObject _loadingScreen = null;
 
-    private string _currentStage = string.Empty;
+    private Zones _currentZone;
+    private int _currentStageIndex = StageProgressionTracker.InvalidStageID;
 
     private Coroutine _unloadingRoutine = null;
     private Coroutine _loadingRoutine = null;
 
-    private OnStageLoadingCompleted _cachedCallback = null;
+    private OnStageLoadingCompletedDelegate _cachedCallback = null;
+
+    public event OnStageLoadingCompletedDelegate OnStageLoaded;
+    public event OnStageUnloadingCompletedDelegate OnStageUnloaded;
+
+    private string CurrentStageName
+    {
+        get 
+        {
+            if (_currentStageIndex > 0)
+            {
+                return FormatStageSceneName(_currentZone, _currentStageIndex); 
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
+
+    public Zones CurrentZone
+    {
+        get { return _currentZone; }
+    }
+
+    public int CurrentStageID
+    {
+        get { return _currentStageIndex; }
+    }
 
     public bool IsStageLoaded
     {
-        get { return !string.IsNullOrEmpty(_currentStage); }
+        get { return !string.IsNullOrEmpty(CurrentStageName); }
     }
 
     public bool IsLoadingHappening
     {
         get { return _unloadingRoutine != null || _loadingRoutine != null; }
+    }
+
+    public void SetStageInfo(Zones zone, int stageIndex)
+    {
+        _currentStageIndex = stageIndex;
+        _currentZone = zone;
+    }
+
+    public static string FormatStageSceneName(Zones zone, int stageID)
+    {
+        return string.Format("{0}_Stage{1}", zone, stageID); 
     }
 
     protected override void Initialize()
@@ -38,7 +79,7 @@ public class StageLoader : SingletonBehaviour<StageLoader>
         DontDestroyOnLoad(_loadingScreen);
     }
 
-    public void LoadStage(Zones zone, int stage, OnStageLoadingCompleted onStageLoaded)
+    public void LoadStage(Zones zone, int stage)
     {
         string levelName = string.Format(_stageNameFormat, zone.ToString(), stage);
 
@@ -46,28 +87,30 @@ public class StageLoader : SingletonBehaviour<StageLoader>
 
         if (newLevelScene != null)
         {
-            _cachedCallback = onStageLoaded;
             ToggleLoadingScreen();
-            OnStageLoadingCompleted onStageLoadingCompleted = (LevelLoadingErrorCodes error) => {
+            OnStageLoadingCompletedDelegate onStageLoadingCompleted = (Zones zone, int stageIndex, LevelLoadingErrorCodes error) => {
                 ToggleLoadingScreen();
-                if (_cachedCallback != null)
+                if (OnStageLoaded != null)
                 {
-                    _cachedCallback(error);
-                    _cachedCallback = null;
+                    OnStageLoaded(zone, stageIndex, error);
                 }
             };
-            OnStageLoadingCompleted onStageUnloaded = (LevelLoadingErrorCodes error) => {  
-                _currentStage = levelName;
+            OnStageUnloadingCompletedDelegate onStageUnloaded = (LevelLoadingErrorCodes error) => {  
+                _currentStageIndex = stage;
+                _currentZone = zone;
                 _loadingRoutine = StartCoroutine(LoadStageRoutine(levelName, onStageLoadingCompleted));
             };
-            if (IsStageLoaded)
-            {
-                _unloadingRoutine = StartCoroutine(UnloadStageRoutine(onStageUnloaded));
-            }
-            else
-            {
-                onStageUnloaded(LevelLoadingErrorCodes.None);
-            }
+            // if (IsStageLoaded)
+            // {
+            //     Debug.Log(onStageUnloaded);
+            //     _unloadingRoutine = StartCoroutine(UnloadStageRoutine(onStageUnloaded));
+            // }
+            // else
+            // {
+            //     onStageUnloaded(LevelLoadingErrorCodes.None);
+            // }
+
+            _loadingRoutine = StartCoroutine(LoadStageRoutine(levelName, onStageLoadingCompleted));
         }
         else
         {
@@ -75,13 +118,13 @@ public class StageLoader : SingletonBehaviour<StageLoader>
         }
     }
 
-    private IEnumerator LoadStageRoutine(string sceneName, OnStageLoadingCompleted onStageLoaded)
+    private IEnumerator LoadStageRoutine(string sceneName, OnStageLoadingCompletedDelegate onStageLoaded)
     {
         LevelLoadingErrorCodes errorCode = LevelLoadingErrorCodes.None;
 
         if (!string.IsNullOrEmpty(sceneName))
         {
-            AsyncOperation sceneLoadOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+            AsyncOperation sceneLoadOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
 
             while (!sceneLoadOperation.isDone)
             {
@@ -97,13 +140,13 @@ public class StageLoader : SingletonBehaviour<StageLoader>
         if (onStageLoaded != null)
         {
             Debug.Log("Scene Loading Completed.");
-            onStageLoaded(errorCode);
+            onStageLoaded(_currentZone, _currentStageIndex,  errorCode);
         }
         
         _loadingRoutine = null;
     }
 
-    public void UnloadStage(OnStageLoadingCompleted onStageUnloaded)
+    public void UnloadStage(OnStageUnloadingCompletedDelegate onStageUnloaded)
     {
         if (_unloadingRoutine == null)
         {
@@ -111,17 +154,22 @@ public class StageLoader : SingletonBehaviour<StageLoader>
         }
     }
 
-    private IEnumerator UnloadStageRoutine(OnStageLoadingCompleted onStageUnloaded)
+    private IEnumerator UnloadStageRoutine(OnStageUnloadingCompletedDelegate onStageUnloaded)
     {
         LevelLoadingErrorCodes errorCode = LevelLoadingErrorCodes.None;
 
         if (IsStageLoaded)
         {
-            AsyncOperation sceneUnloadOperation = SceneManager.UnloadSceneAsync(_currentStage);
+            AsyncOperation sceneUnloadOperation = SceneManager.UnloadSceneAsync(CurrentStageName);
+
+            if (sceneUnloadOperation == null)
+            {
+                Debug.LogError($"Error while trying to unload scene {CurrentStageName}");
+            }
 
             while (!sceneUnloadOperation.isDone)
             {
-                Debug.Log($"Unloading Scene {_currentStage} - {(sceneUnloadOperation.progress * 100)}%");
+                Debug.Log($"Unloading Scene {CurrentStageName} - {(sceneUnloadOperation.progress * 100)}%");
                 yield return null;
             }
         }
@@ -130,12 +178,17 @@ public class StageLoader : SingletonBehaviour<StageLoader>
             errorCode = LevelLoadingErrorCodes.FailedToLoad;
         }
 
-        _currentStage = string.Empty;
+        _currentStageIndex = StageProgressionTracker.InvalidStageID;
 
         if (onStageUnloaded != null)
         {
             Debug.Log($"Unloading Scene Completed.");
             onStageUnloaded(errorCode);
+        }
+
+        if (OnStageUnloaded != null)
+        {
+            OnStageUnloaded(errorCode);
         }
         
         _unloadingRoutine = null;
@@ -147,7 +200,7 @@ public class StageLoader : SingletonBehaviour<StageLoader>
         {
             ToggleLoadingScreen();
             UnloadStage(null);
-            _loadingRoutine = StartCoroutine(LoadStageRoutine(_currentStage, null));
+            _loadingRoutine = StartCoroutine(LoadStageRoutine(CurrentStageName, null));
         }
     }
 

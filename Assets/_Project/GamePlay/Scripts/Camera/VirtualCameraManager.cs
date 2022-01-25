@@ -137,7 +137,10 @@ public class VirtualCameraManager : Singleton<VirtualCameraManager>
         {   
             foreach(KeyValuePair<CameraID, CinemachineVirtualCameraBase> pair in _loadedCameras)
             {
-                GameObject.Destroy(pair.Value.gameObject);
+                if (pair.Value != null)
+                {
+                    GameObject.Destroy(pair.Value.gameObject);
+                }
             }
 
             _loadedCameras.Clear();
