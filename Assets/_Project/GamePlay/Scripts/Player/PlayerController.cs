@@ -1,8 +1,7 @@
 using System.Text;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
@@ -82,22 +81,36 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public enum LookDirection
+    {
+        Left = 0,
+        Right = 1
+    }
+
     private static readonly int OnGroundLayerMask = 1 << 10; //Terrain
     private const float OnGroundCastDistance = 0.1f;
 
+    private const float FlipAnimationLength = 0.2f;
+
+    private static readonly Vector3 LookRightRotation = Vector3.zero;
+    private static readonly Vector3 LookLeftRotation = Vector3.up * 180;
+
     [SerializeField] private Rigidbody2D _playerBody;
     [SerializeField] private Collider2D _playerCollider;
+    [SerializeField] private Transform _visualRoot;
     [SerializeField] private Transform[] _groundCheckCastPoints;
     [Space]
     [SerializeField] private float _jumpSpeed = 5f;
     [SerializeField] private float _doubleJumpSpeed = 13f;
     [SerializeField] private float _movementSpeed = 2f;
 
-    int _frameNumberOnJumpCheck = -1;
-    bool _isOnGround = true;
-    RaycastHit2D _reusableRaycastHitObject = default(RaycastHit2D);
-    bool _hasDoubleJumped = false;
-    PlayerInputManager _inputManager;
+    private int _frameNumberOnJumpCheck = -1;
+    private bool _isOnGround = true;
+    private RaycastHit2D _reusableRaycastHitObject = default(RaycastHit2D);
+    private bool _hasDoubleJumped = false;
+    private PlayerInputManager _inputManager;
+    private LookDirection _lookDirection = LookDirection.Right;
+    private Tween _changeDirectionTween = null;
 
     MovementManager _leftManager = null;
     MovementManager _rightManager = null;
@@ -142,12 +155,14 @@ public class PlayerController : MonoBehaviour
     {
         _rightManager.Stop(true);
         _leftManager.Start();
+        SetDirection(LookDirection.Left);
     }
 
     private void OnStartMoveRight()
     {
         _leftManager.Stop(true);
         _rightManager.Start();
+        SetDirection(LookDirection.Right);
     }
 
     private void OnEndMoveLeft()
@@ -158,6 +173,40 @@ public class PlayerController : MonoBehaviour
     private void OnEndMoveRight()
     {
         _rightManager.Stop();
+    }
+
+    private void SetDirection(LookDirection direction)
+    {
+        if (_lookDirection != direction)
+        {
+            if (_changeDirectionTween != null)
+            {
+                _changeDirectionTween.Kill();
+                _changeDirectionTween = null;
+            }
+
+            Vector3 eulerRotation = _visualRoot.transform.localEulerAngles;
+
+            float percentageLeft = eulerRotation.y / 180;
+            Vector3 endRotation = LookRightRotation;
+
+            if (direction == LookDirection.Left)
+            {
+                percentageLeft = 1 - percentageLeft;
+                endRotation = LookLeftRotation;
+            }
+
+            _changeDirectionTween = _visualRoot.transform.DOLocalRotate(endRotation,FlipAnimationLength * percentageLeft);
+            _changeDirectionTween.SetEase(Ease.OutQuad);
+            _changeDirectionTween.OnComplete(OnDirectionChangeCompleted);
+
+            _lookDirection = direction;
+        }
+    }
+
+    private void OnDirectionChangeCompleted()
+    {
+        _changeDirectionTween = null;
     }
 
     private void OnJump()
