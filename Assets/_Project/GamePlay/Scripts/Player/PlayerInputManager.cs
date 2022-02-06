@@ -22,8 +22,17 @@ public class PlayerInputManager
     private bool _wasMovingLeft;
     private bool _wasMovingRight;
 
+    public bool IsEnabled
+    {
+        get; set;
+    }
+
     public void UpdateInput()
     {
+        if (!IsEnabled)
+        {
+            return;
+        }
         bool moveLeft = false;
         bool moveRight = false;
         bool canJump = false;

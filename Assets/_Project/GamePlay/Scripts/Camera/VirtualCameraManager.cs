@@ -38,50 +38,49 @@ public class VirtualCameraManager : Singleton<VirtualCameraManager>
 
     public void OnStageLoaded()
     {
-        if (_brain == null)
+        Camera gameplayCamera = CameraManager.Instance.GetCamera("Gameplay");
+        _brain = gameplayCamera.GetComponent<CinemachineBrain>();
+        
+        _brain.enabled = false;
+
+        Transform player = GameObject.FindGameObjectWithTag("Player").transform;
+        _staticFollowTarget.position = player.position;
+
+        VirtualCameraData[] cameraDatas = _settings.CameraDatas;
+
+        if (_loadedCameras == null)
         {
-            Camera gameplayCamera = GameObject.FindGameObjectWithTag("GameplayCamera").GetComponent<Camera>();
-            Transform player = GameObject.FindGameObjectWithTag("Player").transform;
-            _staticFollowTarget.position = player.position;
-            _brain = gameplayCamera.GetComponent<CinemachineBrain>();
-            _brain.enabled = false;
-
-            VirtualCameraData[] cameraDatas = _settings.CameraDatas;
-
-            if (_loadedCameras == null)
-            {
-                _loadedCameras = new Dictionary<CameraID, CinemachineVirtualCameraBase>(cameraDatas.Length);
-            }
-            else
-            {
-                CleanUpCameras();
-            }
-
-            foreach(VirtualCameraData cameraData in cameraDatas)
-            {
-                CinemachineVirtualCameraBase currentCamera = GameObject.Instantiate<CinemachineVirtualCameraBase>(cameraData.Camera);
-                if (cameraData.FollowData.IsFollowing)
-                {
-                    if (cameraData.FollowData.Type == VirtualCameraFollowData.FollowType.Player)
-                    {
-                        currentCamera.Follow = player;
-                    }
-                    else
-                    {
-                        currentCamera.Follow = _staticFollowTarget;
-                    }
-                }
-                currentCamera.Priority = DisabledPriority;
-                currentCamera.transform.parent = gameplayCamera.transform;
-                _loadedCameras.Add(cameraData.ID, currentCamera);
-            }
-
-            _currentCameraID = _settings.DefaultCamera;
-            CinemachineBlendDefinition originalBlend = _brain.m_DefaultBlend;
-            _loadedCameras[_currentCameraID].Priority = EnabledPriority;
-
-            _brain.enabled = true;
+            _loadedCameras = new Dictionary<CameraID, CinemachineVirtualCameraBase>(cameraDatas.Length);
         }
+        else
+        {
+            CleanUpCameras();
+        }
+
+        foreach(VirtualCameraData cameraData in cameraDatas)
+        {
+            CinemachineVirtualCameraBase currentCamera = GameObject.Instantiate<CinemachineVirtualCameraBase>(cameraData.Camera);
+            if (cameraData.FollowData.IsFollowing)
+            {
+                if (cameraData.FollowData.Type == VirtualCameraFollowData.FollowType.Player)
+                {
+                    currentCamera.Follow = player;
+                }
+                else
+                {
+                    currentCamera.Follow = _staticFollowTarget;
+                }
+            }
+            currentCamera.Priority = DisabledPriority;
+            currentCamera.transform.parent = gameplayCamera.transform;
+            _loadedCameras.Add(cameraData.ID, currentCamera);
+        }
+
+        _currentCameraID = _settings.DefaultCamera;
+        CinemachineBlendDefinition originalBlend = _brain.m_DefaultBlend;
+        _loadedCameras[_currentCameraID].Priority = EnabledPriority;
+
+        _brain.enabled = true;
     }
 
     public void CleanUpStage()
@@ -145,5 +144,21 @@ public class VirtualCameraManager : Singleton<VirtualCameraManager>
 
             _loadedCameras.Clear();
         }
+    }
+
+    private Camera GetGameplayCamera()
+    {
+        Camera gameplayCamera = GameObject.FindGameObjectWithTag("GameplayCamera").GetComponent<Camera>();
+
+        if (gameplayCamera == null)
+        {
+            gameplayCamera = Resources.Load<Camera>("Prfabs/Camera/GameplayCamera");
+            if (gameplayCamera != null)
+            {
+                GameObject.DontDestroyOnLoad(gameplayCamera.gameObject);
+            }
+        }
+
+        return gameplayCamera;
     }
 }

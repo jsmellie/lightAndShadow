@@ -128,6 +128,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public bool IsControllerActive
+    {
+        get
+        {
+            return _inputManager.IsEnabled;
+        }
+        set
+        {
+            _inputManager.IsEnabled = value;
+        }
+    }
+
     private bool HasCheckedJumpThisFrame
     {
         get { return _frameNumberOnJumpCheck == Time.frameCount; }
@@ -140,6 +152,7 @@ public class PlayerController : MonoBehaviour
         Assert.AreNotEqual(_groundCheckCastPoints.Length, 0, "Ground Check Cast Points");
 
         _inputManager = new PlayerInputManager();
+        _inputManager.IsEnabled = false;
         _inputManager.OnJumpValidation += JumpValidation;
         _inputManager.OnJump += OnJump;
         _inputManager.OnMoveLeftStart += OnStartMoveLeft;

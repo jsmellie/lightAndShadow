@@ -87,9 +87,9 @@ public class StageLoader : SingletonBehaviour<StageLoader>
 
         if (newLevelScene != null)
         {
-            ToggleLoadingScreen();
+            //ToggleLoadingScreen();
             OnStageLoadingCompletedDelegate onStageLoadingCompleted = (Zones zone, int stageIndex, LevelLoadingErrorCodes error) => {
-                ToggleLoadingScreen();
+                //ToggleLoadingScreen();
                 if (OnStageLoaded != null)
                 {
                     OnStageLoaded(zone, stageIndex, error);
@@ -110,7 +110,7 @@ public class StageLoader : SingletonBehaviour<StageLoader>
             //     onStageUnloaded(LevelLoadingErrorCodes.None);
             // }
 
-            _loadingRoutine = StartCoroutine(LoadStageRoutine(levelName, onStageLoadingCompleted));
+            onStageUnloaded(LevelLoadingErrorCodes.None);
         }
         else
         {

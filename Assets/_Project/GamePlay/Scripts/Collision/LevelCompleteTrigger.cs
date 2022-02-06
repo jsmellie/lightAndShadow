@@ -4,18 +4,21 @@ using UnityEngine;
 
 public class LevelCompleteTrigger : BaseTrigger
 {
+    [SerializeField] private LevelCompleteAnimationSequencer _levelCompleteSequencer = null;
+
     protected override void OnTriggerEnter2D(Collider2D collider)
     {
         base.OnTriggerEnter2D(collider);
+
+        PlayerController player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        player.IsControllerActive = false;
 
         PlayLevelCompleteSequence();
     }
 
     private void PlayLevelCompleteSequence()
     {
-        //TODO jsmellie: What ever we want (fade, w.e)
-        OnCompleteSequenceFinished();
-
+        FullScreenWipe.FadeIn(1, OnCompleteSequenceFinished);
     }
 
     private void OnCompleteSequenceFinished()
@@ -31,7 +34,7 @@ public class LevelCompleteTrigger : BaseTrigger
         {
             if (nextZone != currentZone)
             {
-                //TODO jsmellie: Play the cinematic
+                //TODO jsmellie: Do the cinematic stuff here.
                 LoadNextLevel();
             }
             else
