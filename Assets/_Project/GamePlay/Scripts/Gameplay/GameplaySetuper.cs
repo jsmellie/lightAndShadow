@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[ExecuteInEditMode]
 public class GameplaySetuper : MonoBehaviour
 {
     [Header("Stage")]
@@ -12,19 +13,30 @@ public class GameplaySetuper : MonoBehaviour
     [SerializeField] private Transform _spawnAnchor;
     [SerializeField] private Transform _playerPrefab;
 
+    private void OnEnable()
+    {
+        if (!Application.isPlaying)
+        {
+            //StageUtility.GetZoneAndStageFromString(this.gameObject.scene.name, out _zone, out _stageIndex);
+        }
+    }
+
     private void Awake()
     {
-        CameraManager cameraManager = CameraManager.Instance;
+        if (Application.isPlaying)
+        {
+            CameraManager cameraManager = CameraManager.Instance;
 
-        if (!StageLoader.IsInstanceNull)
-        {
-            StageLoader.Instance.OnStageLoaded += OnStageLoaded;
-        }
-        else
-        {
-            FullScreenWipe.FadeIn(0, null);
-            StageLoader.Instance.SetStageInfo(_zone, _stageIndex);
-            OnStageLoaded(_zone, _stageIndex, LevelLoadingErrorCodes.None);
+            if (!StageLoader.IsInstanceNull)
+            {
+                StageLoader.Instance.OnStageLoaded += OnStageLoaded;
+            }
+            else
+            {
+                FullScreenWipe.FadeIn(0, null);
+                StageLoader.Instance.SetStageInfo(_zone, _stageIndex);
+                OnStageLoaded(_zone, _stageIndex, LevelLoadingErrorCodes.None);
+            }
         }
     }
 

@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 5664761600040294256}
   - component: {fileID: 5664761600040294257}
   m_Layer: 10
-  m_Name: CameraTrigger_ZoomOut
+  m_Name: CameraTrigger_Follow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -169,10 +169,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _onTriggerEnterCameraData:
     ShouldChangeCamera: 1
-    CameraID: 1
-    ShouldMoveStaticTarget: 1
+    CameraID: 0
+    ShouldMoveStaticTarget: 0
     StaticTargetPosition: {x: 50, y: 13.5, z: 0}
-  _shouldReturnToPreviousCameraOnExit: 1
+  _shouldReturnToPreviousCameraOnExit: 0
   _onTriggerExitCameraData:
     ShouldChangeCamera: 0
     CameraID: 0

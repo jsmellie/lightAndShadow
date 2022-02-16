@@ -124,7 +124,7 @@ public class PlayerController : MonoBehaviour
                 UpdateGroundState();
             }
 
-            return _isOnGround || !_hasDoubleJumped;
+            return _isOnGround;
         }
     }
 
