@@ -17,7 +17,10 @@ public class GameplaySetuper : MonoBehaviour
     {
         if (!Application.isPlaying)
         {
-            //StageUtility.GetZoneAndStageFromString(this.gameObject.scene.name, out _zone, out _stageIndex);
+            StageUtility.GetZoneAndStageFromString(this.gameObject.scene.name, out _zone, out _stageIndex);
+            #if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this.gameObject);
+            #endif
         }
     }
 
