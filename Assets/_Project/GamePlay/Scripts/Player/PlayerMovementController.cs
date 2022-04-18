@@ -52,6 +52,22 @@ public class PlayerMovementController : MonoBehaviour
         }
 	}
 
+	public float MaxSpeed
+	{
+		get
+		{
+            return m_MaxSpeed;
+        }
+	}
+
+	public bool IsGrounded
+	{
+		get
+		{
+            return m_IsGrounded;
+        }
+	}
+
     void Update()
     {
         float horizontalMovement = InputController.Instance.GetAxis(InputController.eAxis.Horizontal).Value;

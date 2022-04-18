@@ -4,10 +4,20 @@ using UnityEngine;
 
 public class PlayerAnimationController : MonoBehaviour
 {
+    private const string IS_GROUNDED_PARAMETER = "IsGrounded";
+    private const string VELOCITY_PARAMETER = "Velocity";
+
     public enum LookDirection
     {
         Right,
         Left
+    }
+
+    public enum AnimationState
+    {
+        Movement,
+        Celebration,
+        Calm
     }
 
     private LookDirection _currentLookDirection;
@@ -20,19 +30,33 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField] private Transform _lookRotationTransform;
     
     [SerializeField] private PlayerMovementController _playerMovementController;
+    [SerializeField] private Animator _animator;
+
+    private bool _acceptInput = true;
 
     private void Update()
     {
-        AxisInput axis = InputController.Instance.GetAxis(InputController.eAxis.Horizontal);
+        if (_acceptInput)
+        {
+            AxisInput axis = InputController.Instance.GetAxis(InputController.eAxis.Horizontal);
 
-        if (axis.IsPositive)
-        {
-            SetLookDirection(LookDirection.Right);
+            if (axis.IsPositive)
+            {
+                SetLookDirection(LookDirection.Right);
+            }
+            else if (axis.IsNegative)
+            {
+                SetLookDirection(LookDirection.Left);
+            }
+
+            _animator.SetFloat(VELOCITY_PARAMETER, Mathf.Abs(_playerMovementController.Velocity.x) / _playerMovementController.MaxSpeed);
         }
-        else if (axis.IsNegative)
+        else
         {
-            SetLookDirection(LookDirection.Left);
+            _animator.SetFloat(VELOCITY_PARAMETER, 0);
         }
+
+        _animator.SetBool(IS_GROUNDED_PARAMETER, _playerMovementController.IsGrounded);
     }
 
     private void FixedUpdate()
