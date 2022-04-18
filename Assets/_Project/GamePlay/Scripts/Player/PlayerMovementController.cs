@@ -44,6 +44,14 @@ public class PlayerMovementController : MonoBehaviour
     protected bool m_IsGrounded;
     protected float m_LastGroundedTime = 0;
 
+	public Vector3 Velocity
+	{
+		get
+		{
+            return m_Velocity;
+        }
+	}
+
     void Update()
     {
         float horizontalMovement = InputController.Instance.GetAxis(InputController.eAxis.Horizontal).Value;
