@@ -5,10 +5,10 @@ using UnityEngine;
 public class Collectable : BaseTrigger
 {
     [SerializeField] protected ParticleSystem _particles;
-    [SerializeField] protected Collider2D _collider;
+    [SerializeField] protected Collider _collider;
     [SerializeField] protected GameObject _visual;
     
-    protected override void OnTriggerEnter2D(Collider2D collider)
+    protected override void OnTriggerEnter(Collider collider)
     {
         if (_particles != null)
         {
@@ -25,6 +25,6 @@ public class Collectable : BaseTrigger
             _visual.SetActive(false);
         }
 
-        base.OnTriggerEnter2D(collider);
+        base.OnTriggerEnter(collider);
     }
 }

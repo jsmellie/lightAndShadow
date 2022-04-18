@@ -1,14 +1,14 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(Collider))]
 public class BaseTrigger: MonoBehaviour
 {
-    public delegate void OnTrigeredDelegate(BaseTrigger trigger, Collider2D collider);
+    public delegate void OnTrigeredDelegate(BaseTrigger trigger, Collider collider);
 
     public event OnTrigeredDelegate OnTrigerEnter;
     public event OnTrigeredDelegate OnTrigerExit;
 
-    protected virtual void OnTriggerEnter2D(Collider2D collider)
+    protected virtual void OnTriggerEnter(Collider collider)
     {
         if (OnTrigerEnter != null)
         {
@@ -16,7 +16,7 @@ public class BaseTrigger: MonoBehaviour
         }
     }
 
-    protected virtual void OnTriggerExit2D(Collider2D collider)
+    protected virtual void OnTriggerExit(Collider collider)
     {
         if (OnTrigerExit != null)
         {

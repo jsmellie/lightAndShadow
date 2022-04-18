@@ -38,7 +38,7 @@ public class VirtualCameraManager : Singleton<VirtualCameraManager>
 
     public void OnStageLoaded()
     {
-        Camera gameplayCamera = CameraManager.Instance.GetCamera("Gameplay");
+        Camera gameplayCamera = CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID);
         _brain = gameplayCamera.GetComponent<CinemachineBrain>();
         
         _brain.enabled = false;

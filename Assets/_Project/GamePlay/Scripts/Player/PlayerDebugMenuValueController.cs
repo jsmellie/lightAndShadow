@@ -17,7 +17,6 @@ public class PlayerDebugMenuValueController : MonoBehaviour
     [SerializeField] private InputField _doubleJumpSpeedInputField;
 
     [Header("Player")]
-    [SerializeField] private PlayerController _playerController;
     [SerializeField] private Rigidbody2D _playerBody;
 
     private float _defaultGravity;
@@ -32,7 +31,7 @@ public class PlayerDebugMenuValueController : MonoBehaviour
         _defaultButton.onClick.AddListener(DefaultValues);
 
         _defaultGravity = _playerBody.gravityScale;
-        _playerController.DebugGetValues(out _defaultHorizontalSpeed, out _defaultJumpSpeed, out _defaultDoubleJumpSpeed);
+        //_playerController.DebugGetValues(out _defaultHorizontalSpeed, out _defaultJumpSpeed, out _defaultDoubleJumpSpeed);
     }
 
     private void OnDestroy()
@@ -57,10 +56,10 @@ public class PlayerDebugMenuValueController : MonoBehaviour
         float jumpSpeed;
         float doubleJumpSpeed;
 
-        _playerController.DebugGetValues(out horizontalSpeed, out jumpSpeed, out doubleJumpSpeed);
+        //_playerController.DebugGetValues(out horizontalSpeed, out jumpSpeed, out doubleJumpSpeed);
         gravity = _playerBody.gravityScale;
 
-        SetInputFields(gravity, horizontalSpeed, jumpSpeed, doubleJumpSpeed);
+        //SetInputFields(gravity, horizontalSpeed, jumpSpeed, doubleJumpSpeed);
     }
 
     private void DefaultValues()
@@ -90,7 +89,7 @@ public class PlayerDebugMenuValueController : MonoBehaviour
 
         if (float.TryParse(_horizontalSpeedInputField.text, out horizontalSpeed) && float.TryParse(_jumpSpeedInputField.text, out jumpSpeed) && float.TryParse(_doubleJumpSpeedInputField.text, out doubleJumpSpeed))
         {
-            _playerController.DebugSetValues(horizontalSpeed, jumpSpeed, doubleJumpSpeed);
+            //_playerController.DebugSetValues(horizontalSpeed, jumpSpeed, doubleJumpSpeed);
         }
     }
 }

@@ -7,20 +7,20 @@ public class StageSelector : MonoBehaviour
     // Start is called before the first frame update
     public void LoadStageOne()
     {
-        StageLoader.Instance.OnStageLoaded += OnStageLoaded;
-        StageLoader.Instance.LoadStage(Zones.URBAN, 1);
+        StageController.Instance.OnStageLoaded += OnStageLoaded;
+        StageController.Instance.LoadStage(Zones.URBAN, 1);
     }
 
     public void LoadStageTwo()
     {
-        StageLoader.Instance.OnStageLoaded += OnStageLoaded;
-        StageLoader.Instance.LoadStage(Zones.URBAN, 2);
+        StageController.Instance.OnStageLoaded += OnStageLoaded;
+        StageController.Instance.LoadStage(Zones.URBAN, 2);
     }
 
     public void UnloadStage()
     {
-        StageLoader.Instance.OnStageUnloaded += OnStageUnloaded;
-        StageLoader.Instance.UnloadStage(OnStageUnloaded);
+        StageController.Instance.OnStageUnloaded += OnStageUnloaded;
+        StageController.Instance.UnloadStage(OnStageUnloaded);
     }
 
     private void OnStageLoaded(Zones zone, int stageIndex,  LevelLoadingErrorCodes errorCode)
@@ -29,8 +29,8 @@ public class StageSelector : MonoBehaviour
         {
             Debug.LogError($"Error While Loading Stage: {errorCode}");
         }
-        
-        StageLoader.Instance.OnStageLoaded -= OnStageLoaded;
+
+        StageController.Instance.OnStageLoaded -= OnStageLoaded;
     }
 
     private void OnStageUnloaded(LevelLoadingErrorCodes errorCode)
@@ -39,7 +39,7 @@ public class StageSelector : MonoBehaviour
         {
             Debug.LogError($"Error While Unloading Stage: {errorCode}");
         }
-        
-        StageLoader.Instance.OnStageUnloaded -= OnStageUnloaded;
+
+        StageController.Instance.OnStageUnloaded -= OnStageUnloaded;
     }
 }
