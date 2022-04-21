@@ -15,6 +15,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     public enum AnimationState
     {
+        Spawning,
         Movement,
         Celebration,
         Calm

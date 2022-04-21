@@ -8,7 +8,7 @@ public class Collectable : BaseTrigger
     [SerializeField] protected Collider _collider;
     [SerializeField] protected GameObject _visual;
     
-    protected override void OnTriggerEnter(Collider collider)
+    public override void OnTriggerEnter(Collider collider)
     {
         if (_particles != null)
         {

@@ -6,7 +6,7 @@ public class LevelCompleteTrigger : BaseTrigger
 {
     [SerializeField] private LevelCompleteAnimationSequencer _levelCompleteSequencer = null;
 
-    protected override void OnTriggerEnter(Collider collider)
+    public override void OnTriggerEnter(Collider collider)
     {
         base.OnTriggerEnter(collider);
 

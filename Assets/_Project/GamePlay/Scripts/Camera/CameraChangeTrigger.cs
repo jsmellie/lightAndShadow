@@ -26,7 +26,7 @@ public class CameraChangeTrigger : BaseTrigger
     {
         _cameraManager = VirtualCameraManager.Instance;
     }
-    protected override void OnTriggerEnter(Collider collider)
+    public override void OnTriggerEnter(Collider collider)
     {
         base.OnTriggerEnter(collider);
 
@@ -43,7 +43,7 @@ public class CameraChangeTrigger : BaseTrigger
         }
     }
 
-    protected override void OnTriggerExit(Collider collider)
+    public override void OnTriggerExit(Collider collider)
     {
         base.OnTriggerExit(collider);
 
