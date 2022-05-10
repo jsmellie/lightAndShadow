@@ -35,7 +35,66 @@ public class PlayerAnimationController : MonoBehaviour
 
     private bool _acceptInput = true;
 
+    private AnimationState _currentAnimationState = AnimationState.Movement;
+
     private void Update()
+    {
+        switch (_currentAnimationState)
+        {
+            case AnimationState.Spawning:
+                UpdateSpawning();
+                break;
+
+            case AnimationState.Calm:
+                UpdateCalm();
+                break;
+
+            case AnimationState.Celebration:
+                UpdateCelebration();
+                break;
+
+            case AnimationState.Movement:
+                UpdateMovement();
+                break;
+        }
+    }
+
+    private void UpdateSpawning()
+    {
+
+    }
+
+    private void UpdateCalm()
+    {
+        if (_acceptInput)
+        {
+            AxisInput axis = InputController.Instance.GetAxis(InputController.eAxis.Horizontal);
+
+            if (axis.IsPositive)
+            {
+                SetLookDirection(LookDirection.Right);
+            }
+            else if (axis.IsNegative)
+            {
+                SetLookDirection(LookDirection.Left);
+            }
+
+            _animator.SetFloat(VELOCITY_PARAMETER, Mathf.Abs(_playerMovementController.Velocity.x) / _playerMovementController.MaxSpeed);
+        }
+        else
+        {
+            _animator.SetFloat(VELOCITY_PARAMETER, 0);
+        }
+
+        _animator.SetBool(IS_GROUNDED_PARAMETER, _playerMovementController.IsGrounded);
+    }
+
+    private void UpdateCelebration()
+    {
+
+    }
+
+    private void UpdateMovement()
     {
         if (_acceptInput)
         {

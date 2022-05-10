@@ -4,9 +4,15 @@ using System;
 using UnityEngine;
 
 
-
 [CreateAssetMenu(menuName = "Light & Shadow/Layered Music/Data")]
 public class LayeredMusicTrackData : ScriptableObject
 {
-    public string[] LayerPath = null;
+    [Serializable]
+    public class MusicTrack
+    {
+        public string TrackPath;
+        public List<bool> EnabledStages;
+    }
+
+    public List<MusicTrack> MusicTracks;
 }

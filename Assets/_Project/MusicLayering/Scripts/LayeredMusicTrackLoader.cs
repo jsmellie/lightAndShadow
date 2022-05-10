@@ -82,14 +82,14 @@ public class LayeredMusicTrackLoader
     {
         bool didSucceed = false;
 
-        if (_trackData.LayerPath != null && _trackData.LayerPath.Length > 0)
+        if (_trackData.MusicTracks != null && _trackData.MusicTracks.Count > 0)
         {
-            ResourceRequest[] loadingOperations = new ResourceRequest[_trackData.LayerPath.Length];
+            ResourceRequest[] loadingOperations = new ResourceRequest[_trackData.MusicTracks.Count];
             List<int> pendingRequests = new List<int>(loadingOperations.Length);
 
-            for(int i = 0; i < _trackData.LayerPath.Length; ++i)
+            for(int i = 0; i < _trackData.MusicTracks.Count; ++i)
             {
-                loadingOperations[i] = Resources.LoadAsync<AudioClip>(_trackData.LayerPath[i]);
+                loadingOperations[i] = Resources.LoadAsync<AudioClip>(_trackData.MusicTracks[i].TrackPath);
                 pendingRequests.Add(i);
             }
 
