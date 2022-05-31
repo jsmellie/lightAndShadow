@@ -15,4 +15,5 @@ public class LayeredMusicTrackData : ScriptableObject
     }
 
     public List<MusicTrack> MusicTracks;
+    public float BPM;
 }

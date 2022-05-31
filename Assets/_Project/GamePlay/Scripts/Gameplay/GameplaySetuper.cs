@@ -46,8 +46,6 @@ public class GameplaySetuper : MonoBehaviour
                 player.parent = this.transform;
                 player.position = _spawnAnchor.position;
 
-                VirtualCameraManager.Instance.OnStageLoaded();
-
                 FullScreenWipe.FadeOut(1, OnAnimationCompleted);
             }
         }
