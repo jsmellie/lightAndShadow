@@ -7,6 +7,7 @@ using static AudioDatabaseObject;
 using System.Threading;
 using static LayeredMusicTrackData;
 using System;
+using UnityEngine.AddressableAssets;
 
 public class AudioController : SingletonBehaviour<AudioController>
 {
@@ -71,10 +72,16 @@ public class AudioController : SingletonBehaviour<AudioController>
     {
         if (Input.GetKeyDown("f"))
         {
-            LoadLayeredMusic(Resources.Load<LayeredMusicTrackData>("Audio/Music/LayeredTrack1/LayeredTrack1"));
-            InitializeLayeredMusic();
+            Addressables.LoadAssetAsync<LayeredMusicTrackData>("Audio/Music/LayeredTrack1/LayeredTrack1").Completed += (x) => {
+            LoadLayeredMusic(x.Result);
+        };
         }
 
+        if(Input.GetKeyDown("g"))
+        {
+            InitializeLayeredMusic();
+        }   
+            
         if (Input.GetKeyDown("r"))
         {
             PlaySoundEffect("Test1", true);
@@ -168,10 +175,8 @@ public class AudioController : SingletonBehaviour<AudioController>
     public void LoadLayeredMusic(LayeredMusicTrackData trackData)
     {
         _loadedMusicBPM = trackData.BPM;
-        _previousLoadedLayeredMusic = _loadedLayeredMusic;
+        _previousLoadedLayeredMusic = new List<AudioClip>(_loadedLayeredMusic);
         _loadedLayeredMusic.Clear();
-
-        List<AudioClip> audioClips = new List<AudioClip>();
 
         foreach(AudioSource audioSource in _layeredAudioSources)
         {
@@ -180,10 +185,11 @@ public class AudioController : SingletonBehaviour<AudioController>
 
         for (int i = 0; i < trackData.MusicTracks.Count;i++)
         {
-            audioClips.Add(Resources.Load<AudioClip>(trackData.MusicTracks[i].TrackPath));
+            Addressables.LoadAssetAsync<AudioClip>(trackData.MusicTracks[i].TrackPath).Completed += (x) => 
+                {
+                    _loadedLayeredMusic.Add(x.Result);
+                };
         }
-
-        _loadedLayeredMusic = audioClips;
 
         _layeredMusicController.SetNextTrackData(trackData);
     }
@@ -205,7 +211,6 @@ public class AudioController : SingletonBehaviour<AudioController>
         }
 
         _tempoCancellationToken = new CancellationTokenSource();
-
         for (int i = 0; i < _layeredAudioSources.Count; i++)
         {
             _layeredAudioSources[i].Stop();
