@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.AddressableAssets;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -20,6 +21,6 @@ public class MainMenuController : MonoBehaviour
 
     private void LoadGameScene()
     {
-        SceneManager.LoadScene("FOREST_Stage1", LoadSceneMode.Single);
+        Addressables.LoadScene("Assets/_Project/GamePlay/Scenes/Stages/URBAN_Stage1.unity", LoadSceneMode.Single);
     }
 }
