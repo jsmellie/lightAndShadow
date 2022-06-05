@@ -14,6 +14,7 @@ public class AudioDatabaseObject : ScriptableObject
         public string Key;
         public int Layer;
         public AudioClip AudioClip;
+        public bool InterruptSameLayer;
     }
 
     public List<AudioDatabaseEntry> Clips;

@@ -24,6 +24,11 @@ public class LayeredMusicController : MonoBehaviour
         _nextTrackData = trackData;
     }
 
+    public List<float> GetLayerVolumes()
+    {
+        return _layerVolumes;
+    }
+
     public void InitializeTrack(Action onComplete)
     {
         if (_currentTrackData != null)
@@ -67,12 +72,14 @@ public class LayeredMusicController : MonoBehaviour
         _totalStageCount = _currentTrackData.MusicTracks.First().EnabledStages.Count;
         
         _layerVolumes.Clear();
-        _layerVolumes = new List<float>(_totalLayerCount);
+        _layerVolumes = new List<float>(new float[_totalLayerCount]);
 
         onComplete?.Invoke();
+
+        UpdateVolumes();
     }
 
-    private void IncrementLayer()
+    public void IncrementLayer()
     {
         if(_currentTrackData == null)
         {
@@ -87,7 +94,7 @@ public class LayeredMusicController : MonoBehaviour
         }
     }
 
-    private void DecrementLayer()
+    public void DecrementLayer()
     {
         if(_currentTrackData == null)
         {
@@ -106,18 +113,25 @@ public class LayeredMusicController : MonoBehaviour
     {
         for (int i = 0; i < _totalLayerCount; i++)
         {
+            int index = i;
             if (_currentTrackData.MusicTracks[i].EnabledStages[_currentLayer])
             {
                 if (_layerVolumes[i] < 0.5f)
                 {
-                    DOTween.To(() => _layerVolumes[i], x => _layerVolumes[i] = x, 1, FADE_DURATION);
+                    DOVirtual.Float(_layerVolumes[index], 1, FADE_DURATION, (x) =>
+                    {
+                        _layerVolumes[index] = x;
+                    });
                 }
             }
             else
             {
                 if (_layerVolumes[i] > 0.5f)
                 {
-                    DOTween.To(() => _layerVolumes[i], x => _layerVolumes[i] = x, 0, FADE_DURATION);
+                    DOVirtual.Float(_layerVolumes[index], 0, FADE_DURATION, (x) =>
+                    {
+                         _layerVolumes[index] = x;
+                    });
                 }
             }
         }
