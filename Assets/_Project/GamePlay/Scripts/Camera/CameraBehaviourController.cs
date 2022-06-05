@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class CameraBehaviourController : MonoBehaviour
@@ -40,6 +41,8 @@ public class CameraBehaviourController : MonoBehaviour
     private float _targetZoom = 15;
     private float _currentZoom;
 
+    private CinemachinePath _cameraMinimumHeight;
+
     public CameraBehaviourState GetCameraBehaviourState()
     {
         return _currentState;
@@ -76,12 +79,55 @@ public class CameraBehaviourController : MonoBehaviour
         SnapToTarget();
     }
 
+    private float CalculateCameraMinHeight()
+    {
+        if (_cameraMinimumHeight == null)
+        {
+            return 0;
+        }
+
+        float cameraXPosition = _currentPosition.x;
+
+        if (cameraXPosition < _cameraMinimumHeight.m_Waypoints[0].position.x)
+        {
+            return _cameraMinimumHeight.m_Waypoints[0].position.y;
+        }
+
+        if (cameraXPosition > _cameraMinimumHeight.m_Waypoints[_cameraMinimumHeight.m_Waypoints.Length - 1].position.x)
+        {
+            return _cameraMinimumHeight.m_Waypoints[_cameraMinimumHeight.m_Waypoints.Length - 1].position.y;
+        }
+
+        int currentWaypoint = -1;
+
+        for (int i = 0; i < _cameraMinimumHeight.m_Waypoints.Length - 1; i++)
+        {
+            if (cameraXPosition > _cameraMinimumHeight.m_Waypoints[i + 1].position.x)
+            {
+                continue;
+            }
+
+            currentWaypoint = i;
+
+            float currentX = _cameraMinimumHeight.m_Waypoints[i].position.x;
+            float nextX = _cameraMinimumHeight.m_Waypoints[i + 1].position.x;
+
+            float percentage = (cameraXPosition - currentX) / (nextX - currentX);
+
+            return _cameraMinimumHeight.EvaluatePosition(currentWaypoint + percentage).y;
+
+        }
+
+        return _cameraMinimumHeight.m_Waypoints[0].position.y;
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown("f"))
         {
             _playerTransform = GameObject.FindObjectOfType<PlayerMovementController>().transform;
             _currentState = CameraBehaviourState.FollowPlayer;
+            _cameraMinimumHeight = GameObject.FindObjectOfType<CinemachinePath>();
         }
 
         switch(_currentState)
@@ -102,6 +148,8 @@ public class CameraBehaviourController : MonoBehaviour
 
         UpdateCurrentPosition();
         UpdateCurrentZoom();
+
+        UpdateCameraMinimumHeight();
     }
 
     private void FixedUpdate()
@@ -183,5 +231,19 @@ public class CameraBehaviourController : MonoBehaviour
         }
 
         _currentZoom = Mathf.Lerp(_currentZoom, targetZoom, Time.deltaTime * zoomLerpSpeed);
+    }
+
+    private void UpdateCameraMinimumHeight()
+    {
+        float cameraMinHeight = CalculateCameraMinHeight();
+
+        float newCameraHeight = _currentPosition.y;
+
+        if (_currentPosition.y - (_currentZoom) < cameraMinHeight)
+        {
+            newCameraHeight = cameraMinHeight + (_currentZoom);
+        }
+
+        _currentPosition.y = newCameraHeight;
     }
 }
