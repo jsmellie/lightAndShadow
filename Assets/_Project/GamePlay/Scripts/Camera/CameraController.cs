@@ -8,8 +8,11 @@ public class CameraController : SingletonBehaviour<CameraController>
     public const string GAMEPLAY_CAMERA_ID = "Gameplay";
     public const string UI_CAMERA_ID = "UI";
 
+    public const string VIDEO_CAMERA_ID = "Cutscene";
+
     [SerializeField] private GameObject _gameCameraPrefab;
     [SerializeField] private GameObject _uiCameraPrefab;
+    [SerializeField] private GameObject _videoCameraPrefab;
 
     private Dictionary<string, Camera> _loadedCameras = new Dictionary<string, Camera>();
 
@@ -17,11 +20,14 @@ public class CameraController : SingletonBehaviour<CameraController>
     {
         Camera gameCamera = Instantiate<GameObject>(_gameCameraPrefab).GetComponent<Camera>();
         Camera uiCamera = Instantiate<GameObject>(_uiCameraPrefab).GetComponent<Camera>();
+        Camera videoCamera = Instantiate<GameObject>(_videoCameraPrefab).GetComponent<Camera>();
         gameCamera.transform.parent = transform;
         uiCamera.transform.parent = transform;
+        videoCamera.transform.parent = transform;
 
         _loadedCameras.Add(GAMEPLAY_CAMERA_ID, gameCamera);
         _loadedCameras.Add(UI_CAMERA_ID, uiCamera);
+        _loadedCameras.Add(VIDEO_CAMERA_ID, videoCamera);
     }
 
     public Camera GetCamera(string ID)
