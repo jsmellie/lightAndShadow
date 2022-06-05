@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using DG.Tweening;
+using System.Linq;
 
 public class LayeredMusicManager : MonoBehaviour
 {
@@ -11,8 +12,9 @@ public class LayeredMusicManager : MonoBehaviour
 
     private AudioSource[] _audioSources = null;
     private LayeredMusicTrackLoader _currentTrack;
-    private int _lastLayerIndex = -1;
+    private int _currentLayer = -1;
     private int _totalLayerCount = -1;
+    private int _totalStageCount = -1;
 
     private Action<LayeredMusicManager, bool> _onLoadCompletedCallback;
     private Action<LayeredMusicManager, bool> _onUnloadCompletedCallback;
@@ -88,13 +90,28 @@ public class LayeredMusicManager : MonoBehaviour
             Debug.LogError($"No track loaded.");
             return;
         }
-        int nextLayer = _lastLayerIndex += 1;
 
-        if (nextLayer < _totalLayerCount)
+        if ((_currentLayer + 1) < _totalStageCount)
         {
-            _lastLayerIndex = nextLayer;
-            AudioSource layerSource = _audioSources[nextLayer];
-            layerSource.DOFade(1.0f, 1.0f);
+            _currentLayer += 1;
+
+            for (int i = 0; i < _totalLayerCount; i++)
+            {
+                if (_currentTrack.TrackData.MusicTracks[i].EnabledStages[_currentLayer])
+                {
+                    if (_audioSources[i].volume < 0.5f)
+                    {
+                        _audioSources[i].DOFade(1f, 1f);
+                    }
+                }
+                else
+                {
+                    if (_audioSources[i].volume > 0.5f)
+                    {
+                        _audioSources[i].DOFade(0f, 1f);
+                    }
+                }
+            }
         }
         else
         {
@@ -105,21 +122,37 @@ public class LayeredMusicManager : MonoBehaviour
     [ContextMenu("Remove layer")]
     public void RemoveLayer()
     {
-
         if (_currentTrack == null)
         {
             Debug.LogError($"No track loaded.");
             return;
         }
-        if (_lastLayerIndex >= 0)
+
+        if ((_currentLayer - 1) >= 0)
         {
-            AudioSource layerSource = _audioSources[_lastLayerIndex];
-            layerSource.DOFade(0.0f, 1.0f);
-            _lastLayerIndex -= 1;
+            _currentLayer -= 1;
+
+            for (int i = 0; i < _totalLayerCount; i++)
+            {
+                if (_currentTrack.TrackData.MusicTracks[i].EnabledStages[_currentLayer])
+                {
+                    if (_audioSources[i].volume < 0.5f)
+                    {
+                        _audioSources[i].DOFade(1f, 1f);
+                    }
+                }
+                else
+                {
+                    if (_audioSources[i].volume > 0.5f)
+                    {
+                        _audioSources[i].DOFade(0f, 1f);
+                    }
+                }
+            }
         }
         else
         {
-            Debug.LogError($"All layers already muted.");
+            Debug.LogError($"All layers already stopped");
         }
     }
 
@@ -150,7 +183,8 @@ public class LayeredMusicManager : MonoBehaviour
             Debug.LogError($"Not enough AudioSources found for all the layers of {_currentTrack.TrackData.name}");
         }
 
-        _totalLayerCount = Mathf.Min(_currentTrack.LoadedLayers.Length, _audioSources.Length);
+        _totalLayerCount = _currentTrack.TrackData.MusicTracks.Count;
+        _totalStageCount = _currentTrack.TrackData.MusicTracks.First().EnabledStages.Count;
 
         for(int i = 0; i < _totalLayerCount; ++i)
         {

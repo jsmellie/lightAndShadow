@@ -26,9 +26,9 @@ public class CameraChangeTrigger : BaseTrigger
     {
         _cameraManager = VirtualCameraManager.Instance;
     }
-    protected override void OnTriggerEnter2D(Collider2D collider)
+    public override void OnTriggerEnter(Collider collider)
     {
-        base.OnTriggerEnter2D(collider);
+        base.OnTriggerEnter(collider);
 
         if (_onTriggerEnterCameraData.ShouldChangeCamera)
         {
@@ -43,9 +43,9 @@ public class CameraChangeTrigger : BaseTrigger
         }
     }
 
-    protected override void OnTriggerExit2D(Collider2D collider)
+    public override void OnTriggerExit(Collider collider)
     {
-        base.OnTriggerExit2D(collider);
+        base.OnTriggerExit(collider);
 
         if (_shouldReturnToPreviousCameraOnExit && _prevCameraID.HasValue)
         {

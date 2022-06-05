@@ -6,12 +6,12 @@ public class LevelCompleteTrigger : BaseTrigger
 {
     [SerializeField] private LevelCompleteAnimationSequencer _levelCompleteSequencer = null;
 
-    protected override void OnTriggerEnter2D(Collider2D collider)
+    public override void OnTriggerEnter(Collider collider)
     {
-        base.OnTriggerEnter2D(collider);
+        base.OnTriggerEnter(collider);
 
-        PlayerController player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        player.IsControllerActive = false;
+        //PlayerController player = collider.GetComponent<PlayerController>();
+        //player.IsControllerActive = false;
 
         PlayLevelCompleteSequence();
     }
@@ -23,8 +23,8 @@ public class LevelCompleteTrigger : BaseTrigger
 
     private void OnCompleteSequenceFinished()
     {
-        Zones currentZone = StageLoader.Instance.CurrentZone;
-        int currentStageID = StageLoader.Instance.CurrentStageID;
+        Zones currentZone = StageController.Instance.CurrentZone;
+        int currentStageID = StageController.Instance.CurrentStageID;
 
         Zones nextZone;
         int nextStageID;
@@ -47,8 +47,8 @@ public class LevelCompleteTrigger : BaseTrigger
 
     private void LoadNextLevel()
     {
-        Zones currentZone = StageLoader.Instance.CurrentZone;
-        int currentStageID = StageLoader.Instance.CurrentStageID;
+        Zones currentZone = StageController.Instance.CurrentZone;
+        int currentStageID = StageController.Instance.CurrentStageID;
 
         Zones nextZone;
         int nextStageID;
@@ -56,6 +56,6 @@ public class LevelCompleteTrigger : BaseTrigger
 
         Debug.Log($"Level Completed.  Loading level {nextZone} stage {nextStageID}");
 
-        StageLoader.Instance.LoadStage(nextZone, nextStageID);
+        StageController.Instance.LoadStage(nextZone, nextStageID);
     }
 }

@@ -17,24 +17,46 @@ public abstract class SingletonBehaviour<T> : MonoBehaviour where T : SingletonB
         {
             if (IsInstanceNull)
             {
-                GameObject obj = GameObject.Find(typeof(T).FullName);
-                if (obj != null)
-                {
-                    _instance = obj.GetComponent<T>();
-                }
-                if (_instance == null)
-                {
-                    obj = new GameObject();
-                    obj.name = typeof(T).FullName;
-                    _instance = obj.AddComponent<T>();
-                }
-
-                DontDestroyOnLoad(_instance.gameObject);
-
-                _instance.Initialize();
+                CreateInstance();
             }
 
             return _instance;
+        }
+    }
+
+    private static bool CreateInstance()
+    {
+        if (IsInstanceNull)
+        {
+            T obj = GameObject.FindObjectOfType<T>();
+
+            if (obj != null)
+            {
+                _instance = obj;
+            }
+
+            if (_instance == null)
+            {
+                obj = new GameObject().AddComponent<T>();
+                obj.name = typeof(T).FullName;
+                _instance = obj;
+            }
+
+            DontDestroyOnLoad(_instance.gameObject);
+
+            _instance.Initialize();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    protected virtual void Awake()
+    {
+        if (!CreateInstance())
+        {
+            Destroy(gameObject);
         }
     }
 

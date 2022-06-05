@@ -12,7 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e42015244575147698ee55fd48f77a08, type: 3}
   m_Name: LayeredTrack1
   m_EditorClassIdentifier: 
-  LayerPath:
-  - Audio/Music/LayeredTrack1/bensound-betterdays
-  - Audio/Music/LayeredTrack1/bensound-sunny
-  - Audio/Music/LayeredTrack1/bensound-dubstep
+  MusicTracks:
+  - TrackPath: Audio/Music/LayeredTrack1/Layer1
+    EnabledStages: 0101000000
+  - TrackPath: Audio/Music/LayeredTrack1/Layer2
+    EnabledStages: 0001010101
+  - TrackPath: Audio/Music/LayeredTrack1/Layer3
+    EnabledStages: 0000010101
+  - TrackPath: Audio/Music/LayeredTrack1/Layer4
+    EnabledStages: 0000000101
+  - TrackPath: Audio/Music/LayeredTrack1/Layer5
+    EnabledStages: 0101010101
+  - TrackPath: Audio/Music/LayeredTrack1/Layer6
+    EnabledStages: 0000000001

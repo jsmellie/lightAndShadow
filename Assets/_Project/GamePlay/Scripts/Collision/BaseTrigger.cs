@@ -1,26 +1,26 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(Collider))]
 public class BaseTrigger: MonoBehaviour
 {
-    public delegate void OnTrigeredDelegate(BaseTrigger trigger, Collider2D collider);
+    public delegate void OnTrigeredDelegate(BaseTrigger trigger, Collider collider);
 
-    public event OnTrigeredDelegate OnTrigerEnter;
-    public event OnTrigeredDelegate OnTrigerExit;
+    public event OnTrigeredDelegate TriggerEnterEvent;
+    public event OnTrigeredDelegate TriggerExitEvent;
 
-    protected virtual void OnTriggerEnter2D(Collider2D collider)
+    public virtual void OnTriggerEnter(Collider collider)
     {
-        if (OnTrigerEnter != null)
+        if (TriggerEnterEvent != null)
         {
-            OnTrigerEnter.Invoke(this, collider);
+            TriggerEnterEvent.Invoke(this, collider);
         }
     }
 
-    protected virtual void OnTriggerExit2D(Collider2D collider)
+    public virtual void OnTriggerExit(Collider collider)
     {
-        if (OnTrigerExit != null)
+        if (TriggerExitEvent != null)
         {
-            OnTrigerExit.Invoke(this, collider);
+            TriggerExitEvent.Invoke(this, collider);
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[ExecuteInEditMode]
 public class GameplaySetuper : MonoBehaviour
 {
     [Header("Stage")]
@@ -18,9 +17,6 @@ public class GameplaySetuper : MonoBehaviour
         if (!Application.isPlaying)
         {
             StageUtility.GetZoneAndStageFromString(this.gameObject.scene.name, out _zone, out _stageIndex);
-            #if UNITY_EDITOR
-            UnityEditor.EditorUtility.SetDirty(this.gameObject);
-            #endif
         }
     }
 
@@ -28,26 +24,19 @@ public class GameplaySetuper : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            CameraManager cameraManager = CameraManager.Instance;
+            CameraController cameraController = CameraController.Instance;
 
-            if (!StageLoader.IsInstanceNull)
-            {
-                StageLoader.Instance.OnStageLoaded += OnStageLoaded;
-            }
-            else
-            {
-                FullScreenWipe.FadeIn(0, null);
-                StageLoader.Instance.SetStageInfo(_zone, _stageIndex);
-                OnStageLoaded(_zone, _stageIndex, LevelLoadingErrorCodes.None);
-            }
+            FullScreenWipe.FadeIn(0, null);
+            StageController.Instance.SetStageInfo(_zone, _stageIndex);
+            OnStageLoaded(_zone, _stageIndex, LevelLoadingErrorCodes.None);
         }
     }
 
     private void OnStageLoaded(Zones zone, int stageIndex, LevelLoadingErrorCodes errorCode)
     {
-        if (!StageLoader.IsInstanceNull)
+        if (!StageController.IsInstanceNull)
         {
-            StageLoader.Instance.OnStageLoaded -= OnStageLoaded;
+            StageController.Instance.OnStageLoaded -= OnStageLoaded;
         }
         if (_zone == zone && _stageIndex == stageIndex)
         {
@@ -57,8 +46,6 @@ public class GameplaySetuper : MonoBehaviour
                 player.parent = this.transform;
                 player.position = _spawnAnchor.position;
 
-                VirtualCameraManager.Instance.OnStageLoaded();
-
                 FullScreenWipe.FadeOut(1, OnAnimationCompleted);
             }
         }
@@ -66,7 +53,6 @@ public class GameplaySetuper : MonoBehaviour
 
     private void OnAnimationCompleted()
     {
-        PlayerController player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        player.IsControllerActive = true;
+        
     }
 }
