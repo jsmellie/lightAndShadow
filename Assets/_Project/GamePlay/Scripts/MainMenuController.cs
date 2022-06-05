@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.AddressableAssets;
 
 public class MainMenuController : MonoBehaviour
 {
     [SerializeField] private Button _playButton;
-
+    [SerializeField] private AssetReference _firstScene;
     private void Awake()
     {
-        AddListeners();
+        AddListeners(); 
     }
 
     private void AddListeners()
@@ -20,6 +21,6 @@ public class MainMenuController : MonoBehaviour
 
     private void LoadGameScene()
     {
-        SceneManager.LoadScene("FOREST_Stage1", LoadSceneMode.Single);
+        AddressableSceneManager.Instance.LoadScene(_firstScene, LoadSceneMode.Single);
     }
 }
