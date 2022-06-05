@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
 using static AudioDatabaseObject;
+using System.Threading;
 using static LayeredMusicTrackData;
+using System;
 
 public class AudioController : SingletonBehaviour<AudioController>
 {
@@ -18,14 +20,51 @@ public class AudioController : SingletonBehaviour<AudioController>
     private List<AudioClip> _loadedLayeredMusic = new List<AudioClip>();
     private List<AudioClip> _previousLoadedLayeredMusic = new List<AudioClip>();
 
-    private List<int> _inUseSoundEffectSources = new List<int>();
-
     private int _currentMusicAudioSource = 0;
     private int _currentBeat = 0;
+    private float _loadedMusicBPM = 0;
+
+    private CancellationTokenSource _tempoCancellationToken;
+
+    public Action<int> OnBeat;
 
     protected override void Initialize()
     {
         _audioDatabase.LoadAudioDatabases();
+    }
+
+    private async Task MusicTempoLoop(float bpm, CancellationToken cancellationToken)
+    {
+        int msPerBeat = (int)(60000 / bpm);
+
+        if (cancellationToken.IsCancellationRequested)
+        {
+            return;
+        }
+
+        while (true)
+        {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
+
+            await Task.Delay(msPerBeat);
+
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
+
+            _currentBeat++;
+
+            if (_currentBeat > 3)
+            {
+                _currentBeat = 0;
+            }
+
+            OnBeat?.Invoke(_currentBeat);
+        }
     }
 
     private void Update()
@@ -128,6 +167,7 @@ public class AudioController : SingletonBehaviour<AudioController>
 
     public void LoadLayeredMusic(LayeredMusicTrackData trackData)
     {
+        _loadedMusicBPM = trackData.BPM;
         _previousLoadedLayeredMusic = _loadedLayeredMusic;
         _loadedLayeredMusic.Clear();
 
@@ -159,6 +199,13 @@ public class AudioController : SingletonBehaviour<AudioController>
 
     private void InitializeLayeredAudioSources()
     {
+        if (_tempoCancellationToken != null)
+        {
+            _tempoCancellationToken.Cancel();
+        }
+
+        _tempoCancellationToken = new CancellationTokenSource();
+
         for (int i = 0; i < _layeredAudioSources.Count; i++)
         {
             _layeredAudioSources[i].Stop();
@@ -173,6 +220,9 @@ public class AudioController : SingletonBehaviour<AudioController>
                 _layeredAudioSources[i].clip = null;
             }
         }
+
+        _currentBeat = 0;
+        _ = MusicTempoLoop(_loadedMusicBPM, _tempoCancellationToken.Token);
     }
 
     private void UnloadPreviousLayeredMusic()
