@@ -25,14 +25,18 @@ public class PlayerTriggerController : MonoBehaviour
 
         RemoveUnusedTriggers(collidersThisFrame);
 
-        TriggerEnterColliders(collidersThisFrame);
+        TriggerEnterColliders(_collidingTriggers);
     }
 
     private void TriggerEnterColliders(List<Collider> colliders)
     {
-        foreach(Collider collider in colliders)
+        foreach (Collider collider in colliders)
         {
-            collider.GetComponent<BaseTrigger>().OnTriggerEnter(GetComponent<BoxCollider>());
+            if (!_collidingTriggers.Contains(collider))
+            {
+                collider.GetComponent<BaseTrigger>().OnTriggerEnter(GetComponent<BoxCollider>());
+                AddCollidingTrigger(collider);
+            }
         }
     }
 
