@@ -1,22 +1,34 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHealthController : MonoBehaviour
+public class PlayerHealthController : SingletonBehaviour<PlayerHealthController>
 {
     
-    [SerializeField] private float MaxHealth = 100f;
-    [SerializeField] private float DifficultyScale = 2f;
-    private int BEATS_PER_DAMAGE = 8;
-    private int MAX_SAFE_BEATS = 2;
-    private float _health = 100f;
+    [SerializeField] private int MaxHealth = 100;
+    private int BEATS_PER_DAMAGE = 2;
+    private int MAX_SAFE_BEATS = 1;
+    private int _health = 40;
     private int _beatCounter = 0;
     private int _safeBeats = 0;
 
+    public Action<int> OnHealthChanged;
+    public Action OnDeath;
+
+    void Start()
+    {
+        AudioController.Instance.OnBeat += HandleBeat;
+    }
+
+    protected override void Initialize()
+    {
+        //stub
+    }
+
     private void CheckDeath()
     {
-        if (_health <= 0)
-        Debug.Log("ded"); //trigger death
+        if (_health <= 0) OnDeath?.Invoke(); //more death stuff here
     }
 
     [ContextMenu("MakeSafe")]
@@ -25,33 +37,38 @@ public class PlayerHealthController : MonoBehaviour
         _safeBeats = MAX_SAFE_BEATS;
     }
 
-    public void HandleBeat()
+    public void HandleBeat(int beat)
     {
-        _beatCounter++;
-        if(_beatCounter >= BEATS_PER_DAMAGE)
+        if(beat == 0)
         {
-            if(_safeBeats > 0)
+            _beatCounter++;
+            if(_beatCounter >= BEATS_PER_DAMAGE)
             {
-                _safeBeats--;
-            }
-            else
-            {
-                Damage(5);
-            }
+                if(_safeBeats > 0)
+                {
+                    _safeBeats--;
+                }   
+                else
+                {
+                    Damage(10);
+                }
 
-            _beatCounter -= BEATS_PER_DAMAGE;
+                _beatCounter -= BEATS_PER_DAMAGE;
+            }
         }
     }
 
-    public void Damage(float losthealth = 20)
+    public void Damage(int losthealth = 20)
     {
         _health -= losthealth;
+        OnHealthChanged?.Invoke(_health);
         CheckDeath();
     }
 
-    public void Heal(float addedHealth = 20)
+    public void Heal(int addedHealth = 20)
     {
         _health = Mathf.Min(MaxHealth, _health + addedHealth);
+        OnHealthChanged?.Invoke(_health);
     }
 
     [ContextMenu("Full Heal")]
