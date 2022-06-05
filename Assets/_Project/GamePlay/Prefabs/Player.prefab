@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1830610066843031014}
   - component: {fileID: 5715027823131054698}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: po_legs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5044949045251510440}
   - component: {fileID: 2931096024265927835}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: po_arm2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,7 +295,8 @@ GameObject:
   - component: {fileID: 4564412550855960111}
   - component: {fileID: 5447743706098794238}
   - component: {fileID: 9204720057895824480}
-  m_Layer: 8
+  - component: {fileID: -4865899276729591674}
+  m_Layer: 12
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -398,6 +399,20 @@ MonoBehaviour:
   _triggerLayers:
     serializedVersion: 2
     m_Bits: 10240
+--- !u!114 &-4865899276729591674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5447743706098794237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cb19150e965f77419369e78ccb0632d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHealth: 100
+  DifficultyScale: 2
 --- !u!1 &5447743706768646331
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,7 +422,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5447743706768646332}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: Graphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -440,7 +455,7 @@ GameObject:
   - component: {fileID: 5447743707038259683}
   - component: {fileID: 5447743707038259682}
   - component: {fileID: 5447743707038259681}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: CollisionBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -519,7 +534,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5447743708005273676}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Focus Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -550,7 +565,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2487940590596469300}
   - component: {fileID: 3378470707297404823}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: po_torso
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -632,7 +647,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4603984571346032028}
   - component: {fileID: 5395951885619567790}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: po_arm1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -765,7 +780,7 @@ GameObject:
   m_Component:
   - component: {fileID: 333281143118213817}
   - component: {fileID: 616678174575102615}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: po_head
   m_TagString: Untagged
   m_Icon: {fileID: 0}

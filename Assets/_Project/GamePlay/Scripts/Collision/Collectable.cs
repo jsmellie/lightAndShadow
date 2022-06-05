@@ -7,6 +7,7 @@ public class Collectable : BaseTrigger
     [SerializeField] protected ParticleSystem _particles;
     [SerializeField] protected Collider _collider;
     [SerializeField] protected GameObject _visual;
+    [SerializeField] protected float _healthRestored = 10;
     
     public override void OnTriggerEnter(Collider collider)
     {
@@ -24,6 +25,9 @@ public class Collectable : BaseTrigger
         {
             _visual.SetActive(false);
         }
+
+        collider.gameObject.GetComponent<PlayerHealthController>().MakeSafe();
+        collider.gameObject.GetComponent<PlayerHealthController>().Heal(_healthRestored);
 
         base.OnTriggerEnter(collider);
     }

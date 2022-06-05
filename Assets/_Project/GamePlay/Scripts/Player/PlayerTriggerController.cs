@@ -20,7 +20,6 @@ public class PlayerTriggerController : MonoBehaviour
         foreach(Collider collider in colliders)
         {
             collidersThisFrame.Add(collider);
-            AddCollidingTrigger(collider);
         }
 
         RemoveUnusedTriggers(collidersThisFrame);
