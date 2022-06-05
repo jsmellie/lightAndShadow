@@ -3,19 +3,26 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using static AudioDatabaseObject;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class AudioDatabase : MonoBehaviour
 {
-    [SerializeField] private List<string> _audioDatabasePaths = new List<string>();
+    [SerializeField] private List<AssetReference> _audioDatabasePaths = new List<AssetReference>();
 
     private List<AudioDatabaseObject> _audioDatabases = new List<AudioDatabaseObject>();
 
     public void LoadAudioDatabases()
     {
-        foreach(string path in _audioDatabasePaths)
+        foreach(var path in _audioDatabasePaths)
         {
-            _audioDatabases.Add(Resources.Load<AudioDatabaseObject>(path));
+            Addressables.LoadAssetAsync<AudioDatabaseObject>(path).Completed += AddDatabase;
         }
+    }
+
+    private void AddDatabase(AsyncOperationHandle<AudioDatabaseObject> obj)
+    {
+        _audioDatabases.Add(obj.Result);
     }
 
     public AudioDatabaseEntry GetClip(string key)
