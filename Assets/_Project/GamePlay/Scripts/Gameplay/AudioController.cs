@@ -28,21 +28,66 @@ public class AudioController : SingletonBehaviour<AudioController>
         _audioDatabase.LoadAudioDatabases();
     }
 
-    public void PlaySoundEffect(string clipName)
+    private void Update()
+    {
+        if (Input.GetKeyDown("f"))
+        {
+            LoadLayeredMusic(Resources.Load<LayeredMusicTrackData>("Audio/Music/LayeredTrack1/LayeredTrack1"));
+            InitializeLayeredMusic();
+        }
+
+        if (Input.GetKeyDown("r"))
+        {
+            PlaySoundEffect("Test1", true);
+        }
+
+        if (Input.GetKeyDown("1"))
+        {
+            _layeredMusicController.DecrementLayer();
+        }
+
+        if (Input.GetKeyDown("2"))
+        {
+            _layeredMusicController.IncrementLayer();
+        }
+
+        UpdateLayeredAudioVolumes();
+    }
+
+    private void UpdateLayeredAudioVolumes()
+    {
+        List<float> layerVolumes = _layeredMusicController.GetLayerVolumes();
+
+        for (int i = 0; i < _layeredAudioSources.Count; i++)
+        {
+            if (layerVolumes.Count > i)
+            {
+                _layeredAudioSources[i].volume = layerVolumes[i];
+            }
+            else
+            {
+                _layeredAudioSources[i].volume = 0;
+            }
+        }
+    }
+
+    public void PlaySoundEffect(string clipName, bool isOneShot = false)
     {
         AudioDatabaseEntry clip = _audioDatabase.GetClip(clipName);
         AudioSource source = _oneShotAudioSource;
 
-        if (_soundEffectAudioSources.Count > clip.Layer)
+        bool shouldPlayOneShot = isOneShot || !clip.InterruptSameLayer || _soundEffectAudioSources.Count <= clip.Layer;
+
+        if (shouldPlayOneShot)
+        {
+            source.PlayOneShot(clip.AudioClip);
+        }
+        else
         {
             source = _soundEffectAudioSources[clip.Layer];
             source.Stop();
             source.clip = clip.AudioClip;
             source.Play();
-        }
-        else
-        {
-            source.PlayOneShot(clip.AudioClip);
         }
     }
 
@@ -72,6 +117,8 @@ public class AudioController : SingletonBehaviour<AudioController>
         else
         {
             _musicAudioSources[_currentMusicAudioSource].Stop();
+
+            _musicAudioSources[nextAudioSource].volume = 1;
         }
 
         _musicAudioSources[nextAudioSource].Play();
@@ -103,11 +150,33 @@ public class AudioController : SingletonBehaviour<AudioController>
 
     public void InitializeLayeredMusic()
     {
-        _layeredMusicController.InitializeTrack(UnloadPreviousLayeredMusic);
+        _layeredMusicController.InitializeTrack(() =>
+        {
+            UnloadPreviousLayeredMusic();
+            InitializeLayeredAudioSources();
+        });
+    }
+
+    private void InitializeLayeredAudioSources()
+    {
+        for (int i = 0; i < _layeredAudioSources.Count; i++)
+        {
+            _layeredAudioSources[i].Stop();
+
+            if (_loadedLayeredMusic.Count > i)
+            {
+                _layeredAudioSources[i].clip = _loadedLayeredMusic[i];
+                _layeredAudioSources[i].Play();
+            }
+            else
+            {
+                _layeredAudioSources[i].clip = null;
+            }
+        }
     }
 
     private void UnloadPreviousLayeredMusic()
     {
-        _previousLoadedLayeredMusic.Clear();
+        _previousLoadedLayeredMusic.Clear();        
     }
 }
