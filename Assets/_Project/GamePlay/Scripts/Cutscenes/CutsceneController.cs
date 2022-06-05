@@ -14,7 +14,6 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
         _videoPlayer.audioOutputMode = VideoAudioOutputMode.None;
         _videoPlayer.aspectRatio = VideoAspectRatio.FitHorizontally;
         _videoPlayer.renderMode = VideoRenderMode.CameraNearPlane;
-        _videoPlayer.prepareCompleted += PrepareCompleted;
         _videoPlayer.loopPointReached += LoopPointReached;
         _videoPlayer.playOnAwake = false;
     }
@@ -34,17 +33,9 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
         _videoPlayer.clip = Resources.Load<VideoClip>(key);
         _videoPlayer.Play();
     }
-    
-    private void PrepareCompleted(VideoPlayer source)
-    {
-        _videoCamera.gameObject.SetActive(true);
-        //_videoPlayer.Play();
-        _videoPlayer.isLooping = true;
-    }
 
     private void LoopPointReached(VideoPlayer source)
     {
-        Debug.LogError("video finished");
         _videoPlayer.frame = 2;
     }
 }

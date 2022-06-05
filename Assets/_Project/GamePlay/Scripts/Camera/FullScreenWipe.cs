@@ -20,7 +20,7 @@ public class FullScreenWipe : MonoBehaviour
 
     private void Awake()
     {
-        s_fullWipeMaterial = _fullWipeMaterial;
+        s_fullWipeMaterial = GetComponent<MeshRenderer>().material;
     }
 
     private void Update()
