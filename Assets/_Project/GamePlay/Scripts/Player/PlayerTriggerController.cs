@@ -24,7 +24,7 @@ public class PlayerTriggerController : MonoBehaviour
 
         RemoveUnusedTriggers(collidersThisFrame);
 
-        TriggerEnterColliders(_collidingTriggers);
+        TriggerEnterColliders(collidersThisFrame);
     }
 
     private void TriggerEnterColliders(List<Collider> colliders)
