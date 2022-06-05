@@ -8,26 +8,28 @@ using UnityEngine.SceneManagement;
 
 public class AddressableSceneManager : SingletonBehaviour<AddressableSceneManager>
 {
-    Dictionary<AssetReference,AsyncOperationHandle<SceneInstance>> _loadedScenes = new Dictionary<AssetReference,AsyncOperationHandle<SceneInstance>>();
+    Dictionary<string,AsyncOperationHandle<SceneInstance>> _loadedScenes = new Dictionary<string,AsyncOperationHandle<SceneInstance>>();
 
     protected override void Initialize()
     {
         DontDestroyOnLoad(gameObject);
     }
 
-    public void LoadScene(AssetReference scene)
+    public void LoadScene(AssetReference scene, LoadSceneMode mode = LoadSceneMode.Additive)
     {
-       var handle = Addressables.LoadSceneAsync(scene, LoadSceneMode.Additive);
-        _loadedScenes.Add(scene,handle);
+       var handle = Addressables.LoadSceneAsync(scene, mode);
+        _loadedScenes.Add(scene.ToString(),handle);
+        
     }
 
 
     public void UnloadScene(AssetReference scene)
     {
-        if(_loadedScenes.ContainsKey(scene))
+        if(_loadedScenes.ContainsKey(scene.ToString()))
         {
-            Addressables.UnloadSceneAsync(_loadedScenes[scene]);
-            _loadedScenes.Remove(scene);
+            Addressables.UnloadSceneAsync(_loadedScenes[scene.ToString()], true);
+            _loadedScenes.Remove(scene.ToString());
         }
+      
     }
 }

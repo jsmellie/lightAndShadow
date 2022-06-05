@@ -8,10 +8,10 @@ using UnityEngine.AddressableAssets;
 public class MainMenuController : MonoBehaviour
 {
     [SerializeField] private Button _playButton;
-
+    [SerializeField] private AssetReference _firstScene;
     private void Awake()
     {
-        AddListeners();
+        AddListeners(); 
     }
 
     private void AddListeners()
@@ -21,6 +21,6 @@ public class MainMenuController : MonoBehaviour
 
     private void LoadGameScene()
     {
-        Addressables.LoadScene("Assets/_Project/GamePlay/Scenes/Stages/URBAN_Stage1.unity", LoadSceneMode.Single);
+        AddressableSceneManager.Instance.LoadScene(_firstScene, LoadSceneMode.Single);
     }
 }
