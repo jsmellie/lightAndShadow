@@ -79,6 +79,19 @@ public class LayeredMusicController : MonoBehaviour
         UpdateVolumes();
     }
 
+    public void SetLayer(int layer)
+    {
+        if(layer >= _totalStageCount)
+        {
+            _currentLayer = _totalStageCount;
+        }
+        else
+        {
+            _currentLayer = Math.Max(layer, 0);
+        }
+        UpdateVolumes();
+    }
+
     public void IncrementLayer()
     {
         if(_currentTrackData == null)
