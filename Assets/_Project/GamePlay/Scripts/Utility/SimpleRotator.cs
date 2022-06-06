@@ -13,7 +13,7 @@ public class SimpleRotator : MonoBehaviour
 
     private void Awake()
     {
-        _startRotation = transform.eulerAngles;
+        _startRotation = transform.localEulerAngles;
     }
 
     private void Update()
@@ -38,6 +38,6 @@ public class SimpleRotator : MonoBehaviour
         rotation.y += _rotationAmount.y * Mathf.Sin(_time * _rotationPeriod.y);
         rotation.z += _rotationAmount.z * Mathf.Sin(_time * _rotationPeriod.z);
 
-        transform.rotation = Quaternion.Euler(rotation);
+        transform.localRotation = Quaternion.Euler(rotation);
     }
 }

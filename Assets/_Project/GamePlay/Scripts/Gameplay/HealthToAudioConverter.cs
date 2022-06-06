@@ -21,23 +21,23 @@ public class HealthToAudioConverter : MonoBehaviour
     {
         if(health < LEVEL_1_THRESHOLD)
         {
-            _layeredMusicController.SetLayer(0);
+            _layeredMusicController.SetStage(0);
         }
         else if (health < LEVEL_2_THRESHOLD)
         {
-            _layeredMusicController.SetLayer(1);
+            _layeredMusicController.SetStage(1);
         }
         else if (health < LEVEL_3_THRESHOLD)
         {
-            _layeredMusicController.SetLayer(2);
+            _layeredMusicController.SetStage(2);
         }
         else if (health < LEVEL_4_THRESHOLD)
         {
-            _layeredMusicController.SetLayer(3);
+            _layeredMusicController.SetStage(3);
         }
         else 
         {
-            _layeredMusicController.SetLayer(4);
+            _layeredMusicController.SetStage(4);
         }
 
     }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.AddressableAssets;
+using DG.Tweening;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -22,8 +23,12 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private List<GameObject> _mainMenuOptions;
     [SerializeField] private RectTransform _mainMenuOptionsParent;
 
-    [SerializeField] private Button _playButton;
     [SerializeField] private AssetReference _firstScene;
+
+    [SerializeField] private SpriteRenderer _title;
+    [SerializeField] private CanvasGroup _buttons;
+
+    private bool _isInteractable = false;
 
     private MainMenuOption _currentOption;
 
@@ -40,13 +45,49 @@ public class MainMenuController : MonoBehaviour
         {
             _optionTargetScale.Add(Vector3.one);
         }
+
+        _buttons.alpha = 0;
         
         SetCurrentOption(MainMenuOption.Play);
+
+        CutsceneController.Instance.LoopMainMenu();
+        CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(false);
+        FullScreenWipe.FadeIn(0);
+        FullScreenWipe.FadeOut(1, () =>
+        {
+            DOVirtual.Float(0, 1, 1, (x) =>
+            {
+                _buttons.alpha = x;
+            })
+            .SetDelay(2)
+            .SetEase(Ease.InOutQuad)
+            .OnComplete(() =>
+            {
+                _isInteractable = true;
+            });
+        });
     }
 
     private void LoadGameScene()
     {
-        AddressableSceneManager.Instance.LoadScene(_firstScene, LoadSceneMode.Single);
+        _isInteractable = false;
+
+        DOVirtual.Float(1, 0, 1.5f, (x) =>
+        {
+            _buttons.alpha = x;
+            _title.color = new Color(1, 1, 1, x);
+        })
+        .SetEase(Ease.InOutQuad);
+
+        CutsceneController.Instance.QueueCutscene1(() =>
+        {
+            FullScreenWipe.FadeIn(1, () =>
+            {
+                CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
+                AddressableSceneManager.Instance.LoadScene(_firstScene, LoadSceneMode.Single);
+                CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(true);
+            });
+        });
     }
 
     private void Update()
@@ -69,6 +110,22 @@ public class MainMenuController : MonoBehaviour
         _mainMenuOptionsParent.localPosition = Vector3.Lerp(_mainMenuOptionsParent.localPosition, _optionsTargetPosition, Time.unscaledDeltaTime * MENU_OPTION_OFFSET_LERP_SPEED);
         LayoutRebuilder.ForceRebuildLayoutImmediate(_mainMenuOptionsParent);
 
+        if (Input.GetKeyDown("t"))
+        {
+            _isInteractable = false;
+            FullScreenWipe.FadeIn(1, () =>
+            {
+                CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
+                AddressableSceneManager.Instance.LoadScene(_firstScene, LoadSceneMode.Single);
+                CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(true);
+            });
+        }
+
+        if (!_isInteractable)
+        {
+            return;
+        }
+
         InputController inputController = InputController.Instance;
 
         if (inputController.GetButtonDown(InputController.eButtons.Jump) || inputController.GetButtonDown(InputController.eButtons.Interact) || inputController.GetButtonDown(InputController.eButtons.Attack))
@@ -79,7 +136,6 @@ public class MainMenuController : MonoBehaviour
         AxisInput horizontal = inputController.GetAxis(InputController.eAxis.Horizontal);
         AxisInput vertical = inputController.GetAxis(InputController.eAxis.Vertical);
         AxisInput scrollWheel = inputController.GetAxis(InputController.eAxis.ScrollWheel);
-
 
         if (horizontal.IsPositive || vertical.IsPositive || scrollWheel.IsPositive)
         {
