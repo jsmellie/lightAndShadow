@@ -85,6 +85,7 @@ public class MainMenuController : MonoBehaviour
             {
                 CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
                 AddressableSceneManager.Instance.LoadScene(_firstScene, LoadSceneMode.Single);
+                CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(true);
             });
         });
     }
@@ -108,6 +109,17 @@ public class MainMenuController : MonoBehaviour
 
         _mainMenuOptionsParent.localPosition = Vector3.Lerp(_mainMenuOptionsParent.localPosition, _optionsTargetPosition, Time.unscaledDeltaTime * MENU_OPTION_OFFSET_LERP_SPEED);
         LayoutRebuilder.ForceRebuildLayoutImmediate(_mainMenuOptionsParent);
+
+        if (Input.GetKeyDown("t"))
+        {
+            _isInteractable = false;
+            FullScreenWipe.FadeIn(1, () =>
+            {
+                CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
+                AddressableSceneManager.Instance.LoadScene(_firstScene, LoadSceneMode.Single);
+                CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(true);
+            });
+        }
 
         if (!_isInteractable)
         {

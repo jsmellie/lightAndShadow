@@ -13,7 +13,7 @@ public class LayeredMusicController : MonoBehaviour
 
     private LayeredMusicTrackData _nextTrackData;
 
-    private int _currentLayer = -1;
+    private int _currentStage = -1;
     private int _totalLayerCount = -1;
     private int _totalStageCount = -1;
 
@@ -67,7 +67,7 @@ public class LayeredMusicController : MonoBehaviour
     private void InitializeNextTrack(Action onComplete)
     {
         _currentTrackData = _nextTrackData;
-        _currentLayer = 0;
+        _currentStage = 0;
         _totalLayerCount = _currentTrackData.MusicTracks.Count;
         _totalStageCount = _currentTrackData.MusicTracks.First().EnabledStages.Count;
         
@@ -79,15 +79,15 @@ public class LayeredMusicController : MonoBehaviour
         UpdateVolumes();
     }
 
-    public void SetLayer(int layer)
+    public void SetStage(int layer)
     {
         if(layer >= _totalStageCount)
         {
-            _currentLayer = _totalStageCount;
+            _currentStage = _totalStageCount;
         }
         else
         {
-            _currentLayer = Math.Max(layer, 0);
+            _currentStage = Math.Max(layer, 0);
         }
         UpdateVolumes();
     }
@@ -99,9 +99,9 @@ public class LayeredMusicController : MonoBehaviour
             return;
         }
 
-        if (_currentLayer < _totalStageCount - 1)
+        if (_currentStage < _totalStageCount - 1)
         {
-            _currentLayer++;
+            _currentStage++;
 
             UpdateVolumes();
         }
@@ -114,9 +114,9 @@ public class LayeredMusicController : MonoBehaviour
             return;
         }
 
-        if (_currentLayer > 0)
+        if (_currentStage > 0)
         {
-            _currentLayer--;
+            _currentStage--;
 
             UpdateVolumes();
         }
@@ -127,7 +127,7 @@ public class LayeredMusicController : MonoBehaviour
         for (int i = 0; i < _totalLayerCount; i++)
         {
             int index = i;
-            if (_currentTrackData.MusicTracks[i].EnabledStages[_currentLayer])
+            if (_currentTrackData.MusicTracks[i].EnabledStages[_currentStage])
             {
                 if (_layerVolumes[i] < 0.5f)
                 {
