@@ -17,8 +17,11 @@ public class AddressableSceneManager : SingletonBehaviour<AddressableSceneManage
 
     public void LoadScene(AssetReference scene, LoadSceneMode mode = LoadSceneMode.Additive)
     {
-       var handle = Addressables.LoadSceneAsync(scene, mode);
-        _loadedScenes.Add(scene.ToString(),handle);
+        if(!_loadedScenes.ContainsKey(scene.ToString()))
+        {
+            var handle = Addressables.LoadSceneAsync(scene, mode);
+            _loadedScenes.Add(scene.ToString(),handle);
+        }
         
     }
 
