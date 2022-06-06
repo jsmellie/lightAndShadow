@@ -18,8 +18,8 @@ public class AudioController : SingletonBehaviour<AudioController>
     [SerializeField] private List<AudioSource> _musicAudioSources = new List<AudioSource>();
     [SerializeField] private AudioSource _oneShotAudioSource;
 
-    private List<AudioClip> _loadedLayeredMusic = new List<AudioClip>();
-    private List<AudioClip> _previousLoadedLayeredMusic = new List<AudioClip>();
+    private Dictionary<int, AudioClip> _loadedLayeredMusic = new Dictionary<int, AudioClip>();
+    private Dictionary<int, AudioClip> _previousLoadedLayeredMusic = new Dictionary<int, AudioClip>();
 
     private int _currentMusicAudioSource = 0;
     private int _currentBeat = 0;
@@ -85,16 +85,6 @@ public class AudioController : SingletonBehaviour<AudioController>
         if (Input.GetKeyDown("r"))
         {
             PlaySoundEffect("Test1", true);
-        }
-
-        if (Input.GetKeyDown("1"))
-        {
-            _layeredMusicController.DecrementLayer();
-        }
-
-        if (Input.GetKeyDown("2"))
-        {
-            _layeredMusicController.IncrementLayer();
         }
 
         UpdateLayeredAudioVolumes();
@@ -175,7 +165,7 @@ public class AudioController : SingletonBehaviour<AudioController>
     public void LoadLayeredMusic(LayeredMusicTrackData trackData)
     {
         _loadedMusicBPM = trackData.BPM;
-        _previousLoadedLayeredMusic = new List<AudioClip>(_loadedLayeredMusic);
+        _previousLoadedLayeredMusic = new Dictionary<int, AudioClip>(_loadedLayeredMusic);
         _loadedLayeredMusic.Clear();
 
         foreach(AudioSource audioSource in _layeredAudioSources)
@@ -185,9 +175,10 @@ public class AudioController : SingletonBehaviour<AudioController>
 
         for (int i = 0; i < trackData.MusicTracks.Count;i++)
         {
+            int index = i;
             Addressables.LoadAssetAsync<AudioClip>(trackData.MusicTracks[i].TrackPath).Completed += (x) => 
                 {
-                    _loadedLayeredMusic.Add(x.Result);
+                    _loadedLayeredMusic.Add(index ,x.Result);
                 };
         }
 
