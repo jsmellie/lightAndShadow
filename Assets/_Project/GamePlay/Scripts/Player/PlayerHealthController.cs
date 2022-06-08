@@ -9,7 +9,7 @@ public class PlayerHealthController : SingletonBehaviour<PlayerHealthController>
     [SerializeField] private int MaxHealth = 100;
     private int BEATS_PER_DAMAGE = 2;
     private int MAX_SAFE_BEATS = 1;
-    private int _health = 40;
+    private int _health = 100;
     private int _beatCounter = 0;
     private int _safeBeats = 0;
 
