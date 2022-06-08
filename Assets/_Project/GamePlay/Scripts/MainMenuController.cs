@@ -95,6 +95,7 @@ public class MainMenuController : MonoBehaviour
             FullScreenWipe.FadeIn(1, () =>
             {
                 CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
+                CheckpointManager.Instance.SaveCheckpoint(1);
                 AddressableSceneManager.Instance.LoadScene(_firstScenePath, LoadSceneMode.Additive);
                 CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(true);
             });

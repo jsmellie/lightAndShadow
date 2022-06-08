@@ -7,6 +7,13 @@ public class FullScreenWipe : MonoBehaviour
     public delegate void OnScreenWipeCompletedDelegate();
     public delegate void OnScreenWipeUpdated(float ratio);
 
+    public static bool IsWiping 
+    {
+        get 
+        {
+            return s_timeLeft > 0;
+        } 
+    }
     private const string RatioShaderKey = "_Ratio";
 
     private static Material s_fullWipeMaterial = null;
