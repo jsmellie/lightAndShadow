@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,6 +12,7 @@ public class GameplaySetuper : MonoBehaviour
     [Header("Setup")]
     [SerializeField] private Transform _spawnAnchor;
     [SerializeField] private Transform _playerPrefab;
+    [SerializeField] private Transform _bugsPrefab;
 
     private void OnEnable()
     {
@@ -45,6 +47,15 @@ public class GameplaySetuper : MonoBehaviour
                 Transform player = Instantiate<Transform>(_playerPrefab);
                 player.parent = this.transform;
                 player.position = _spawnAnchor.position;
+
+                var bugs = Instantiate(_bugsPrefab);
+                bugs.transform.position = _spawnAnchor.position;
+                bugs.GetComponent<BugsController>().SetPlayerTransform(player.transform);
+
+                CameraBehaviourController cameraBehaviourController = CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).GetComponent<CameraBehaviourController>();
+                cameraBehaviourController.SetPlayerTransform(player);
+                cameraBehaviourController.SetCameraBehaviourState(CameraBehaviourController.CameraBehaviourState.FollowPlayer);
+                cameraBehaviourController.SetCameraMinimumHeight(GameObject.FindObjectOfType<CinemachinePath>());
 
                 if(CheckpointManager.Instance.CurrentCheckpoint == 0)
                 {

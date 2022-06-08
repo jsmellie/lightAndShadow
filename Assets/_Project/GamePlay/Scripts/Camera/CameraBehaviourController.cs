@@ -41,6 +41,9 @@ public class CameraBehaviourController : MonoBehaviour
     private float _targetZoom = 15;
     private float _currentZoom;
 
+    private Vector3 _velocity = Vector3.zero;
+    private float _zoomVelocity = 0;
+
     private CinemachinePath _cameraMinimumHeight;
 
     public CameraBehaviourState GetCameraBehaviourState()
@@ -121,15 +124,18 @@ public class CameraBehaviourController : MonoBehaviour
         return _cameraMinimumHeight.m_Waypoints[0].position.y;
     }
 
+    public void SetPlayerTransform(Transform player)
+    {
+        _playerTransform = player;
+    }
+
+    public void SetCameraMinimumHeight(CinemachinePath path)
+    {
+        _cameraMinimumHeight = path;
+    }
+
     private void Update()
     {
-        if (Input.GetKeyDown("f"))
-        {
-            _playerTransform = GameObject.FindObjectOfType<PlayerMovementController>().transform;
-            _currentState = CameraBehaviourState.FollowPlayer;
-            _cameraMinimumHeight = GameObject.FindObjectOfType<CinemachinePath>();
-        }
-
         switch(_currentState)
         {
             case CameraBehaviourState.FollowTarget:
@@ -145,15 +151,15 @@ public class CameraBehaviourController : MonoBehaviour
                 UpdateNone();
                 break;
         }
-
-        UpdateCurrentPosition();
-        UpdateCurrentZoom();
-
-        UpdateCameraMinimumHeight();
     }
 
     private void FixedUpdate()
     {
+        UpdateCurrentPosition();
+        UpdateCurrentZoom();
+
+        UpdateCameraMinimumHeight();
+
         transform.position = _currentPosition;
         _camera.orthographicSize = _currentZoom;
     }
@@ -189,11 +195,6 @@ public class CameraBehaviourController : MonoBehaviour
         _followTransform = followTransform;
     }
 
-    public void SetPlayerTransform(Transform playerTransform)
-    {
-
-    }
-
     private void UpdateCurrentPosition()
     {
         Vector3 offsetTargetPosition = _targetPosition;
@@ -208,7 +209,7 @@ public class CameraBehaviourController : MonoBehaviour
             }
         }
 
-        _currentPosition = Vector3.Lerp(_currentPosition, offsetTargetPosition, Time.deltaTime * cameraLerpSpeed);
+        _currentPosition = Vector3.SmoothDamp(_currentPosition, offsetTargetPosition, ref _velocity, cameraLerpSpeed);
         _currentPosition.z = -100;
     }
 
@@ -230,7 +231,7 @@ public class CameraBehaviourController : MonoBehaviour
             }
         }
 
-        _currentZoom = Mathf.Lerp(_currentZoom, targetZoom, Time.deltaTime * zoomLerpSpeed);
+        _currentZoom = Mathf.SmoothDamp(_currentZoom, targetZoom, ref _zoomVelocity, zoomLerpSpeed);
     }
 
     private void UpdateCameraMinimumHeight()
