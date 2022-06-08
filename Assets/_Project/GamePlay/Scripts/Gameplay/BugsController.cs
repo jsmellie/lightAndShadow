@@ -6,6 +6,7 @@ using static UnityEngine.ParticleSystem;
 public class BugsController : MonoBehaviour
 {
     private const float BUGS_MOVE_SPEED = 4f;
+    private const float BUGS_RADIUS_LERP_SPEED = 2f;
 
     private const float MAX_BUGS_RADIUS = 43.54f;
     private readonly Vector2 BUG_OFFSET_AMOUNT = new Vector2(6f, 1f);
@@ -31,17 +32,14 @@ public class BugsController : MonoBehaviour
 
     [Range(0,1)]
     [SerializeField] private float _radius = 0;
+    private float _targetRadius = 0;
 
     private void Awake()
     {
-        _scrollingBugsMaterial = _bugSprites[0].material;
-
         for (int i = 0; i < _bugSprites.Count; i++)
         {
             _bugSpritePositions.Add(_bugSprites[i].transform.localPosition);
             _bugSpriteOffsets.Add(UnityEngine.Random.insideUnitCircle);
-
-            _bugSprites[i].material = _scrollingBugsMaterial;
         }        
     }
 
@@ -49,7 +47,7 @@ public class BugsController : MonoBehaviour
     {
         transform.position = _currentPosition;
 
-        _scrollingBugsMaterial.SetVector("_Offset", new Vector4(transform.position.x / transform.localScale.x, transform.position.y / transform.localScale.y, 0, 0));
+        //_scrollingBugsMaterial.SetVector("_Offset", new Vector4(transform.position.x / transform.localScale.x, transform.position.y / transform.localScale.y, 0, 0));
     }
 
     private void Update()
@@ -78,6 +76,7 @@ public class BugsController : MonoBehaviour
             float perlinY = Mathf.PerlinNoise(0f, particles[i].remainingLifetime * BUG_SPEED.y) * BUG_OFFSET_AMOUNT.y;
 
             Vector3 position = transform.position;
+            position.z = -1f;
             float perlinDirection = Mathf.PerlinNoise(particles[i].randomSeed * 0.000001f, 0.01f) * 9720f;
 
             position += Quaternion.Euler(0, 0, perlinDirection) * new Vector3((1 -_radius) * MAX_BUGS_RADIUS, 0, 0);
@@ -130,6 +129,8 @@ public class BugsController : MonoBehaviour
             _targetPosition = _playerTransform.position;
             _currentPosition = Vector3.Lerp(_currentPosition, _targetPosition, Time.deltaTime * BUGS_MOVE_SPEED);
         }
+
+        _radius = Mathf.Lerp(_radius, _targetRadius, Time.deltaTime * BUGS_RADIUS_LERP_SPEED);
     }
 
     public void SetPlayerTransform(Transform player)
@@ -137,8 +138,13 @@ public class BugsController : MonoBehaviour
         _playerTransform = player;
     }
 
-    public void SetRadius(float radius)
+    public void SetRadius(float radius, bool instant = false)
     {
-        _radius = radius;
+        _targetRadius = radius;
+
+        if (instant)
+        {
+            _radius = _targetRadius;
+        }
     }
 }
