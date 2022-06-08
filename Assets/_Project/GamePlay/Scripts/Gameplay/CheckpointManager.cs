@@ -28,8 +28,18 @@ public class CheckpointManager : SingletonBehaviour<CheckpointManager>
         }
     }
 
+    [ContextMenu("Reset Progress")]
+    public void ResetProgress()
+    {
+        _currentCheckpoint = 0;
+        PlayerPrefs.SetInt(CHECKPOINT_KEY,0);
+        PlayerPrefs.Save();
+    }
+
+
     private Dictionary<int,string> CHECKPOINT_SCENE_MAP = new Dictionary<int, string>
     {
+       {0,"IntroScene"},
        {1,"URBAN_Stage1,URBAN_Stage2"},
        {2,"URBAN_Stage1,URBAN_Stage2,URBAN_Stage3"},
        {3,"URBAN_Stage2,URBAN_Stage3,URBAN_Stage4"},
@@ -59,6 +69,6 @@ public class CheckpointManager : SingletonBehaviour<CheckpointManager>
 
     public string GetScenesForCurrentCheckpoint()
     {
-        return CHECKPOINT_SCENE_MAP[_currentCheckpoint];
+        return CHECKPOINT_SCENE_MAP[Mathf.Min(_currentCheckpoint, CHECKPOINT_SCENE_MAP.Count-1)];
     }
 }

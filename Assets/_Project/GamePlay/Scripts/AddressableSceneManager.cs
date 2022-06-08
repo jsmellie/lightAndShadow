@@ -15,24 +15,37 @@ public class AddressableSceneManager : SingletonBehaviour<AddressableSceneManage
         DontDestroyOnLoad(gameObject);
     }
 
-    public void LoadScene(AssetReference scene, LoadSceneMode mode = LoadSceneMode.Additive)
+    public AsyncOperationHandle<SceneInstance> LoadScene(string scene, LoadSceneMode mode = LoadSceneMode.Additive)
     {
-        if(!_loadedScenes.ContainsKey(scene.ToString()))
+        if(!_loadedScenes.ContainsKey(scene))
         {
             var handle = Addressables.LoadSceneAsync(scene, mode);
-            _loadedScenes.Add(scene.ToString(),handle);
+            _loadedScenes.Add(scene,handle);
+            return handle;
         }
-        
+        return default;
     }
 
-
-    public void UnloadScene(AssetReference scene)
+    public void LoadScenesFromString(string scenes)
     {
-        if(_loadedScenes.ContainsKey(scene.ToString()))
+        string[] sceneList = scenes.Split(',');
+
+        foreach (string scene in sceneList)
         {
-            Addressables.UnloadSceneAsync(_loadedScenes[scene.ToString()], true);
-            _loadedScenes.Remove(scene.ToString());
+            if(!_loadedScenes.ContainsKey(scene))
+            {
+                var handle = Addressables.LoadSceneAsync(scene, LoadSceneMode.Additive);
+                _loadedScenes.Add(scene,handle);
+            }
         }
-      
+    }
+
+    public void UnloadScene(string scene)
+    {
+        if(_loadedScenes.ContainsKey(scene))
+        {
+            Addressables.UnloadSceneAsync(_loadedScenes[scene], true);
+            _loadedScenes.Remove(scene);
+        }
     }
 }

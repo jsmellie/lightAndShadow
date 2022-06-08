@@ -11,7 +11,8 @@ public class CollectableSpawner : MonoBehaviour
     {
         if (CheckpointManager.Instance.CurrentCheckpoint < _maxCheckpoint)
         {
-            Instantiate(_collectable,transform);
+            var go = Instantiate(_collectable, transform);
+            go.transform.localPosition = Vector3.zero;
         }
     }
 }

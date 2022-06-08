@@ -23,7 +23,7 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private List<GameObject> _mainMenuOptions;
     [SerializeField] private RectTransform _mainMenuOptionsParent;
 
-    [SerializeField] private AssetReference _firstScene;
+    [SerializeField] private string _firstScenePath;
 
     [SerializeField] private SpriteRenderer _title;
     [SerializeField] private CanvasGroup _buttons;
@@ -49,23 +49,29 @@ public class MainMenuController : MonoBehaviour
         _buttons.alpha = 0;
         
         SetCurrentOption(MainMenuOption.Play);
-
-        CutsceneController.Instance.LoopMainMenu();
-        CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(false);
-        FullScreenWipe.FadeIn(0);
-        FullScreenWipe.FadeOut(1, () =>
+        if(CheckpointManager.Instance.CurrentCheckpoint == 0)
         {
+            CutsceneController.Instance.LoopMainMenu();
+            CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(false);
+        }
+        else
+        {
+            CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
+        }
+            FullScreenWipe.FadeIn(0);
+            FullScreenWipe.FadeOut(1, () => {
             DOVirtual.Float(0, 1, 1, (x) =>
             {
                 _buttons.alpha = x;
             })
-            .SetDelay(2)
+            .SetDelay(1)
             .SetEase(Ease.InOutQuad)
             .OnComplete(() =>
             {
                 _isInteractable = true;
             });
-        });
+
+            });
     }
 
     private void LoadGameScene()
@@ -77,14 +83,19 @@ public class MainMenuController : MonoBehaviour
             _buttons.alpha = x;
             _title.color = new Color(1, 1, 1, x);
         })
-        .SetEase(Ease.InOutQuad);
-
+        .SetEase(Ease.InOutQuad).onComplete += () => {
+            gameObject.SetActive(false);
+        };
+        if(CheckpointManager.Instance.CurrentCheckpoint > 0)
+        {
+            return;
+        }
         CutsceneController.Instance.QueueCutscene1(() =>
         {
             FullScreenWipe.FadeIn(1, () =>
             {
                 CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
-                AddressableSceneManager.Instance.LoadScene(_firstScene, LoadSceneMode.Single);
+                AddressableSceneManager.Instance.LoadScene(_firstScenePath, LoadSceneMode.Additive);
                 CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(true);
             });
         });
@@ -116,7 +127,7 @@ public class MainMenuController : MonoBehaviour
             FullScreenWipe.FadeIn(1, () =>
             {
                 CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
-                AddressableSceneManager.Instance.LoadScene(_firstScene, LoadSceneMode.Single);
+                AddressableSceneManager.Instance.LoadScene(_firstScenePath, LoadSceneMode.Single);
                 CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(true);
             });
         }

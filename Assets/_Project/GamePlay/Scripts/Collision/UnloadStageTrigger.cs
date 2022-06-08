@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class UnloadStageTrigger : BaseTrigger
 {
-    [SerializeField] private AssetReference StageToUnload;
+    [SerializeField] private string StageToUnload;
 
 
     public override void OnTriggerEnter(Collider collider)
