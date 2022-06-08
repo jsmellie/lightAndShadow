@@ -26,7 +26,7 @@ public class GameplaySetuper : MonoBehaviour
         {
             CameraController cameraController = CameraController.Instance;
 
-            FullScreenWipe.FadeIn(0, null);
+            //FullScreenWipe.FadeIn(0, null);
             StageController.Instance.SetStageInfo(_zone, _stageIndex);
             OnStageLoaded(_zone, _stageIndex, LevelLoadingErrorCodes.None);
         }
@@ -46,7 +46,11 @@ public class GameplaySetuper : MonoBehaviour
                 player.parent = this.transform;
                 player.position = _spawnAnchor.position;
 
-                FullScreenWipe.FadeOut(1, OnAnimationCompleted);
+                if(CheckpointManager.Instance.CurrentCheckpoint == 0)
+                {
+                    FullScreenWipe.FadeOut(1, OnAnimationCompleted);
+                    CheckpointManager.Instance.SaveCheckpoint(1);
+                }
             }
         }
     }
