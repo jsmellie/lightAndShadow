@@ -26,14 +26,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1921967966150178344}
-  m_LocalRotation: {x: 0.950849, y: -0.30965492, z: -0.00000010616196, w: -0.00000018482707}
+  m_LocalRotation: {x: -0.9508487, y: 0.309656, z: 0, w: 0}
   m_LocalPosition: {x: -7.185398, y: 1.8165774, z: -0}
   m_LocalScale: {x: 0.8578815, y: 0.8578815, z: 0.8578815}
   m_Children:
   - {fileID: 6181879829714491008}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -180, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -180, y: 0, z: 36.076996}
 --- !u!198 &8386771713257675298
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -1383,7 +1383,7 @@ ParticleSystem:
     serializedVersion: 2
     enabled: 1
     mode: 0
-    timeMode: 2
+    timeMode: 0
     fps: 45
     frameOverTime:
       serializedVersion: 2
@@ -1396,32 +1396,23 @@ ParticleSystem:
         - serializedVersion: 3
           time: 0
           value: 0
-          inSlope: 2.0930204
-          outSlope: 2.0930204
-          tangentMode: 0
+          inSlope: 50
+          outSlope: 50
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.02
+          value: 1
+          inSlope: 50
+          outSlope: 50
+          tangentMode: 34
           weightedMode: 0
           inWeight: 0.33333334
-          outWeight: 1
-        - serializedVersion: 3
-          time: 0.5
-          value: 1
-          inSlope: -0
-          outSlope: -0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.6772874
-          outWeight: 0.33333334
-        - serializedVersion: 3
-          time: 1
-          value: 0
-          inSlope: -1.5996181
-          outSlope: -1.5996181
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.5977784
-          outWeight: 0.33333334
+          outWeight: 0
         m_PreInfinity: 2
-        m_PostInfinity: 2
+        m_PostInfinity: 0
         m_RotationOrder: 4
       minCurve:
         serializedVersion: 2
@@ -1505,7 +1496,7 @@ ParticleSystem:
     tilesY: 2
     animationType: 0
     rowIndex: 0
-    cycles: 30
+    cycles: 1
     uvChannelMask: -1
     rowMode: 0
     sprites:
