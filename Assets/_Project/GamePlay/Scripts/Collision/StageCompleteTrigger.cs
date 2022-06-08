@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class StageCompleteTrigger : BaseTrigger
 {
-    [SerializeField] private AssetReference StageToLoad;
+    [SerializeField] private string StageToLoad;
 
 
     public override void OnTriggerEnter(Collider collider)

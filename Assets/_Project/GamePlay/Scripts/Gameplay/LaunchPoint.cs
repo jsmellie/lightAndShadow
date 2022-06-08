@@ -5,11 +5,11 @@ using UnityEngine.AddressableAssets;
 
 public class LaunchPoint : MonoBehaviour
 {
-    [SerializeField] private AssetReference scene;
+    [SerializeField] private string scene;
 
     void Awake()
     {
-        AddressableSceneManager.Instance.LoadScene(scene);
+        //AddressableSceneManager.Instance.LoadScene(scene);
     }
 
 }
