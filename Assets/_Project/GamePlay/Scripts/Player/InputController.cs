@@ -21,7 +21,8 @@ public class InputController
 		Attack,
 		Jump,
 		DropDown,
-        Cancel
+        Cancel,
+        Submit
 	}
 
 	public enum eAxis

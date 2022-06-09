@@ -52,18 +52,18 @@ public class MainMenuController : MonoBehaviour
 
     private void Awake()
     {
-        for (int i = 0; i < _mainMenuOptions.Count;i++)
+        for (int i = 0; i < _mainMenuOptions.Count; i++)
         {
             _optionTargetScale.Add(Vector3.one);
         }
 
         _buttons.alpha = 0;
-        
+
         SetCurrentOption(MainMenuOption.Play);
 
         _settingsPanel.GetComponent<CanvasGroup>().alpha = 0;
 
-        if(CheckpointManager.Instance.CurrentCheckpoint == 0)
+        if (CheckpointManager.Instance.CurrentCheckpoint == 0)
         {
             CutsceneController.Instance.LoopMainMenu();
             CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(false);
@@ -72,8 +72,9 @@ public class MainMenuController : MonoBehaviour
         {
             CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
         }
-            FullScreenWipe.FadeIn(0);
-            FullScreenWipe.FadeOut(1, () => {
+
+        FullScreenWipe.FadeOut(1, () =>
+        {
             DOVirtual.Float(0, 1, 1, (x) =>
             {
                 _buttons.alpha = x;
@@ -85,7 +86,7 @@ public class MainMenuController : MonoBehaviour
                 _isInteractable = true;
             });
 
-            });
+        });
     }
 
     private void LoadGameScene()
@@ -97,10 +98,11 @@ public class MainMenuController : MonoBehaviour
             _buttons.alpha = x;
             _title.color = new Color(1, 1, 1, x);
         })
-        .SetEase(Ease.InOutQuad).onComplete += () => {
+        .SetEase(Ease.InOutQuad).onComplete += () =>
+        {
             gameObject.SetActive(false);
         };
-        if(CheckpointManager.Instance.CurrentCheckpoint > 0)
+        if (CheckpointManager.Instance.CurrentCheckpoint > 0)
         {
             return;
         }
@@ -154,7 +156,10 @@ public class MainMenuController : MonoBehaviour
 
         InputController inputController = InputController.Instance;
 
-        if (inputController.GetButtonDown(InputController.eButtons.Jump) || inputController.GetButtonDown(InputController.eButtons.Interact) || inputController.GetButtonDown(InputController.eButtons.Attack))
+        if (inputController.GetButtonDown(InputController.eButtons.Jump)
+        || inputController.GetButtonDown(InputController.eButtons.Interact) 
+        || inputController.GetButtonDown(InputController.eButtons.Attack)
+        || inputController.GetButtonDown(InputController.eButtons.Submit))
         {
             SelectMenuOption();
         }
@@ -192,7 +197,7 @@ public class MainMenuController : MonoBehaviour
 
     private void SelectMenuOption()
     {
-        switch(_currentOption)
+        switch (_currentOption)
         {
             case MainMenuOption.Play:
                 LoadGameScene();
@@ -250,7 +255,7 @@ public class MainMenuController : MonoBehaviour
             }
         }
 
-        totalWidth += (1.5f * 100f)/2f;
+        totalWidth += (1.5f * 100f) / 2f;
 
         Vector3 position = _mainMenuOptionsParent.localPosition;
         position.x = -totalWidth;
