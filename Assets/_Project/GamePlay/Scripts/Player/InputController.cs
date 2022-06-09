@@ -20,7 +20,8 @@ public class InputController
 		PhoneTab5,
 		Attack,
 		Jump,
-		DropDown
+		DropDown,
+        Cancel
 	}
 
 	public enum eAxis
