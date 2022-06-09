@@ -59,7 +59,7 @@ public class GameplaySetuper : MonoBehaviour
 
                 if(CheckpointManager.Instance.CurrentCheckpoint == 0)
                 {
-                    FullScreenWipe.FadeOut(1, OnAnimationCompleted);
+                    //FullScreenWipe.FadeOut(1, OnAnimationCompleted);
                     CheckpointManager.Instance.SaveCheckpoint(1);
                 }
             }

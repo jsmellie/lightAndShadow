@@ -67,7 +67,10 @@ public class SettingsMenuPanel : MonoBehaviour
 
         InputController inputController = InputController.Instance;
 
-        if (inputController.GetButtonDown(InputController.eButtons.Jump) || inputController.GetButtonDown(InputController.eButtons.Interact) || inputController.GetButtonDown(InputController.eButtons.Attack))
+        if (inputController.GetButtonDown(InputController.eButtons.Jump)
+        || inputController.GetButtonDown(InputController.eButtons.Interact) 
+        || inputController.GetButtonDown(InputController.eButtons.Attack)
+        || inputController.GetButtonDown(InputController.eButtons.Submit))
         {
             SelectMenuOption();
         }

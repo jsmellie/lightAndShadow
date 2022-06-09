@@ -30,8 +30,8 @@ public class PlayerSpawnHandler : SingletonBehaviour<PlayerSpawnHandler>
         cameraBehaviourController.SetCameraMinimumHeight(GameObject.FindObjectOfType<CinemachinePath>());
 
         //TODO set player idle animation here
-        if(!FullScreenWipe.IsWiping)
-            FullScreenWipe.FadeOut(1, OnAnimationCompleted);
+        //if(!FullScreenWipe.IsWiping)
+        //    FullScreenWipe.FadeOut(1, OnAnimationCompleted);
     }
     
     private void OnAnimationCompleted()
