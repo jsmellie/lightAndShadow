@@ -5,10 +5,19 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.AddressableAssets;
 using DG.Tweening;
+using System;
 
 public class MainMenuController : MonoBehaviour
 {
-    private enum MainMenuOption
+    public enum MainMenuState
+    {
+        Main,
+        Settings,
+        Resources,
+        Credits
+    }
+
+    public enum MainMenuOption
     {
         Play = 0,
         Settings = 1,
@@ -28,16 +37,18 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private SpriteRenderer _title;
     [SerializeField] private CanvasGroup _buttons;
 
+    [SerializeField] private SettingsMenuPanel _settingsPanel;
+
     private bool _isInteractable = false;
 
     private MainMenuOption _currentOption;
+    private MainMenuState _currentState = MainMenuState.Main;
 
     private List<Vector3> _optionTargetScale = new List<Vector3>();
     private Vector3 _optionsTargetPosition;
 
     private bool _rightAxisUsed = false;
     private bool _leftAxisUsed = false;
-
 
     private void Awake()
     {
@@ -49,6 +60,9 @@ public class MainMenuController : MonoBehaviour
         _buttons.alpha = 0;
         
         SetCurrentOption(MainMenuOption.Play);
+
+        _settingsPanel.GetComponent<CanvasGroup>().alpha = 0;
+
         if(CheckpointManager.Instance.CurrentCheckpoint == 0)
         {
             CutsceneController.Instance.LoopMainMenu();
@@ -183,6 +197,9 @@ public class MainMenuController : MonoBehaviour
             case MainMenuOption.Play:
                 LoadGameScene();
                 break;
+            case MainMenuOption.Settings:
+                SetCurrentMenuState(MainMenuState.Settings);
+                break;
             case MainMenuOption.Quit:
                 Application.Quit();
                 break;
@@ -239,5 +256,76 @@ public class MainMenuController : MonoBehaviour
         position.x = -totalWidth;
 
         _optionsTargetPosition = position;
+    }
+
+    public void SetCurrentMenuState(MainMenuState state)
+    {
+        _currentState = state;
+
+        _isInteractable = false;
+
+        switch (state)
+        {
+            case MainMenuState.Main:
+                FadeInMain(0.5f);
+                FadeOutPanel(_settingsPanel.GetComponent<CanvasGroup>(), 0.5f);
+                break;
+            case MainMenuState.Settings:
+                FadeOutMain(0.5f);
+                _settingsPanel.SetCurrentOption(SettingsMenuPanel.SettingsMenuOption.Back);
+                FadeInPanel(_settingsPanel.GetComponent<CanvasGroup>(), 0.5f, () => { _settingsPanel.SetInteractable(true); });
+                break;
+            case MainMenuState.Resources:
+                break;
+            case MainMenuState.Credits:
+                break;
+        }
+    }
+
+    private void FadeInPanel(CanvasGroup panel, float fadeTime, Action onDone = null)
+    {
+        DOVirtual.Float(panel.alpha, 1, fadeTime, (x) =>
+        {
+            panel.alpha = x;
+        })
+        .SetEase(Ease.InOutQuad).OnComplete(() =>
+        {
+            onDone?.Invoke();
+        });
+    }
+
+    private void FadeOutPanel(CanvasGroup panel, float fadeTime, Action onDone = null)
+    {
+        DOVirtual.Float(panel.alpha, 0, fadeTime, (x) =>
+        {
+            panel.alpha = x;
+        })
+        .SetEase(Ease.InOutQuad).OnComplete(() =>
+        {
+            onDone?.Invoke();
+        });
+    }
+
+    private void FadeInMain(float fadeTime)
+    {
+        DOVirtual.Float(0, 1, fadeTime, (x) =>
+        {
+            _buttons.alpha = x;
+            _title.color = new Color(1, 1, 1, x);
+        })
+        .SetEase(Ease.InOutQuad).OnComplete(() =>
+        {
+            _isInteractable = true;
+        });
+    }
+
+    private void FadeOutMain(float fadeTime)
+    {
+        DOVirtual.Float(1, 0, fadeTime, (x) =>
+        {
+            _buttons.alpha = x;
+            _title.color = new Color(1, 1, 1, x);
+        })
+        .SetEase(Ease.InOutQuad);
     }
 }
