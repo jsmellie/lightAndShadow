@@ -29,6 +29,7 @@ public class SettingsMenuPanel : MonoBehaviour
     [SerializeField] private AudioMixer _audioMixer;
 
     [SerializeField] private MainMenuController _mainMenuController;
+    [SerializeField] private MenuInputController _menuInputController;
 
     private SettingsMenuOption _currentOption = SettingsMenuOption.Music;
 
@@ -55,86 +56,54 @@ public class SettingsMenuPanel : MonoBehaviour
         _isInteractable = interactable;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         UpdateSelectionAlpha();
+        HandleInput();
+    }
 
+    private void HandleInput()
+    {
         if (!_isInteractable)
         {
             return;
         }
 
-        InputController inputController = InputController.Instance;
-
-        if (inputController.GetButtonDown(InputController.eButtons.Jump)
-        || inputController.GetButtonDown(InputController.eButtons.Interact) 
-        || inputController.GetButtonDown(InputController.eButtons.Attack)
-        || inputController.GetButtonDown(InputController.eButtons.Submit))
+        if (_menuInputController.GetSelectDown())
         {
             SelectMenuOption();
+            return;
         }
 
-        if (inputController.GetButtonDown(InputController.eButtons.Cancel))
+        if (_menuInputController.GetEscapeDown())
         {
             SetCurrentOption(SettingsMenuOption.Back);
             SelectMenuOption();
+            return;
         }
 
-        AxisInput horizontal = inputController.GetAxis(InputController.eAxis.Horizontal);
-        AxisInput vertical = inputController.GetAxis(InputController.eAxis.Vertical);
-        AxisInput scrollWheel = inputController.GetAxis(InputController.eAxis.ScrollWheel);
-
-        if (horizontal.IsPositive)
+        if (_menuInputController.GetRightDown())
         {
-            if (!_rightAxisUsed)
-            {
-                _rightAxisUsed = true;
-                AdjustMenuOption(true);
-            }
-        }
-        else
-        {
-            _rightAxisUsed = false;
+            AdjustMenuOption(true);
+            return;
         }
 
-        if (vertical.IsPositive || scrollWheel.IsPositive) 
+        if (_menuInputController.GetLeftDown())
         {
-            if (!_upAxisUsed)
-            {
-                _upAxisUsed = true;
-                PreviousOption();
-            }
-        }
-        else
-        {
-            _upAxisUsed = false;
+            AdjustMenuOption(false);
+            return;
         }
 
-        if (horizontal.IsNegative)
+        if (_menuInputController.GetUpDown())
         {
-            if (!_leftAxisUsed)
-            {
-                _leftAxisUsed = true;
-                AdjustMenuOption(false);
-            }
-        }
-        else
-        {
-            _leftAxisUsed = false;
+            PreviousOption();
+            return;
         }
 
-        if (vertical.IsNegative || scrollWheel.IsNegative)
+        if (_menuInputController.GetDownDown())
         {
-            if (!_downAxisUsed)
-            {
-                _downAxisUsed = true;
-                NextOption();
-            }
-        }
-        else
-        {
-            _downAxisUsed = false;
+            NextOption();
+            return;
         }
     }
 

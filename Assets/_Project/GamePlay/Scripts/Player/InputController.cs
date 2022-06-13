@@ -22,7 +22,11 @@ public class InputController
 		Jump,
 		DropDown,
         Cancel,
-        Submit
+        Submit,
+		MenuRight,
+		MenuLeft,
+		MenuUp,
+		MenuDown
 	}
 
 	public enum eAxis

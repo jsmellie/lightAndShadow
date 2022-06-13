@@ -31,6 +31,7 @@ public class MainMenuController : MonoBehaviour
 
     [SerializeField] private List<GameObject> _mainMenuOptions;
     [SerializeField] private RectTransform _mainMenuOptionsParent;
+    [SerializeField] private MenuInputController _menuInputController;
 
     [SerializeField] private string _firstScenePath;
 
@@ -38,6 +39,8 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private CanvasGroup _buttons;
 
     [SerializeField] private SettingsMenuPanel _settingsPanel;
+    [SerializeField] private ResourcesMenuPanel _resourcesPanel;
+    [SerializeField] private CreditsMenuPanel _creditsPanel;
 
     private bool _isInteractable = false;
 
@@ -46,9 +49,6 @@ public class MainMenuController : MonoBehaviour
 
     private List<Vector3> _optionTargetScale = new List<Vector3>();
     private Vector3 _optionsTargetPosition;
-
-    private bool _rightAxisUsed = false;
-    private bool _leftAxisUsed = false;
 
     private void Awake()
     {
@@ -62,6 +62,8 @@ public class MainMenuController : MonoBehaviour
         SetCurrentOption(MainMenuOption.Play);
 
         _settingsPanel.GetComponent<CanvasGroup>().alpha = 0;
+        _resourcesPanel.GetComponent<CanvasGroup>().alpha = 0;
+        _creditsPanel.GetComponent<CanvasGroup>().alpha = 0;
 
         if (CheckpointManager.Instance.CurrentCheckpoint == 0)
         {
@@ -149,49 +151,32 @@ public class MainMenuController : MonoBehaviour
             });
         }
 
+        HandleInput();
+    }
+
+    private void HandleInput()
+    {
         if (!_isInteractable)
         {
             return;
         }
 
-        InputController inputController = InputController.Instance;
-
-        if (inputController.GetButtonDown(InputController.eButtons.Jump)
-        || inputController.GetButtonDown(InputController.eButtons.Interact) 
-        || inputController.GetButtonDown(InputController.eButtons.Attack)
-        || inputController.GetButtonDown(InputController.eButtons.Submit))
+        if (_menuInputController.GetSelectDown())
         {
             SelectMenuOption();
+            return;
         }
 
-        AxisInput horizontal = inputController.GetAxis(InputController.eAxis.Horizontal);
-        AxisInput vertical = inputController.GetAxis(InputController.eAxis.Vertical);
-        AxisInput scrollWheel = inputController.GetAxis(InputController.eAxis.ScrollWheel);
-
-        if (horizontal.IsPositive || vertical.IsPositive || scrollWheel.IsPositive)
+        if (_menuInputController.GetRightDown())
         {
-            if (!_rightAxisUsed)
-            {
-                _rightAxisUsed = true;
-                NextOption();
-            }
-        }
-        else
-        {
-            _rightAxisUsed = false;
+            NextOption();
+            return;
         }
 
-        if (horizontal.IsNegative || vertical.IsNegative || scrollWheel.IsNegative)
+        if (_menuInputController.GetLeftDown())
         {
-            if (!_leftAxisUsed)
-            {
-                _leftAxisUsed = true;
-                PreviousOption();
-            }
-        }
-        else
-        {
-            _leftAxisUsed = false;
+            PreviousOption();
+            return;
         }
     }
 
@@ -204,6 +189,12 @@ public class MainMenuController : MonoBehaviour
                 break;
             case MainMenuOption.Settings:
                 SetCurrentMenuState(MainMenuState.Settings);
+                break;
+            case MainMenuOption.Resources:
+                SetCurrentMenuState(MainMenuState.Resources);
+                break;
+            case MainMenuOption.Credits:
+                SetCurrentMenuState(MainMenuState.Credits);
                 break;
             case MainMenuOption.Quit:
                 Application.Quit();
@@ -268,12 +259,17 @@ public class MainMenuController : MonoBehaviour
         _currentState = state;
 
         _isInteractable = false;
+        _settingsPanel.SetInteractable(false);
+        _resourcesPanel.SetInteractable(false);
+        _creditsPanel.SetInteractable(false);
 
         switch (state)
         {
             case MainMenuState.Main:
                 FadeInMain(0.5f);
                 FadeOutPanel(_settingsPanel.GetComponent<CanvasGroup>(), 0.5f);
+                FadeOutPanel(_resourcesPanel.GetComponent<CanvasGroup>(), 0.5f);
+                FadeOutPanel(_creditsPanel.GetComponent<CanvasGroup>(), 0.5f);
                 break;
             case MainMenuState.Settings:
                 FadeOutMain(0.5f);
@@ -281,8 +277,14 @@ public class MainMenuController : MonoBehaviour
                 FadeInPanel(_settingsPanel.GetComponent<CanvasGroup>(), 0.5f, () => { _settingsPanel.SetInteractable(true); });
                 break;
             case MainMenuState.Resources:
+                FadeOutMain(0.5f);
+                _resourcesPanel.SetCurrentOption(ResourcesMenuPanel.ResourcesMenuOption.Back);
+                FadeInPanel(_resourcesPanel.GetComponent<CanvasGroup>(), 0.5f, () => { _resourcesPanel.SetInteractable(true); });
                 break;
             case MainMenuState.Credits:
+                FadeOutMain(0.5f);
+                _creditsPanel.SetCurrentOption(CreditsMenuPanel.CreditsMenuOption.Back);
+                FadeInPanel(_creditsPanel.GetComponent<CanvasGroup>(), 0.5f, () => { _creditsPanel.SetInteractable(true); });
                 break;
         }
     }
