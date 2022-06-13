@@ -4,58 +4,45 @@ using UnityEngine;
 
 public class LevelCompleteTrigger : BaseTrigger
 {
-    [SerializeField] private LevelCompleteAnimationSequencer _levelCompleteSequencer = null;
+    [SerializeField] private string _cutsceneAddress;
+    [SerializeField] private string _oldScenes;
+    [SerializeField] private string _nextLevel;
+
+    [SerializeField] private int _nextLevelFirstCheckpoint;
 
     public override void OnTriggerEnter(Collider collider)
     {
         base.OnTriggerEnter(collider);
-
-        //PlayerController player = collider.GetComponent<PlayerController>();
-        //player.IsControllerActive = false;
-
         PlayLevelCompleteSequence();
     }
 
     private void PlayLevelCompleteSequence()
     {
+        PlayerHealthController.Instance.SetHealthDrainPaused(true);
         FullScreenWipe.FadeIn(1, OnCompleteSequenceFinished);
     }
 
     private void OnCompleteSequenceFinished()
     {
-        Zones currentZone = StageController.Instance.CurrentZone;
-        int currentStageID = StageController.Instance.CurrentStageID;
-
-        Zones nextZone;
-        int nextStageID;
-        StageProgressionTracker.GetNextStageInfo(currentZone, currentStageID, out nextZone, out nextStageID);
-
-        if (nextStageID != StageProgressionTracker.InvalidStageID)
-        {
-            if (nextZone != currentZone)
-            {
-                //TODO jsmellie: Do the cinematic stuff here.
-                LoadNextLevel();
-            }
-            else
-            {
-                LoadNextLevel();
-            }
-
-        }
+        //play cutscene
+        CutsceneController.Instance.LoadCutscene(_cutsceneAddress, () => {
+        CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(true);
+        FullScreenWipe.FadeOut(0.5f);
+        CutsceneController.Instance.PlayCutscene();
+        CutsceneController.Instance.OnClipFinishedSingleAction = () => {
+            FullScreenWipe.FadeIn(0);
+            CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
+            AddressableSceneManager.Instance.UnloadScenes(_oldScenes);
+            CheckpointManager.Instance.SaveCheckpoint(_nextLevelFirstCheckpoint);
+            AddressableSceneManager.Instance.LoadScene(_nextLevel);
+            FullScreenWipe.FadeOut(1f, () => {PlayerHealthController.Instance.SetHealthDrainPaused(false);}); 
+        };
+        });
+        
     }
 
     private void LoadNextLevel()
     {
-        Zones currentZone = StageController.Instance.CurrentZone;
-        int currentStageID = StageController.Instance.CurrentStageID;
 
-        Zones nextZone;
-        int nextStageID;
-        StageProgressionTracker.GetNextStageInfo(currentZone, currentStageID, out nextZone, out nextStageID);
-
-        Debug.Log($"Level Completed.  Loading level {nextZone} stage {nextStageID}");
-
-        StageController.Instance.LoadStage(nextZone, nextStageID);
     }
 }

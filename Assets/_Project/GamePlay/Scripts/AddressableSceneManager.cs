@@ -48,4 +48,14 @@ public class AddressableSceneManager : SingletonBehaviour<AddressableSceneManage
             _loadedScenes.Remove(scene);
         }
     }
+    
+    public void UnloadScenes(string scenes)
+    {
+        string[] sceneList = scenes.Split(',');
+
+        foreach (string scene in sceneList)
+        {
+            UnloadScene(scene);
+        }
+    }
 }

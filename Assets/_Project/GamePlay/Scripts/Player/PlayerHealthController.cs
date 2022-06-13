@@ -12,6 +12,8 @@ public class PlayerHealthController : SingletonBehaviour<PlayerHealthController>
     private int _health = 100;
     private int _beatCounter = 0;
     private int _safeBeats = 0;
+    private bool _isDead = false;
+    private bool _isPaused = false;
 
     public Action<int> OnHealthChanged;
     public Action OnDeath;
@@ -28,7 +30,17 @@ public class PlayerHealthController : SingletonBehaviour<PlayerHealthController>
 
     private void CheckDeath()
     {
-        if (_health <= 0) OnDeath?.Invoke(); //more death stuff here
+        if (_health <= 0)
+        {
+            _isDead = true;
+            OnDeath?.Invoke(); //more death stuff here, probably a death audio trill?
+        } 
+            
+    }
+
+    public void SetHealthDrainPaused (bool paused)
+    {
+        _isPaused = paused;
     }
 
     [ContextMenu("MakeSafe")]
@@ -50,7 +62,8 @@ public class PlayerHealthController : SingletonBehaviour<PlayerHealthController>
                 }   
                 else
                 {
-                    Damage(10);
+                    if(!_isDead)
+                        Damage(10);
                 }
 
                 _beatCounter -= BEATS_PER_DAMAGE;
@@ -60,9 +73,12 @@ public class PlayerHealthController : SingletonBehaviour<PlayerHealthController>
 
     public void Damage(int losthealth = 20)
     {
-        _health -= losthealth;
-        OnHealthChanged?.Invoke(_health);
-        CheckDeath();
+        if(!_isPaused)
+        {
+            _health -= losthealth;
+            OnHealthChanged?.Invoke(_health);
+            CheckDeath();
+        }
     }
 
     public void Heal(int addedHealth = 20)
@@ -71,9 +87,17 @@ public class PlayerHealthController : SingletonBehaviour<PlayerHealthController>
         OnHealthChanged?.Invoke(_health);
     }
 
+    public void Respawn(int setHealth = 40)
+    {
+        _health = setHealth;
+        _isDead = false;
+        OnHealthChanged?.Invoke(_health);
+    }
+
     [ContextMenu("Full Heal")]
     public void FullHeal()
     {
+        _isDead = false;//this is for testing
         Heal(1000);
     }
 

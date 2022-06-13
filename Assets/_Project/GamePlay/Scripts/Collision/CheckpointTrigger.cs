@@ -9,6 +9,12 @@ public class CheckpointTrigger : BaseTrigger
 
     void Start()
     {
+        SpawnPlayer();
+        PlayerHealthController.Instance.OnDeath += SpawnPlayer;
+    }
+
+    public void SpawnPlayer()
+    {
         if (CheckpointManager.Instance.CurrentCheckpoint == CheckpointIndex)
         {
             PlayerSpawnHandler.Instance.Spawn(_spawnAnchor);

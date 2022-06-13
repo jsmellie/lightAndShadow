@@ -14,7 +14,8 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
     private AsyncOperationHandle<VideoClip> _currentClip;
     private AsyncOperationHandle<VideoClip> _nextClip;
 
-    private Action _OnClipFinishedAction;
+    //assign to, don't +=
+    public Action OnClipFinishedSingleAction;
 
     protected override void Initialize()
     {
@@ -30,7 +31,7 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
     {
         LoadCutscene("Cutscene1Loop", () =>
         {
-            _OnClipFinishedAction = () =>
+            OnClipFinishedSingleAction = () =>
             {
                 _videoPlayer.frame = 2;
             };
@@ -44,11 +45,11 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
     {
         LoadCutscene("Cutscene1End", () =>
             {
-                _OnClipFinishedAction = () =>
+                OnClipFinishedSingleAction = () =>
                 {
-                    _OnClipFinishedAction = () =>
+                    OnClipFinishedSingleAction = () =>
                     {
-                        _OnClipFinishedAction = () =>
+                        OnClipFinishedSingleAction = () =>
                         {
                             onFinished?.Invoke();
                         };
@@ -83,7 +84,7 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
         _videoPlayer.Play();
     }
 
-    private async void LoadCutscene(string key, Action onLoadComplete)
+    public async void LoadCutscene(string key, Action onLoadComplete = null)
     {
         _nextClip = Addressables.LoadAssetAsync<VideoClip>(key);
 
@@ -94,6 +95,6 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
 
     private void LoopPointReached(VideoPlayer source)
     {
-        _OnClipFinishedAction?.Invoke();
+        OnClipFinishedSingleAction?.Invoke();
     }
 }

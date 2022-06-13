@@ -45,7 +45,8 @@ public class CheckpointManager : SingletonBehaviour<CheckpointManager>
        {3,"URBAN_Stage2,URBAN_Stage3,URBAN_Stage4"},
        {4,"URBAN_Stage3,URBAN_Stage4,URBAN_Stage5"},
        {5,"URBAN_Stage4,URBAN_Stage5"},
-       {6,"COUNTRY_Stage1,COUNTRY_Stage2"},
+       //{6,"COUNTRY_Stage1,COUNTRY_Stage2"},
+       {6, "FOREST_Stage1"}, //Temps
        {7,"COUNTRY_Stage1,COUNTRY_Stage2,COUNTRY_Stage3"},
        {8,"COUNTRY_Stage2,COUNTRY_Stage3,COUNTRY_Stage4"},
        {9,"COUNTRY_Stage3,COUNTRY_Stage4,COUNTRY_Stage5"},
