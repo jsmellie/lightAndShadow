@@ -37,8 +37,13 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
             };
 
             PlayCutscene();
-            _videoPlayer.isLooping = true;
+            SetVideoLooping(true);
         });
+    }
+
+    public void SetVideoLooping(bool isLooping)
+    {
+        _videoPlayer.isLooping = isLooping;
     }
 
     public void QueueCutscene1(Action onFinished)
@@ -55,11 +60,11 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
                         };
 
                         PlayCutscene();
-                        _videoPlayer.isLooping = false;
+                        SetVideoLooping(false);
                     };
 
                     PlayCutscene();
-                    _videoPlayer.isLooping = false;
+                    SetVideoLooping(false);
 
                     LoadCutscene("Cutscene1", () =>
                     {
