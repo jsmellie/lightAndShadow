@@ -29,6 +29,7 @@ public class LevelCompleteTrigger : BaseTrigger
         CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(true);
         FullScreenWipe.FadeOut(0.5f);
         CutsceneController.Instance.PlayCutscene();
+        CutsceneController.Instance.SetVideoLooping(false);
         CutsceneController.Instance.OnClipFinishedSingleAction = () => {
             FullScreenWipe.FadeIn(0);
             CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
