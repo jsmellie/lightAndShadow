@@ -37,6 +37,16 @@ public class PlayerAnimationController : MonoBehaviour
 
     private AnimationState _currentAnimationState = AnimationState.Movement;
 
+    public void SetInteractable(bool isInteractable)
+    {
+        _acceptInput = isInteractable;
+    }
+    
+    public void SetAnimationState(AnimationState animationState)
+    {
+        _currentAnimationState = animationState;
+    }
+
     private void Update()
     {
         switch (_currentAnimationState)

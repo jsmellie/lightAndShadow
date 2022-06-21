@@ -44,7 +44,14 @@ public class PlayerMovementController : MonoBehaviour
     protected bool m_IsGrounded;
     protected float m_LastGroundedTime = 0;
 
-	public Vector3 Velocity
+    private bool _isInteractable = false;
+
+    public void SetInteractable(bool isInteractable)
+    {
+        _isInteractable = isInteractable;
+    }
+
+    public Vector3 Velocity
 	{
 		get
 		{
@@ -72,6 +79,11 @@ public class PlayerMovementController : MonoBehaviour
     {
         float horizontalMovement = InputController.Instance.GetAxis(InputController.eAxis.Horizontal).Value;
 
+        if (!_isInteractable)
+        {
+            horizontalMovement = 0;
+        }
+
         if (m_LastHorizontalMovement < 0 && horizontalMovement > 0)
         {
             m_TargetVelocity.x = 0;
@@ -96,7 +108,7 @@ public class PlayerMovementController : MonoBehaviour
 
         m_TargetVelocity.x = Mathf.Clamp(m_TargetVelocity.x, -m_MaxSpeed, m_MaxSpeed);
 
-        if (InputController.Instance.GetButtonDown(InputController.eButtons.Jump))
+        if (_isInteractable && InputController.Instance.GetButtonDown(InputController.eButtons.Jump))
         {
             if (m_IsGrounded || m_LastGroundedTime < m_JumpSafetyTime)
             {
@@ -104,7 +116,7 @@ public class PlayerMovementController : MonoBehaviour
             }
         }
 
-        if (InputController.Instance.GetButton(InputController.eButtons.Jump))
+        if (_isInteractable && InputController.Instance.GetButton(InputController.eButtons.Jump))
         {
             m_HoldingJump = true;
         }
@@ -143,13 +155,13 @@ public class PlayerMovementController : MonoBehaviour
             }
         }
 
-        if (m_IsGrounded && !m_DropDown && IsDroppingDown())
+        if (m_IsGrounded && !m_DropDown && _isInteractable && IsDroppingDown())
         {
             m_DropDown = true;
             m_DropDownTime = 0.2f;
         }
 
-        if (InputController.Instance.GetButton(InputController.eButtons.DropDown) || IsDroppingDown())
+        if (_isInteractable && (InputController.Instance.GetButton(InputController.eButtons.DropDown) || IsDroppingDown()))
         {
             m_HoldingDropDown = true;
         }

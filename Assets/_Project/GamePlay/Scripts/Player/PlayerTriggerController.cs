@@ -8,8 +8,21 @@ public class PlayerTriggerController : MonoBehaviour
 
     protected List<Collider> _collidingTriggers = new List<Collider>();
 
+    private bool _detectTriggers = true;
+
+    public void DetectTriggers(bool detectTriggers)
+    {
+        _detectTriggers = detectTriggers;
+    }
+
     private void FixedUpdate()
     {
+        if (!_detectTriggers)
+        {
+            RemoveUnusedTriggers();
+            return;
+        }
+
         Vector3 colliderExtents = GetComponent<BoxCollider>().bounds.extents;
         Vector3 detectorExtents = colliderExtents * 0.99f;
 
@@ -37,6 +50,11 @@ public class PlayerTriggerController : MonoBehaviour
                 AddCollidingTrigger(collider);
             }
         }
+    }
+
+    private void RemoveUnusedTriggers()
+    {
+        RemoveUnusedTriggers(new List<Collider>());
     }
 
     private void RemoveUnusedTriggers(List<Collider> collidersInUse)
