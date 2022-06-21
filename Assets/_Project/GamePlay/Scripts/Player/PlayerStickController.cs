@@ -6,7 +6,7 @@ public class PlayerStickController : MonoBehaviour
 {
     [SerializeField] private List<Transform> _stickTransforms;
 
-    private void Awake()
+    public void AddSticks()
     {
         for (int i = 0; i < _stickTransforms.Count;i++)
         {

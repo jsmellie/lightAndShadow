@@ -42,6 +42,7 @@ public class PlayerSpawnHandler : SingletonBehaviour<PlayerSpawnHandler>
         //TODO set player idle animation here
 
         PlayerHealthController.Instance.FullHeal();
+        PlayerController.Instance.SetInitialState();
 
         if(!FullScreenWipe.IsWiping)
             FullScreenWipe.FadeOut(1, OnAnimationCompleted);
