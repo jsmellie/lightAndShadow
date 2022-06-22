@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -47,6 +48,18 @@ public class AddressableSceneManager : SingletonBehaviour<AddressableSceneManage
             Addressables.UnloadSceneAsync(_loadedScenes[scene], true);
             _loadedScenes.Remove(scene);
         }
+    }
+
+    public List<Task> GetTasks()
+    {
+        List<Task> taskList = new List<Task>();
+
+        foreach(string loadedScene in _loadedScenes.Keys)
+        {
+            taskList.Add(_loadedScenes[loadedScene].Task);
+        }
+
+        return taskList;
     }
     
     public void UnloadScenes(string scenes)

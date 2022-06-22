@@ -17,6 +17,15 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
         {24, "Cutscene1Loop"}
     };
 
+    private readonly Dictionary<int, string> CHECKPOINT_CUTSCENE = new Dictionary<int, string>()
+    {
+        {0, "Cutscene1"},
+        {6, "Cutscene2"},
+        {12, "Cutscene3"},
+        {18, "Cutscene4"},
+        {24, "Cutscene5"}
+    };
+
     private VideoPlayer _videoPlayer;
     private Camera _videoCamera;
 
@@ -47,6 +56,15 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
 
             PlayCutscene();
             SetVideoLooping(true);
+        });
+    }
+
+    public void PlayCutsceneForCheckpoint(int currentCheckpoint)
+    {
+        LoadCutscene(CHECKPOINT_CUTSCENE[currentCheckpoint], () =>
+        {
+            PlayCutscene();
+            SetVideoLooping(false);
         });
     }
 
@@ -217,6 +235,11 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
         await _nextClip.Task;
 
         onLoadComplete?.Invoke();
+    }
+
+    public void LoadCutsceneForCheckpoint(int currentCheckpoint, Action onLoadComplete = null)
+    {
+        LoadCutscene(CHECKPOINT_CUTSCENE[currentCheckpoint], onLoadComplete);
     }
 
     private void LoopPointReached(VideoPlayer source)
