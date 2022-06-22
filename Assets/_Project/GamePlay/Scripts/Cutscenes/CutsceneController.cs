@@ -11,10 +11,10 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
     private readonly Dictionary<int, string> CHECKPOINT_CUTSCENE_LOOP = new Dictionary<int, string>()
     {
         {0, "Cutscene1Loop"},
-        {6, "Cutscene1Loop"},
-        {12, "Cutscene1Loop"},
-        {18, "Cutscene1Loop"},
-        {24, "Cutscene1Loop"}
+        {6, "Cutscene2Loop"},
+        {12, "Cutscene3Loop"},
+        {18, "Cutscene4Loop"},
+        {24, "Cutscene5Loop"}
     };
 
     private readonly Dictionary<int, string> CHECKPOINT_CUTSCENE = new Dictionary<int, string>()
@@ -103,7 +103,7 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
 
     public void QueueCutscene2(Action onFinished)
     {
-        LoadCutscene("Cutscene1End", () =>
+        LoadCutscene("Cutscene2End", () =>
             {
                 OnClipFinishedSingleAction = () =>
                 {
@@ -131,7 +131,7 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
 
     public void QueueCutscene3(Action onFinished)
     {
-        LoadCutscene("Cutscene1End", () =>
+        LoadCutscene("Cutscene3End", () =>
             {
                 OnClipFinishedSingleAction = () =>
                 {
@@ -159,7 +159,7 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
 
     public void QueueCutscene4(Action onFinished)
     {
-        LoadCutscene("Cutscene1End", () =>
+        LoadCutscene("Cutscene4End", () =>
             {
                 OnClipFinishedSingleAction = () =>
                 {
@@ -187,7 +187,7 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
 
     public void QueueCutscene5(Action onFinished)
     {
-        LoadCutscene("Cutscene1End", () =>
+        LoadCutscene("Cutscene5End", () =>
             {
                 OnClipFinishedSingleAction = () =>
                 {
