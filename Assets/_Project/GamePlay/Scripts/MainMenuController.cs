@@ -96,13 +96,6 @@ public class MainMenuController : MonoBehaviour
         };
 
         GameController.Instance.SetState(GameController.GameState.Playing);
-
-        if (CheckpointManager.Instance.CurrentCheckpoint > 0)
-        {
-            return;
-        }
-
-
     }
 
     private void Update()

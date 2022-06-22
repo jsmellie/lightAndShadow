@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 
 public class GameController : SingletonBehaviour<GameController>
@@ -34,6 +35,9 @@ public class GameController : SingletonBehaviour<GameController>
         await handle.Task;
         AddressableSceneManager.Instance.LoadScenesFromString(CheckpointManager.Instance.GetScenesForCurrentCheckpoint());
         Instantiate(_menu);
+
+        await Task.WhenAll(AddressableSceneManager.Instance.GetTasks());
+        
         SetState(GameState.Menu);
     }
 
@@ -56,7 +60,56 @@ public class GameController : SingletonBehaviour<GameController>
                 break;
 
             case GameState.Cutscene:
+                EnterCutsceneState();
                 break;
+        }
+    }
+
+    private void EnterCutsceneState()
+    {       
+        //play cutscene
+        CutsceneController.Instance.LoadCutsceneForCheckpoint(CheckpointManager.Instance.CurrentCheckpoint, () =>
+        {
+            CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(true);
+            FullScreenWipe.FadeOut(0.5f);
+            CutsceneController.Instance.PlayCutscene();
+            CutsceneController.Instance.SetVideoLooping(false);
+            CutsceneController.Instance.OnClipFinishedSingleAction = () =>
+            {
+                FullScreenWipe.FadeIn(1f, () => 
+                {
+                    CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
+                    LoadNextScene();
+                });
+            };
+        });
+    }
+
+    private async void LoadNextScene()
+    {
+        AddressableSceneManager.Instance.UnloadScenes(CheckpointManager.Instance.GetScenesForCheckpoint(CheckpointManager.Instance.CurrentCheckpoint - 1));
+
+        CheckpointManager.Instance.SaveCheckpoint(CheckpointManager.Instance.CurrentCheckpoint + 1);
+
+        await AddressableSceneManager.Instance.LoadScene(CheckpointManager.Instance.GetSceneForCheckpoint(CheckpointManager.Instance.CurrentCheckpoint)).Task;
+
+        CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(true);
+
+        SpawnPlayer();
+
+        FullScreenWipe.FadeOut(1f, () =>
+        {
+            SetState(GameState.Playing);
+        });
+    }
+
+    private void SpawnPlayer()
+    {
+        CheckpointTrigger[] checkpoints = GameObject.FindObjectsOfType<CheckpointTrigger>();
+
+        foreach (CheckpointTrigger checkpoint in checkpoints)
+        {
+            checkpoint.SpawnPlayer();
         }
     }
 
@@ -66,13 +119,18 @@ public class GameController : SingletonBehaviour<GameController>
         {
             case 0:
             case 6:
+            case 12:
             case 18:
             case 24:
                 CutsceneController.Instance.LoopMainMenu(CheckpointManager.Instance.CurrentCheckpoint);
                 CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(false);
+                CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(true);
                 break;
 
             default:
+                SpawnPlayer();
+
+                CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(true);
                 CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
                 break;
         }
@@ -88,9 +146,7 @@ public class GameController : SingletonBehaviour<GameController>
                     FullScreenWipe.FadeIn(1, () =>
                     {
                         CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
-                        CheckpointManager.Instance.SaveCheckpoint(1);
-                        AddressableSceneManager.Instance.LoadScene("URBAN_Stage1", LoadSceneMode.Additive);
-                        CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(true);
+                        LoadNextScene();                        
                     });
                 });
                 break;
@@ -101,9 +157,7 @@ public class GameController : SingletonBehaviour<GameController>
                     FullScreenWipe.FadeIn(1, () =>
                     {
                         CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
-                        CheckpointManager.Instance.SaveCheckpoint(7);
-                        AddressableSceneManager.Instance.LoadScene("COUNTRY_Stage1", LoadSceneMode.Additive);
-                        CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(true);
+                        LoadNextScene();
                     });
                 });
                 break;
@@ -114,9 +168,7 @@ public class GameController : SingletonBehaviour<GameController>
                     FullScreenWipe.FadeIn(1, () =>
                     {
                         CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
-                        CheckpointManager.Instance.SaveCheckpoint(13);
-                        AddressableSceneManager.Instance.LoadScene("FOREST_Stage1", LoadSceneMode.Additive);
-                        CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(true);
+                        LoadNextScene();
                     });
                 });
                 break;
@@ -127,9 +179,7 @@ public class GameController : SingletonBehaviour<GameController>
                     FullScreenWipe.FadeIn(1, () =>
                     {
                         CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
-                        CheckpointManager.Instance.SaveCheckpoint(19);
-                        AddressableSceneManager.Instance.LoadScene("FOOTHILLS_Stage1", LoadSceneMode.Additive);
-                        CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(true);
+                        LoadNextScene();
                     });
                 });
                 break;
@@ -140,9 +190,7 @@ public class GameController : SingletonBehaviour<GameController>
                     FullScreenWipe.FadeIn(1, () =>
                     {
                         CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
-                        CheckpointManager.Instance.SaveCheckpoint(25);
-                        AddressableSceneManager.Instance.LoadScene("MOUNTAIN_Stage1", LoadSceneMode.Additive);
-                        CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(true);
+                        LoadNextScene();
                     });
                 });
                 break;
@@ -151,6 +199,7 @@ public class GameController : SingletonBehaviour<GameController>
                 PlayerController.Instance.SetInteractable(true);
                 PlayerController.Instance.SetAnimationState(PlayerAnimationController.AnimationState.Movement);
                 PlayerController.Instance.DetectTriggers(true);
+                PlayerHealthController.Instance.SetHealthDrainPaused(false);
                 break;
         }
     }
