@@ -24,11 +24,21 @@ public class PlayerController : SingletonBehaviour<PlayerController>
         _animationController.SetInteractable(_isInteractable);
     }
 
+    public void SetAnimationState(PlayerAnimationController.AnimationState animationState)
+    {
+        _animationController.SetAnimationState(animationState);
+    }
+
+    public void DetectTriggers(bool detectTriggers)
+    {
+        _triggerController.DetectTriggers(detectTriggers);
+    }
+
     public void SetInitialState()
     {
-        SetInteractable(true);
+        SetInteractable(false);
         _animationController.SetAnimationState(PlayerAnimationController.AnimationState.Movement);
-        _triggerController.DetectTriggers(true);
+        _triggerController.DetectTriggers(false);
         _stickController.AddSticks();
     }
 }

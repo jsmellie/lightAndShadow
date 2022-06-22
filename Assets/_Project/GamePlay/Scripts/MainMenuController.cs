@@ -33,8 +33,6 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private RectTransform _mainMenuOptionsParent;
     [SerializeField] private MenuInputController _menuInputController;
 
-    [SerializeField] private string _firstScenePath;
-
     [SerializeField] private SpriteRenderer _title;
     [SerializeField] private CanvasGroup _buttons;
 
@@ -65,15 +63,7 @@ public class MainMenuController : MonoBehaviour
         _resourcesPanel.GetComponent<CanvasGroup>().alpha = 0;
         _creditsPanel.GetComponent<CanvasGroup>().alpha = 0;
 
-        if (CheckpointManager.Instance.CurrentCheckpoint == 0)
-        {
-            CutsceneController.Instance.LoopMainMenu();
-            CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(false);
-        }
-        else
-        {
-            CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
-        }
+        GameController.Instance.SetState(GameController.GameState.Menu);
 
         FullScreenWipe.FadeOut(1, () =>
         {
@@ -104,20 +94,15 @@ public class MainMenuController : MonoBehaviour
         {
             gameObject.SetActive(false);
         };
+
+        GameController.Instance.SetState(GameController.GameState.Playing);
+
         if (CheckpointManager.Instance.CurrentCheckpoint > 0)
         {
             return;
         }
-        CutsceneController.Instance.QueueCutscene1(() =>
-        {
-            FullScreenWipe.FadeIn(1, () =>
-            {
-                CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
-                CheckpointManager.Instance.SaveCheckpoint(1);
-                AddressableSceneManager.Instance.LoadScene(_firstScenePath, LoadSceneMode.Additive);
-                CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(true);
-            });
-        });
+
+
     }
 
     private void Update()
@@ -139,17 +124,6 @@ public class MainMenuController : MonoBehaviour
 
         _mainMenuOptionsParent.localPosition = Vector3.Lerp(_mainMenuOptionsParent.localPosition, _optionsTargetPosition, Time.unscaledDeltaTime * MENU_OPTION_OFFSET_LERP_SPEED);
         LayoutRebuilder.ForceRebuildLayoutImmediate(_mainMenuOptionsParent);
-
-        if (Input.GetKeyDown("t"))
-        {
-            _isInteractable = false;
-            FullScreenWipe.FadeIn(1, () =>
-            {
-                CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
-                AddressableSceneManager.Instance.LoadScene(_firstScenePath, LoadSceneMode.Single);
-                CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(true);
-            });
-        }
 
         HandleInput();
     }

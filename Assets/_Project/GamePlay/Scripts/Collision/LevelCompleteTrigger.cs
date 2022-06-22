@@ -24,6 +24,8 @@ public class LevelCompleteTrigger : BaseTrigger
 
     private void OnCompleteSequenceFinished()
     {
+        GameController.Instance.SetState(GameController.GameState.Cutscene);
+        
         //play cutscene
         CutsceneController.Instance.LoadCutscene(_cutsceneAddress, () => {
         CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(true);

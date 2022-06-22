@@ -49,6 +49,7 @@ public class FullScreenWipe : MonoBehaviour
         s_wipeUpdateMethod = FadeOutUpdate;
 
         s_animationLength = s_timeLeft = time;
+        s_wipeUpdateMethod(1 - (s_timeLeft / s_animationLength));
         CheckIfWipeCompleted();
     }
 
@@ -58,6 +59,7 @@ public class FullScreenWipe : MonoBehaviour
         s_wipeUpdateMethod = FadeInUpdate;
 
         s_animationLength = s_timeLeft = time;
+        s_wipeUpdateMethod(1 - (s_timeLeft / s_animationLength));
         CheckIfWipeCompleted();
     }
 

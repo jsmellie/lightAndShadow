@@ -8,6 +8,15 @@ using System;
 
 public class CutsceneController : SingletonBehaviour<CutsceneController>
 {
+    private readonly Dictionary<int, string> CHECKPOINT_CUTSCENE_LOOP = new Dictionary<int, string>()
+    {
+        {0, "Cutscene1Loop"},
+        {6, "Cutscene1Loop"},
+        {12, "Cutscene1Loop"},
+        {18, "Cutscene1Loop"},
+        {24, "Cutscene1Loop"}
+    };
+
     private VideoPlayer _videoPlayer;
     private Camera _videoCamera;
 
@@ -27,9 +36,9 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
         _videoPlayer.playOnAwake = false;
     }
 
-    public void LoopMainMenu()
+    public void LoopMainMenu(int currentCheckpoint)
     {
-        LoadCutscene("Cutscene1Loop", () =>
+        LoadCutscene(CHECKPOINT_CUTSCENE_LOOP[currentCheckpoint], () =>
         {
             OnClipFinishedSingleAction = () =>
             {
@@ -67,6 +76,118 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
                     SetVideoLooping(false);
 
                     LoadCutscene("Cutscene1", () =>
+                    {
+
+                    });
+                };
+            });
+    }
+
+    public void QueueCutscene2(Action onFinished)
+    {
+        LoadCutscene("Cutscene1End", () =>
+            {
+                OnClipFinishedSingleAction = () =>
+                {
+                    OnClipFinishedSingleAction = () =>
+                    {
+                        OnClipFinishedSingleAction = () =>
+                        {
+                            onFinished?.Invoke();
+                        };
+
+                        PlayCutscene();
+                        SetVideoLooping(false);
+                    };
+
+                    PlayCutscene();
+                    SetVideoLooping(false);
+
+                    LoadCutscene("Cutscene2", () =>
+                    {
+
+                    });
+                };
+            });
+    }
+
+    public void QueueCutscene3(Action onFinished)
+    {
+        LoadCutscene("Cutscene1End", () =>
+            {
+                OnClipFinishedSingleAction = () =>
+                {
+                    OnClipFinishedSingleAction = () =>
+                    {
+                        OnClipFinishedSingleAction = () =>
+                        {
+                            onFinished?.Invoke();
+                        };
+
+                        PlayCutscene();
+                        SetVideoLooping(false);
+                    };
+
+                    PlayCutscene();
+                    SetVideoLooping(false);
+
+                    LoadCutscene("Cutscene3", () =>
+                    {
+
+                    });
+                };
+            });
+    }
+
+    public void QueueCutscene4(Action onFinished)
+    {
+        LoadCutscene("Cutscene1End", () =>
+            {
+                OnClipFinishedSingleAction = () =>
+                {
+                    OnClipFinishedSingleAction = () =>
+                    {
+                        OnClipFinishedSingleAction = () =>
+                        {
+                            onFinished?.Invoke();
+                        };
+
+                        PlayCutscene();
+                        SetVideoLooping(false);
+                    };
+
+                    PlayCutscene();
+                    SetVideoLooping(false);
+
+                    LoadCutscene("Cutscene4", () =>
+                    {
+
+                    });
+                };
+            });
+    }
+
+    public void QueueCutscene5(Action onFinished)
+    {
+        LoadCutscene("Cutscene1End", () =>
+            {
+                OnClipFinishedSingleAction = () =>
+                {
+                    OnClipFinishedSingleAction = () =>
+                    {
+                        OnClipFinishedSingleAction = () =>
+                        {
+                            onFinished?.Invoke();
+                        };
+
+                        PlayCutscene();
+                        SetVideoLooping(false);
+                    };
+
+                    PlayCutscene();
+                    SetVideoLooping(false);
+
+                    LoadCutscene("Cutscene5", () =>
                     {
 
                     });
