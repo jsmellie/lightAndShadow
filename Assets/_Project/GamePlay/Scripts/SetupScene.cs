@@ -9,10 +9,6 @@ using UnityEngine.SceneManagement;
 
 public class SetupScene : MonoBehaviour
 {
-    private const string MAIN_MENU_SCENE = "MainMenu";
-    [SerializeField] private GameObject _menu;
-    [SerializeField] private string _baseScene;
-
     [SerializeField] private SpriteRenderer _splashScreen;
     [SerializeField] private SpriteRenderer _splashScreen2;
 
@@ -21,17 +17,6 @@ public class SetupScene : MonoBehaviour
         _splashScreen.color = new Color(1, 1, 1, 0);
         _splashScreen2.color = new Color(1, 1, 1, 0);
         ShowSplashScreen();
-    }
-
-    private async Task LoadMainMenu()
-    {
-        await Task.Delay(100);
-        var handle = AddressableSceneManager.Instance.LoadScene(_baseScene, LoadSceneMode.Single);
-
-        await handle.Task;
-        AddressableSceneManager.Instance.LoadScenesFromString(CheckpointManager.Instance.GetScenesForCurrentCheckpoint());
-        Instantiate(_menu);
-
     }
 
     private void ShowSplashScreen()
@@ -82,7 +67,7 @@ public class SetupScene : MonoBehaviour
         .SetEase(Ease.InOutQuad).onComplete += () =>
         {
             FullScreenWipe.FadeIn(0);
-            LoadMainMenu();
+            GameController.Instance.LoadMenu();
         };
     }
 }

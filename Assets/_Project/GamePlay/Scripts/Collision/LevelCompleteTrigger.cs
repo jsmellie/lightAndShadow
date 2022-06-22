@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class LevelCompleteTrigger : BaseTrigger
 {
-    [SerializeField] private string _cutsceneAddress;
-    [SerializeField] private string _oldScenes;
-    [SerializeField] private string _nextLevel;
-
-    [SerializeField] private int _nextLevelFirstCheckpoint;
-
     public override void OnTriggerEnter(Collider collider)
     {
         base.OnTriggerEnter(collider);
@@ -19,28 +13,13 @@ public class LevelCompleteTrigger : BaseTrigger
     private void PlayLevelCompleteSequence()
     {
         PlayerHealthController.Instance.SetHealthDrainPaused(true);
-        CheckpointManager.Instance.SaveCheckpoint(_nextLevelFirstCheckpoint);
+        CheckpointManager.Instance.SaveCheckpoint(CheckpointManager.Instance.CurrentCheckpoint + 1);
         FullScreenWipe.FadeIn(1, OnCompleteSequenceFinished);
     }
 
     private void OnCompleteSequenceFinished()
     {
-        //play cutscene
-        CutsceneController.Instance.LoadCutscene(_cutsceneAddress, () => {
-        CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(true);
-        FullScreenWipe.FadeOut(0.5f);
-        CutsceneController.Instance.PlayCutscene();
-        CutsceneController.Instance.SetVideoLooping(false);
-        CutsceneController.Instance.OnClipFinishedSingleAction = () => {
-            FullScreenWipe.FadeIn(0);
-            CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
-            AddressableSceneManager.Instance.UnloadScenes(_oldScenes);
-            CheckpointManager.Instance.SaveCheckpoint(_nextLevelFirstCheckpoint+1);
-            AddressableSceneManager.Instance.LoadScene(_nextLevel);
-            FullScreenWipe.FadeOut(1f, () => {PlayerHealthController.Instance.SetHealthDrainPaused(false);}); 
-        };
-        });
-        
+        GameController.Instance.SetState(GameController.GameState.Cutscene);        
     }
 
     private void LoadNextLevel()
