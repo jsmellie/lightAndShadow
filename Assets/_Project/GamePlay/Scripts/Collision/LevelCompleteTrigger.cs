@@ -19,6 +19,7 @@ public class LevelCompleteTrigger : BaseTrigger
     private void PlayLevelCompleteSequence()
     {
         PlayerHealthController.Instance.SetHealthDrainPaused(true);
+        CheckpointManager.Instance.SaveCheckpoint(_nextLevelFirstCheckpoint);
         FullScreenWipe.FadeIn(1, OnCompleteSequenceFinished);
     }
 
@@ -36,7 +37,7 @@ public class LevelCompleteTrigger : BaseTrigger
             FullScreenWipe.FadeIn(0);
             CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
             AddressableSceneManager.Instance.UnloadScenes(_oldScenes);
-            CheckpointManager.Instance.SaveCheckpoint(_nextLevelFirstCheckpoint);
+            CheckpointManager.Instance.SaveCheckpoint(_nextLevelFirstCheckpoint+1);
             AddressableSceneManager.Instance.LoadScene(_nextLevel);
             FullScreenWipe.FadeOut(1f, () => {PlayerHealthController.Instance.SetHealthDrainPaused(false);}); 
         };
