@@ -6,12 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class StageCompleteTrigger : BaseTrigger
 {
-    [SerializeField] private string StageToLoad;
-
-
     public override void OnTriggerEnter(Collider collider)
     {
-        AddressableSceneManager.Instance.LoadScene(StageToLoad);
-        base.OnTriggerEnter(collider);
+        AddressableSceneManager.Instance.LoadScenesFromString(CheckpointManager.Instance.GetScenesForCurrentCheckpoint());
     }
 }

@@ -29,7 +29,7 @@ public class AddressableSceneManager : SingletonBehaviour<AddressableSceneManage
 
     public void LoadScenesFromString(string scenes)
     {
-        string[] sceneList = scenes.Split(',');
+        List<string> sceneList = new List<string>(scenes.Split(','));
 
         foreach (string scene in sceneList)
         {
@@ -39,6 +39,21 @@ public class AddressableSceneManager : SingletonBehaviour<AddressableSceneManage
                 _loadedScenes.Add(scene,handle);
             }
         }
+
+        List<string> toRemove = new List<string>();
+        foreach (string loadedScene in _loadedScenes.Keys)
+        {
+            if(!sceneList.Contains(loadedScene))
+            {
+                toRemove.Add(loadedScene);
+            }
+        }
+        
+        foreach (string unloadScene in toRemove)
+        {
+            UnloadScene(unloadScene);
+        }
+
     }
 
     public void UnloadScene(string scene)
