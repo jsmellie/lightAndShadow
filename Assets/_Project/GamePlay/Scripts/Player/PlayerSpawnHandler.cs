@@ -24,6 +24,7 @@ public class PlayerSpawnHandler : SingletonBehaviour<PlayerSpawnHandler>
         {
             _currentPlayer = Instantiate(_playerPrefab);
             _currentPlayer.transform.parent = this.transform;
+            PlayerController.Instance.SetInitialState();
 
             CameraBehaviourController cameraBehaviourController = CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).GetComponent<CameraBehaviourController>();
             cameraBehaviourController.SetPlayerTransform(_currentPlayer.transform);
@@ -42,11 +43,11 @@ public class PlayerSpawnHandler : SingletonBehaviour<PlayerSpawnHandler>
         //TODO set player idle animation here
 
         PlayerHealthController.Instance.FullHeal();
-        PlayerController.Instance.SetInitialState();
 
         if(!FullScreenWipe.IsWiping)
             FullScreenWipe.FadeOut(1, OnAnimationCompleted);
 
+        CollectableManager.Instance.Spawn();
         onSpawnComplete?.Invoke();
     }
     

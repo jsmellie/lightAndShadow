@@ -30,7 +30,7 @@ public class GameController : SingletonBehaviour<GameController>
     public async Task LoadMenu()
     {
         await Task.Delay(100);
-        var handle = AddressableSceneManager.Instance.LoadScene(_baseScene, LoadSceneMode.Single);
+        var handle = AddressableSceneManager.Instance.LoadScene(_baseScene, LoadSceneMode.Single, true);
 
         await handle.Task;
         AddressableSceneManager.Instance.LoadScenesFromString(CheckpointManager.Instance.GetScenesForCurrentCheckpoint());
@@ -109,7 +109,7 @@ public class GameController : SingletonBehaviour<GameController>
 
         foreach (CheckpointTrigger checkpoint in checkpoints)
         {
-            checkpoint.SpawnPlayer();
+            //checkpoint.SpawnPlayer();
         }
     }
 

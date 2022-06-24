@@ -16,12 +16,13 @@ public class AddressableSceneManager : SingletonBehaviour<AddressableSceneManage
         DontDestroyOnLoad(gameObject);
     }
 
-    public AsyncOperationHandle<SceneInstance> LoadScene(string scene, LoadSceneMode mode = LoadSceneMode.Additive)
+    public AsyncOperationHandle<SceneInstance> LoadScene(string scene, LoadSceneMode mode = LoadSceneMode.Additive, bool alwaysLoaded = false)
     {
         if(!_loadedScenes.ContainsKey(scene))
         {
             var handle = Addressables.LoadSceneAsync(scene, mode);
-            _loadedScenes.Add(scene,handle);
+            if(!alwaysLoaded)
+                _loadedScenes.Add(scene,handle);
             return handle;
         }
         return default;

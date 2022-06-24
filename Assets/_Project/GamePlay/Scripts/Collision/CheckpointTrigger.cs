@@ -10,6 +10,7 @@ public class CheckpointTrigger : BaseTrigger
     void Start()
     {
         PlayerHealthController.Instance.OnDeath += SpawnPlayer;
+        SpawnPlayer();
     }
 
     public void SpawnPlayer()
