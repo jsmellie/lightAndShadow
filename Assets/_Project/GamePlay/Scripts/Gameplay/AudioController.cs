@@ -72,7 +72,7 @@ public class AudioController : SingletonBehaviour<AudioController>
     {
         if (Input.GetKeyDown("f"))
         {
-            Addressables.LoadAssetAsync<LayeredMusicTrackData>("Audio/Music/LayeredTrack1/LayeredTrack1").Completed += (x) => {
+            Addressables.LoadAssetAsync<LayeredMusicTrackData>("LayeredMusic1").Completed += (x) => {
             LoadLayeredMusic(x.Result);
         };
         }
