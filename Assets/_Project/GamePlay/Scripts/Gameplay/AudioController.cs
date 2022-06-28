@@ -50,8 +50,14 @@ public class AudioController : SingletonBehaviour<AudioController>
             {
                 return;
             }
+            
 
             await Task.Delay(msPerBeat);
+
+            if(PauseController.IsPaused)
+            {
+                continue;
+            }
 
             if (cancellationToken.IsCancellationRequested)
             {

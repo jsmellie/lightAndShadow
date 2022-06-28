@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1142794548}
   - component: {fileID: 1142794550}
+  - component: {fileID: 1142794549}
   m_Layer: 0
   m_Name: Launcher
   m_TagString: Untagged
@@ -154,6 +155,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1142794549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1142794547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c102aee889bb8843b53b05d24f3b992, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pauseMenu: {fileID: 7038067870846635615, guid: 565565c7a65f2824491eb91749dc12d2, type: 3}
 --- !u!114 &1142794550
 MonoBehaviour:
   m_ObjectHideFlags: 0
