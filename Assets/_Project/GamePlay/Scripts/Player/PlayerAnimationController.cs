@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class PlayerAnimationController : MonoBehaviour
 {
+    public class PlayerAnimationInfo
+    {
+        public string AnimationName;
+        public LookDirection Direction;
+        public Vector3 AnimationOrigin;
+        public AnimationState AnimationState;
+    }
+
     private const string IS_GROUNDED_PARAMETER = "IsGrounded";
     private const string VELOCITY_PARAMETER = "Velocity";
 
@@ -33,6 +41,10 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField] private PlayerMovementController _playerMovementController;
     [SerializeField] private Animator _animator;
 
+    private PlayerAnimationInfo _currentAnimationInfo;
+    private bool _waitingToPlayAnimtion = false;
+    private bool _isPlayingAnimation = false;
+
     private bool _acceptInput = true;
 
     private AnimationState _currentAnimationState = AnimationState.Movement;
@@ -45,6 +57,49 @@ public class PlayerAnimationController : MonoBehaviour
     public void SetAnimationState(AnimationState animationState)
     {
         _currentAnimationState = animationState;
+    }
+
+    public void PlayAnimation(PlayerAnimationInfo animationInfo, bool forcePosition)
+    {
+        if (forcePosition)
+        {
+            transform.position = animationInfo.AnimationOrigin;
+        }
+
+        _currentAnimationInfo = animationInfo;
+
+        PlayerController.Instance.SetInteractable(false);
+        PlayerController.Instance.DetectTriggers(false);
+       
+        if (!_playerMovementController.IsGrounded)
+        {
+            _waitingToPlayAnimtion = true;
+        }
+        else
+        {
+            BeginAnimation();
+        }        
+    }
+
+    private void BeginAnimation()
+    {
+        if (_isPlayingAnimation) return;
+
+        _isPlayingAnimation = true;
+
+        SetAnimationState(_currentAnimationInfo.AnimationState);
+        _animator.SetTrigger(_currentAnimationInfo.AnimationName);
+    }
+
+    public void EnterMovementState()
+    {
+        if (_isPlayingAnimation)
+        {
+            _isPlayingAnimation = false;
+            SetAnimationState(AnimationState.Movement);
+            PlayerController.Instance.SetInteractable(true);
+            PlayerController.Instance.DetectTriggers(true);
+        }
     }
 
     private void Update()
@@ -68,6 +123,12 @@ public class PlayerAnimationController : MonoBehaviour
             case AnimationState.Movement:
                 UpdateMovement();
                 break;
+        }
+
+        if (_waitingToPlayAnimtion && _playerMovementController.IsGrounded)
+        {
+            _waitingToPlayAnimtion = false;
+            BeginAnimation();
         }
     }
 
