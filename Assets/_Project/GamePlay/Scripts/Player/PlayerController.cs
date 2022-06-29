@@ -16,6 +16,11 @@ public class PlayerController : SingletonBehaviour<PlayerController>
 
     }
 
+    public void EnterMovementState()
+    {
+        _animationController.EnterMovementState();
+    }
+
     public void SetInteractable(bool isInteractable)
     {
         _isInteractable = isInteractable;
