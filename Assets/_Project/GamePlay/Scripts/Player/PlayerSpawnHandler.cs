@@ -42,7 +42,8 @@ public class PlayerSpawnHandler : SingletonBehaviour<PlayerSpawnHandler>
 
         //TODO set player idle animation here
 
-        PlayerHealthController.Instance.FullHeal();
+        PlayerHealthController.Instance.FullHeal(); //TODO set health value by checkpoint
+        AudioController.Instance.SetupMusic();
 
         if(!FullScreenWipe.IsWiping)
             FullScreenWipe.FadeOut(1, OnAnimationCompleted);

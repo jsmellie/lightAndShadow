@@ -49,6 +49,8 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void Update()
     {
+        if(PauseController.IsPaused) return;
+
         switch (_currentAnimationState)
         {
             case AnimationState.Spawning:

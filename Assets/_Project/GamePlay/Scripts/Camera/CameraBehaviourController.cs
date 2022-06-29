@@ -38,7 +38,7 @@ public class CameraBehaviourController : MonoBehaviour
     private Vector3 _targetPosition;
     private Vector3 _currentPosition;
 
-    private float _targetZoom = 15;
+    private float _targetZoom = 10;
     private float _currentZoom;
 
     private Vector3 _velocity = Vector3.zero;

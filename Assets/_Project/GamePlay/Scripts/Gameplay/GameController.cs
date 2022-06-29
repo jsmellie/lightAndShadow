@@ -95,22 +95,10 @@ public class GameController : SingletonBehaviour<GameController>
 
         CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(true);
 
-        SpawnPlayer();
-
         FullScreenWipe.FadeOut(1f, () =>
         {
             SetState(GameState.Playing);
         });
-    }
-
-    private void SpawnPlayer()
-    {
-        CheckpointTrigger[] checkpoints = GameObject.FindObjectsOfType<CheckpointTrigger>();
-
-        foreach (CheckpointTrigger checkpoint in checkpoints)
-        {
-            //checkpoint.SpawnPlayer();
-        }
     }
 
     private void EnterMenuState()
@@ -128,8 +116,6 @@ public class GameController : SingletonBehaviour<GameController>
                 break;
 
             default:
-                SpawnPlayer();
-
                 CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(true);
                 CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
                 break;

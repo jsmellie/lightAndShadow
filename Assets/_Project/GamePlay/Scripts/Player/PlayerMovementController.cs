@@ -77,6 +77,8 @@ public class PlayerMovementController : MonoBehaviour
 
     void Update()
     {
+        if(PauseController.IsPaused) return;
+
         float horizontalMovement = InputController.Instance.GetAxis(InputController.eAxis.Horizontal).Value;
 
         if (!_isInteractable)
