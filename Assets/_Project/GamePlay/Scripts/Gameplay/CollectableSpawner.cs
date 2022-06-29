@@ -17,7 +17,8 @@ public class CollectableSpawner : MonoBehaviour
 
     void OnDestroy()
     {
-        CollectableManager.Instance.Unregister(this);
+        if(!CollectableManager.IsInstanceNull)
+            CollectableManager.Instance.Unregister(this);
     }
 
     public void Spawn()
