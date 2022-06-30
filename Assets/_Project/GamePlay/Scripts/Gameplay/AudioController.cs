@@ -9,15 +9,20 @@ using static LayeredMusicTrackData;
 using System;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.Audio;
 
 public class AudioController : SingletonBehaviour<AudioController>
 {
+    private const string MASTER_VOLUME = "MASTER_VOLUME";
+
     [SerializeField] private AudioDatabase _audioDatabase;
     [SerializeField] private LayeredMusicController _layeredMusicController;
     [SerializeField] private List<AudioSource> _layeredAudioSources = new List<AudioSource>();
     [SerializeField] private List<AudioSource> _soundEffectAudioSources = new List<AudioSource>();
     [SerializeField] private List<AudioSource> _musicAudioSources = new List<AudioSource>();
     [SerializeField] private AudioSource _oneShotAudioSource;
+
+    [SerializeField] private AudioMixer _audioMixer;
 
     private Dictionary<int, AudioClip> _loadedLayeredMusic = new Dictionary<int, AudioClip>();
     private Dictionary<int, AudioClip> _previousLoadedLayeredMusic = new Dictionary<int, AudioClip>();
@@ -71,7 +76,10 @@ public class AudioController : SingletonBehaviour<AudioController>
                 _currentBeat = 0;
             }
 
-            OnBeat?.Invoke(_currentBeat);
+            if (!PauseController.IsPaused)
+            {
+                OnBeat?.Invoke(_currentBeat);
+            }
         }
     }
 
@@ -260,5 +268,10 @@ public class AudioController : SingletonBehaviour<AudioController>
     private void UnloadPreviousLayeredMusic()
     {
         _previousLoadedLayeredMusic.Clear();        
+    }
+
+    public void SetPaused(bool paused)
+    {
+        _audioMixer.SetFloat(MASTER_VOLUME, paused ? -10f : 0f);
     }
 }

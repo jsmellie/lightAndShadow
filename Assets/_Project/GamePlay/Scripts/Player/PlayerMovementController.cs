@@ -232,6 +232,8 @@ public class PlayerMovementController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (PauseController.IsPaused) return;
+        
         m_IsGrounded = false;
 
         RaycastHit hit;

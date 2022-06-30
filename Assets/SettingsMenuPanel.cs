@@ -37,10 +37,6 @@ public class SettingsMenuPanel : MonoBehaviour
     private int _soundVolume = 4;
 
     private bool _isInteractable = false;
-    private bool _rightAxisUsed = false;
-    private bool _leftAxisUsed = false;
-    private bool _upAxisUsed = false;
-    private bool _downAxisUsed = false;
 
     private void Awake()
     {
@@ -281,10 +277,19 @@ public class SettingsMenuPanel : MonoBehaviour
         }
     }
 
+    private readonly Dictionary<int, float> MUSIC_VOLUME_LEVELS = new Dictionary<int, float>()
+    {
+        {0, -80f},
+        {1, -15f},
+        {2, -10f},
+        {3, -5f},
+        {4, 0f}
+    };
+
     private void UpdateAudioLevels()
     {
-        _audioMixer.SetFloat(MUSIC_VOLUME_KEY, -80f + (20f * _musicVolume));
-        _audioMixer.SetFloat(SOUNDS_VOLUME_KEY, -80f + (20f * _soundVolume));
+        _audioMixer.SetFloat(MUSIC_VOLUME_KEY, MUSIC_VOLUME_LEVELS[_musicVolume]);
+        _audioMixer.SetFloat(SOUNDS_VOLUME_KEY, MUSIC_VOLUME_LEVELS[_soundVolume]);
 
         PlayerPrefs.SetInt(MUSIC_VOLUME_KEY, _musicVolume);
         PlayerPrefs.SetInt(SOUNDS_VOLUME_KEY, _soundVolume);
