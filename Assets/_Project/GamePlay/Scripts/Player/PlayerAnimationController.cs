@@ -104,7 +104,15 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void Update()
     {
-        if(PauseController.IsPaused) return;
+        if(PauseController.IsPaused)
+        {
+            _animator.speed = 0;
+            return;
+        }
+        else
+        {
+            _animator.speed = 1;
+        }
 
         switch (_currentAnimationState)
         {

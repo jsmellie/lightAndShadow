@@ -22,6 +22,16 @@ public class GameController : SingletonBehaviour<GameController>
     
     private GameState _currentGameState = GameState.Menu;
 
+    public GameState CurrentState
+    {
+        get { return _currentGameState; }
+    }
+
+    public bool CanPause()
+    {
+        return _currentGameState == GameState.Playing;
+    }
+
     protected override void Initialize()
     {
         
@@ -50,13 +60,21 @@ public class GameController : SingletonBehaviour<GameController>
                 break;
 
             case GameState.Playing:
-                EnterPlayState();
+                if (_currentGameState == GameState.Paused)
+                {
+                    _currentGameState = GameState.Playing;
+                }
+                else
+                {
+                    EnterPlayState();
+                }
                 break;
 
             case GameState.Loading:
                 break;
 
             case GameState.Paused:
+                _currentGameState = GameState.Paused;
                 break;
 
             case GameState.Cutscene:
@@ -103,6 +121,8 @@ public class GameController : SingletonBehaviour<GameController>
 
     private void EnterMenuState()
     {
+        _currentGameState = GameState.Menu;
+
         switch (CheckpointManager.Instance.CurrentCheckpoint)
         {
             case 0:
@@ -132,6 +152,7 @@ public class GameController : SingletonBehaviour<GameController>
                     FullScreenWipe.FadeIn(1, () =>
                     {
                         CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
+                        _currentGameState = GameState.Loading;
                         LoadNextScene();                        
                     });
                 });
@@ -143,6 +164,7 @@ public class GameController : SingletonBehaviour<GameController>
                     FullScreenWipe.FadeIn(1, () =>
                     {
                         CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
+                        _currentGameState = GameState.Loading;
                         LoadNextScene();
                     });
                 });
@@ -154,6 +176,7 @@ public class GameController : SingletonBehaviour<GameController>
                     FullScreenWipe.FadeIn(1, () =>
                     {
                         CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
+                        _currentGameState = GameState.Loading;
                         LoadNextScene();
                     });
                 });
@@ -165,6 +188,7 @@ public class GameController : SingletonBehaviour<GameController>
                     FullScreenWipe.FadeIn(1, () =>
                     {
                         CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
+                        _currentGameState = GameState.Loading;
                         LoadNextScene();
                     });
                 });
@@ -176,12 +200,14 @@ public class GameController : SingletonBehaviour<GameController>
                     FullScreenWipe.FadeIn(1, () =>
                     {
                         CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
+                        _currentGameState = GameState.Loading;
                         LoadNextScene();
                     });
                 });
                 break;
 
             default:
+                _currentGameState = GameState.Playing;
                 PlayerController.Instance.SetInteractable(true);
                 PlayerController.Instance.SetAnimationState(PlayerAnimationController.AnimationState.Movement);
                 PlayerController.Instance.DetectTriggers(true);
