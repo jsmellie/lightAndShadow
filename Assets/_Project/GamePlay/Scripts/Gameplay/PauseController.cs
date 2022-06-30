@@ -12,7 +12,7 @@ public static class PauseController
     public static void SetPause(bool paused)
     {
         _isPaused = paused;
-        Time.timeScale = paused ? 0 : 1;
-        AudioListener.pause = paused;
+        AudioController.Instance.SetPaused(paused);
+        GameController.Instance.SetState(paused ? GameController.GameState.Paused : GameController.GameState.Playing);
     }
 }

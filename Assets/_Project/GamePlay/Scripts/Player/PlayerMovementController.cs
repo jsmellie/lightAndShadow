@@ -232,6 +232,8 @@ public class PlayerMovementController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (PauseController.IsPaused) return;
+        
         m_IsGrounded = false;
 
         RaycastHit hit;
@@ -414,6 +416,29 @@ public class PlayerMovementController : MonoBehaviour
                     targetPosition.x = newTargetPosition.x;
                 }
             }
+        }
+
+        Collider[] colliders = Physics.OverlapBox(targetPosition, colliderExtents, Quaternion.identity, m_CollisionLayers);
+
+        List<Vector3> directions = new List<Vector3>();
+
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            Vector3 direction;
+            float distance;
+
+            if (Physics.ComputePenetration(GetComponent<BoxCollider>(), targetPosition, Quaternion.identity, colliders[i], colliders[i].transform.position, colliders[i].transform.rotation, out direction, out distance))
+            {
+                if (direction != null)
+                {
+                    directions.Add(direction * distance);
+                }
+            }
+        }
+
+        for (int i = 0; i < directions.Count; i++)
+        {
+            targetPosition += directions[i];
         }
 
         transform.position = targetPosition;
