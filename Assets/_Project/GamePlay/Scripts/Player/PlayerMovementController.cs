@@ -416,6 +416,29 @@ public class PlayerMovementController : MonoBehaviour
             }
         }
 
+        Collider[] colliders = Physics.OverlapBox(targetPosition, colliderExtents, Quaternion.identity, m_CollisionLayers);
+
+        List<Vector3> directions = new List<Vector3>();
+
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            Vector3 direction;
+            float distance;
+
+            if (Physics.ComputePenetration(GetComponent<BoxCollider>(), targetPosition, Quaternion.identity, colliders[i], colliders[i].transform.position, colliders[i].transform.rotation, out direction, out distance))
+            {
+                if (direction != null)
+                {
+                    directions.Add(direction * distance);
+                }
+            }
+        }
+
+        for (int i = 0; i < directions.Count; i++)
+        {
+            targetPosition += directions[i];
+        }
+
         transform.position = targetPosition;
         m_TargetVelocity = originalTargetVelocity;
     }
