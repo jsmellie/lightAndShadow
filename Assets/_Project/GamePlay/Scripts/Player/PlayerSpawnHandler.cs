@@ -33,12 +33,17 @@ public class PlayerSpawnHandler : SingletonBehaviour<PlayerSpawnHandler>
         }
         _currentPlayer.transform.position = spawnAnchor.position;
 
+        CameraBehaviourController cameraController = CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).GetComponent<CameraBehaviourController>();
+        cameraController.SnapToTarget();
+
         if(_currentBugs == null)
         {
             _currentBugs = Instantiate(_bugsPrefab);
             _currentBugs.transform.position = spawnAnchor.position;
             _currentBugs.GetComponent<BugsController>().SetPlayerTransform(_currentPlayer.transform);
         }
+
+        _currentBugs.GetComponent<BugsController>().ForceTargetPosition();
 
         //TODO set player idle animation here
 
