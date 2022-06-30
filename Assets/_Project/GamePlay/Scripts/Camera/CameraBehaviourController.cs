@@ -73,13 +73,10 @@ public class CameraBehaviourController : MonoBehaviour
 
     public void SnapToTarget()
     {
+        ForceTargetPosition();
+
         _currentPosition = _targetPosition;
         _currentZoom = _targetZoom;
-    }
-
-    private void Awake()
-    {
-        SnapToTarget();
     }
 
     private float CalculateCameraMinHeight()
@@ -211,6 +208,25 @@ public class CameraBehaviourController : MonoBehaviour
 
         _currentPosition = Vector3.SmoothDamp(_currentPosition, offsetTargetPosition, ref _velocity, cameraLerpSpeed);
         _currentPosition.z = -100;
+    }
+
+    public void ForceTargetPosition()
+    {
+        switch (_currentState)
+        {
+            case CameraBehaviourState.FollowTarget:
+                if (_followTransform != null)
+                {
+                    _targetPosition = _followTransform.position;
+                }
+                break;
+            case CameraBehaviourState.FollowPlayer:
+                if (_playerTransform != null)
+                {
+                    _targetPosition = _playerTransform.position;
+                }
+                break;
+        }
     }
 
     private void UpdateCurrentZoom()

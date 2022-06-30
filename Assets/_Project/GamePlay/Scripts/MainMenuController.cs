@@ -85,17 +85,16 @@ public class MainMenuController : MonoBehaviour
     {
         _isInteractable = false;
 
-        DOVirtual.Float(1, 0, 1.5f, (x) =>
+        DOVirtual.Float(1, 0, 1f, (x) =>
         {
             _buttons.alpha = x;
             _title.color = new Color(1, 1, 1, x);
         })
         .SetEase(Ease.InOutQuad).onComplete += () =>
         {
+            GameController.Instance.SetState(GameController.GameState.Playing);
             gameObject.SetActive(false);
         };
-
-        GameController.Instance.SetState(GameController.GameState.Playing);
     }
 
     private void Update()

@@ -133,6 +133,15 @@ public class BugsController : MonoBehaviour
         _radius = Mathf.Lerp(_radius, _targetRadius, Time.deltaTime * BUGS_RADIUS_LERP_SPEED);
     }
 
+    public void ForceTargetPosition()
+    {
+        if (_playerTransform != null)
+        {
+            _targetPosition = _playerTransform.position;
+        }
+        _currentPosition = _targetPosition;
+    }
+
     public void SetPlayerTransform(Transform player)
     {
         _playerTransform = player;

@@ -67,7 +67,7 @@ public class LayeredMusicController : MonoBehaviour
     private void InitializeNextTrack(Action onComplete)
     {
         _currentTrackData = _nextTrackData;
-        _currentStage = 0;
+        _currentStage = 4;
         _totalLayerCount = _currentTrackData.MusicTracks.Count;
         _totalStageCount = _currentTrackData.MusicTracks.First().EnabledStages.Count;
         
