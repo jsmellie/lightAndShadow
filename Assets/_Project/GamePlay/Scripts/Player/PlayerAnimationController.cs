@@ -75,7 +75,7 @@ public class PlayerAnimationController : MonoBehaviour
         _currentAnimationInfo = animationInfo;
 
         PlayerController.Instance.SetInteractable(false);
-        PlayerController.Instance.DetectTriggers(false);
+        //PlayerController.Instance.DetectTriggers(false);
        
         if (!_playerMovementController.IsGrounded)
         {
