@@ -291,23 +291,23 @@ public class AudioController : SingletonBehaviour<AudioController>
     {
         if(checkpoint < 6)
         {
-            return "LayeredMusic1";
+            return "CityLayeredTrackData";
         }
         else if(checkpoint < 12)
         {
-            return "LayeredMusic1"; //todo change when music exists
+            return "CountryLayeredTrackData"; 
         }
         else if(checkpoint < 18)
         {
-            return "LayeredMusic1"; //todo change when music exists
+            return "ForestLayeredTrackData"; 
         }
         else if(checkpoint < 24)
         {
-            return "LayeredMusic1"; //todo change when music exists
+            return "CountryLayeredTrackData"; //todo change when music exists
         }
         else
         {
-            return "LayeredMusic1"; //todo change when music exists
+            return "CountryLayeredTrackData"; //todo change when music exists
         }
     }
 

@@ -9,6 +9,7 @@ Shader "Unlit/background"
     {
         Tags { "RenderType"="Transparent" }
         LOD 100
+        Cull Off
 
         Pass
         {
