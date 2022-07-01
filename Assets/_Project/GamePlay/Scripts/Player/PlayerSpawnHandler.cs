@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cinemachine;
 using UnityEngine;
 
@@ -18,12 +19,13 @@ public class PlayerSpawnHandler : SingletonBehaviour<PlayerSpawnHandler>
         //TODO get initial spawn point, probably won't be loaded yet actually
     }
 
-    public void Spawn(Transform spawnAnchor, Action onSpawnComplete = null)
+    public async Task Spawn(Transform spawnAnchor, Action onSpawnComplete = null)
     {
         if(_currentPlayer == null)
         {
             _currentPlayer = Instantiate(_playerPrefab);
             _currentPlayer.transform.parent = this.transform;
+
             PlayerController.Instance.SetInitialState();
 
             CameraBehaviourController cameraBehaviourController = CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).GetComponent<CameraBehaviourController>();
@@ -44,17 +46,10 @@ public class PlayerSpawnHandler : SingletonBehaviour<PlayerSpawnHandler>
         }
 
         _currentBugs.GetComponent<BugsController>().ForceTargetPosition();
-
-        //TODO set player idle animation here
-
-        PlayerHealthController.Instance.FullHeal(); //TODO set health value by checkpoint
-        AudioController.Instance.SetupMusic();
-
-        if(!FullScreenWipe.IsWiping)
-            FullScreenWipe.FadeOut(1, OnAnimationCompleted);
-
-        CollectableManager.Instance.Spawn();
+        _currentBugs.GetComponent<BugsController>().ForceRadius();
         onSpawnComplete?.Invoke();
+
+        await Task.CompletedTask;
     }
     
     private void OnAnimationCompleted()

@@ -88,6 +88,7 @@ public class PlayerAnimationController : MonoBehaviour
         _isPlayingAnimation = true;
 
         SetAnimationState(_currentAnimationInfo.AnimationState);
+        SetLookDirection(_currentAnimationInfo.Direction);
         _animator.SetTrigger(_currentAnimationInfo.AnimationName);
     }
 
@@ -100,6 +101,31 @@ public class PlayerAnimationController : MonoBehaviour
             PlayerController.Instance.SetInteractable(true);
             PlayerController.Instance.DetectTriggers(true);
         }
+    }
+
+    public void PlayStartLoop()
+    {
+
+    }
+
+    public void PlayStartAnimation()
+    {
+
+    }
+
+    public void PlayDeathAnimation()
+    {
+
+    }
+
+    public void PlayRespawnAnimation()
+    {
+
+    }
+
+    public void PlaySpawnLoop()
+    {
+
     }
 
     private void Update()

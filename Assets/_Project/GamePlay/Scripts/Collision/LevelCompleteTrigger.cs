@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class LevelCompleteTrigger : BaseTrigger
@@ -19,7 +20,7 @@ public class LevelCompleteTrigger : BaseTrigger
 
     private void OnCompleteSequenceFinished()
     {
-        GameController.Instance.SetState(GameController.GameState.Cutscene);        
+        GameController.Instance.SetState(GameController.GameState.Cutscene).ContinueWith(task => Debug.LogException(task.Exception), TaskContinuationOptions.OnlyOnFaulted);        
     }
 
     private void LoadNextLevel()

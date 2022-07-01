@@ -7,7 +7,7 @@ public class HealthToBugsConverter : MonoBehaviour
 
     private readonly Dictionary<int, float> _healthRadiusDictionary = new Dictionary<int, float>()
     {
-        {1, 1f},
+        {1, 0.95f},
         {11, 0.9f},
         {21, 0.8f},
         {31, 0.7f},

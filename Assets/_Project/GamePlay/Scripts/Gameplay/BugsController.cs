@@ -6,7 +6,7 @@ using static UnityEngine.ParticleSystem;
 public class BugsController : MonoBehaviour
 {
     private const float BUGS_MOVE_SPEED = 4f;
-    private const float BUGS_RADIUS_LERP_SPEED = 2f;
+    private const float BUGS_RADIUS_LERP_SPEED = 0.5f;
 
     private const float MAX_BUGS_RADIUS = 43.54f;
     private readonly Vector2 BUG_OFFSET_AMOUNT = new Vector2(6f, 1f);
@@ -140,6 +140,11 @@ public class BugsController : MonoBehaviour
             _targetPosition = _playerTransform.position;
         }
         _currentPosition = _targetPosition;
+    }
+
+    public void ForceRadius()
+    {
+        _radius = _targetRadius;
     }
 
     public void SetPlayerTransform(Transform player)
