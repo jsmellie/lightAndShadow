@@ -31,6 +31,8 @@ public class AudioController : SingletonBehaviour<AudioController>
     private int _currentBeat = 0;
     private float _loadedMusicBPM = 0;
 
+    private int _lastLoadedCheckpoint = -1;
+
     private CancellationTokenSource _tempoCancellationToken;
 
     public Action<int> OnBeat;
@@ -88,13 +90,23 @@ public class AudioController : SingletonBehaviour<AudioController>
         UpdateLayeredAudioVolumes();
     }
 
-    public void SetupMusic()
+    public async Task SetupMusic()
     {
-        string currentTrack = GetTrackNameForCheckpoint(CheckpointManager.Instance.CurrentCheckpoint);
+        if (_lastLoadedCheckpoint == CheckpointManager.Instance.CurrentCheckpoint)
+        {
+            InitializeLayeredAudioSources();
+        }
+        else
+        {
+            string currentTrack = GetTrackNameForCheckpoint(CheckpointManager.Instance.CurrentCheckpoint);
 
-        Addressables.LoadAssetAsync<LayeredMusicTrackData>(currentTrack).Completed += (x) => {
-            LoadLayeredMusic(x.Result);
-        };
+            AsyncOperationHandle<LayeredMusicTrackData> handle = Addressables.LoadAssetAsync<LayeredMusicTrackData>(currentTrack);
+
+            await handle.Task;
+            await LoadLayeredMusic(handle.Result);
+        }
+
+        await Task.CompletedTask;
     }
 
     private void UpdateLayeredAudioVolumes()
@@ -169,8 +181,9 @@ public class AudioController : SingletonBehaviour<AudioController>
         _currentMusicAudioSource = nextAudioSource;
     }
 
-    public async void LoadLayeredMusic(LayeredMusicTrackData trackData)
+    public async Task LoadLayeredMusic(LayeredMusicTrackData trackData)
     {
+        _lastLoadedCheckpoint = CheckpointManager.Instance.CurrentCheckpoint;
         _loadedMusicBPM = trackData.BPM;
         _previousLoadedLayeredMusic = new Dictionary<int, AudioClip>(_loadedLayeredMusic);
         _loadedLayeredMusic.Clear();
@@ -184,11 +197,18 @@ public class AudioController : SingletonBehaviour<AudioController>
         for (int i = 0; i < trackData.MusicTracks.Count;i++)
         {
             int index = i;
-            
+
             AsyncOperationHandle<AudioClip> handle = Addressables.LoadAssetAsync<AudioClip>(trackData.MusicTracks[i].TrackPath);
             handle.Completed += (x) => 
                 {
-                    _loadedLayeredMusic.Add(index ,x.Result);
+                    if (_loadedLayeredMusic.ContainsKey(index))
+                    {
+                        _loadedLayeredMusic[index] = x.Result;
+                    }
+                    else
+                    {
+                        _loadedLayeredMusic.Add(index, x.Result);
+                    }
                 };
                 handles.Add(handle);
         }
@@ -202,6 +222,10 @@ public class AudioController : SingletonBehaviour<AudioController>
         await Task.WhenAll(tasks);
 
         _layeredMusicController.SetNextTrackData(trackData);
+    }
+
+    public void PlayStageMusic()
+    {
         InitializeLayeredMusic();
     }
 
@@ -239,6 +263,14 @@ public class AudioController : SingletonBehaviour<AudioController>
 
         _currentBeat = 0;
         _ = MusicTempoLoop(_loadedMusicBPM, _tempoCancellationToken.Token);
+    }
+
+    private void OnDestroy()
+    {
+        if (_tempoCancellationToken != null)
+        {
+            _tempoCancellationToken.Cancel();
+        }
     }
 
     private string GetTrackNameForCheckpoint(int checkpoint)

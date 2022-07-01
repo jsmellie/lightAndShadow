@@ -45,7 +45,7 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
         _videoPlayer.playOnAwake = false;
     }
 
-    public void LoopMainMenu(int currentCheckpoint)
+    public void LoopMainMenu(int currentCheckpoint, Action onLoaded)
     {
         LoadCutscene(CHECKPOINT_CUTSCENE_LOOP[currentCheckpoint], () =>
         {
@@ -53,6 +53,8 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
             {
                 _videoPlayer.frame = 2;
             };
+
+            onLoaded?.Invoke();
 
             PlayCutscene();
             SetVideoLooping(true);
