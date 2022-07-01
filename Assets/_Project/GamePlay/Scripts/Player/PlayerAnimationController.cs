@@ -92,7 +92,8 @@ public class PlayerAnimationController : MonoBehaviour
         if (_isPlayingAnimation) return;
 
         _isPlayingAnimation = true;
-
+        PlayerHealthController.Instance.FullHeal();
+        PlayerHealthController.Instance.SetHealthDrainPaused(true);
         SetAnimationState(_currentAnimationInfo.AnimationState);
         SetLookDirection(_currentAnimationInfo.Direction);
         _animator.SetTrigger(_currentAnimationInfo.AnimationName);

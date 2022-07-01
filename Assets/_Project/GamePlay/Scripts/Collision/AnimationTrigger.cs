@@ -35,7 +35,6 @@ public class AnimationTrigger : BaseTrigger
 
             playerAnimationController.PlayAnimation(animationInfo, _forcePosition);
 
-            gameObject.SetActive(false);
         }
 
         base.OnTriggerEnter(collider);
@@ -43,7 +42,8 @@ public class AnimationTrigger : BaseTrigger
 
     public override void OnTriggerExit(Collider collider)
     {
-
+        gameObject.SetActive(false);
+        PlayerHealthController.Instance.SetHealthDrainPaused(false);   
         base.OnTriggerExit(collider);
     }
 }
