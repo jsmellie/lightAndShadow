@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.AddressableAssets;
 using DG.Tweening;
 using System;
+using System.Threading.Tasks;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -63,8 +64,20 @@ public class MainMenuController : MonoBehaviour
         _resourcesPanel.GetComponent<CanvasGroup>().alpha = 0;
         _creditsPanel.GetComponent<CanvasGroup>().alpha = 0;
 
-        GameController.Instance.SetState(GameController.GameState.Menu);
+        GameController.Instance.SetMainMenuController(this);
 
+        if (CheckpointManager.Instance.CurrentCheckpoint == 0)
+        {
+            _title.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+        }
+        else
+        {
+            _title.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
+        }
+    }
+
+    public void SceneLoaded()
+    {
         FullScreenWipe.FadeOut(1, () =>
         {
             DOVirtual.Float(0, 1, 1, (x) =>
@@ -77,7 +90,6 @@ public class MainMenuController : MonoBehaviour
             {
                 _isInteractable = true;
             });
-
         });
     }
 
@@ -92,7 +104,7 @@ public class MainMenuController : MonoBehaviour
         })
         .SetEase(Ease.InOutQuad).onComplete += () =>
         {
-            GameController.Instance.SetState(GameController.GameState.Playing);
+            GameController.Instance.SetState(GameController.GameState.Playing).ContinueWith(task => Debug.LogException(task.Exception), TaskContinuationOptions.OnlyOnFaulted);
             gameObject.SetActive(false);
         };
     }

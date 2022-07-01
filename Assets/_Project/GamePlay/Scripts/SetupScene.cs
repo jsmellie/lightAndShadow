@@ -67,7 +67,7 @@ public class SetupScene : MonoBehaviour
         .SetEase(Ease.InOutQuad).onComplete += () =>
         {
             FullScreenWipe.FadeIn(0);
-            GameController.Instance.LoadMenu();
+            GameController.Instance.LoadMenu().ContinueWith(task => Debug.LogException(task.Exception), TaskContinuationOptions.OnlyOnFaulted);
         };
     }
 }

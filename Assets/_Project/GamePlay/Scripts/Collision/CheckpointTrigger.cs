@@ -7,18 +7,14 @@ public class CheckpointTrigger : BaseTrigger
     [SerializeField] private int CheckpointIndex = 0;
     [SerializeField] private Transform _spawnAnchor;
 
-    void Start()
+    public Transform SpawnAnchor
     {
-        PlayerHealthController.Instance.OnDeath += SpawnPlayer;
-        SpawnPlayer();
+        get { return _spawnAnchor; }
     }
 
-    public void SpawnPlayer()
+    void Awake()
     {
-        if (CheckpointManager.Instance.CurrentCheckpoint == CheckpointIndex)
-        {
-            PlayerSpawnHandler.Instance.Spawn(_spawnAnchor);
-        }
+        CheckpointManager.Instance.RegisterCheckpoint(this, CheckpointIndex);
     }
 
     public override void OnTriggerEnter(Collider collider)

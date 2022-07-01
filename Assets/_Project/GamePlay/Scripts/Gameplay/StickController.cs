@@ -44,9 +44,15 @@ public class StickController : SingletonBehaviour<StickController>
             int targetIndex = startIndex + 1;
             int backIndex = startIndex + 2;
 
-            Vector3 targetPosition = _stickTargets[i].Target.position;
-            Vector3 originPosition = _stickTargets[i].Target.position + _stickTargets[i].OriginOffset;
+            Vector3 targetPosition = new Vector3(0,-1000,0);
+            Vector3 originPosition = new Vector3(0,-1000,0);
 
+            if (_stickTargets[i].Target != null && _stickTargets[i].Target.gameObject.activeInHierarchy)
+            {
+                targetPosition = _stickTargets[i].Target.position;
+                originPosition = _stickTargets[i].Target.position + _stickTargets[i].OriginOffset;
+            }
+            
             _lineRenderer.SetPosition(originIndex, originPosition);
             _lineRenderer.SetPosition(targetIndex, targetPosition);
             _lineRenderer.SetPosition(backIndex, originPosition);

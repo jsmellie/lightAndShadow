@@ -5,8 +5,12 @@ using UnityEngine;
 public class CheckpointManager : SingletonBehaviour<CheckpointManager>
 {
 
+    [SerializeField] private int _forcedCheckpoint = -1;
+
     private string CHECKPOINT_KEY = "CHECKPOINT";
     private int _currentCheckpoint = 0;
+
+    private Dictionary<int, CheckpointTrigger> _registeredCheckpoints = new Dictionary<int, CheckpointTrigger>();
 
     public int CurrentCheckpoint
     {
@@ -15,7 +19,14 @@ public class CheckpointManager : SingletonBehaviour<CheckpointManager>
 
     protected override void Initialize()
     {
-        _currentCheckpoint = PlayerPrefs.GetInt(CHECKPOINT_KEY, 0);
+        if (_forcedCheckpoint >= 0)
+        {
+            _currentCheckpoint = _forcedCheckpoint;
+        }
+        else
+        {
+            _currentCheckpoint = PlayerPrefs.GetInt(CHECKPOINT_KEY, 0);
+        }
     }
 
     public void SaveCheckpoint(int checkpoint)
@@ -26,6 +37,24 @@ public class CheckpointManager : SingletonBehaviour<CheckpointManager>
             PlayerPrefs.SetInt(CHECKPOINT_KEY, checkpoint);
             PlayerPrefs.Save();
         }
+    }
+
+    public void RegisterCheckpoint(CheckpointTrigger trigger, int checkpointIndex)
+    {
+        if (!_registeredCheckpoints.ContainsKey(checkpointIndex))
+        {
+            _registeredCheckpoints.Add(checkpointIndex, trigger);
+        }
+    }
+
+    public CheckpointTrigger GetCurrentCheckpoint()
+    {
+        if (_registeredCheckpoints.ContainsKey(_currentCheckpoint))
+        {
+            return _registeredCheckpoints[_currentCheckpoint];
+        }
+
+        return null;
     }
 
     [ContextMenu("Reset Progress")]
