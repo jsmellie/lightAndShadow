@@ -140,6 +140,8 @@ public class BugsController : MonoBehaviour
             _targetPosition = _playerTransform.position;
         }
         _currentPosition = _targetPosition;
+
+        transform.position = _currentPosition;
     }
 
     public void ForceRadius()
