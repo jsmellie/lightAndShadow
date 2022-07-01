@@ -30,6 +30,7 @@ public class AudioController : SingletonBehaviour<AudioController>
     private int _currentMusicAudioSource = 0;
     private int _currentBeat = 0;
     private float _loadedMusicBPM = 0;
+    private float _layeredVolume = 1;
 
     private int _lastLoadedCheckpoint = -1;
 
@@ -117,7 +118,7 @@ public class AudioController : SingletonBehaviour<AudioController>
         {
             if (layerVolumes.Count > i)
             {
-                _layeredAudioSources[i].volume = layerVolumes[i];
+                _layeredAudioSources[i].volume = layerVolumes[i] * _layeredVolume;
             }
             else
             {
@@ -224,9 +225,22 @@ public class AudioController : SingletonBehaviour<AudioController>
         _layeredMusicController.SetNextTrackData(trackData);
     }
 
-    public void PlayStageMusic()
+    public void PlayNewStageMusic()
     {
         InitializeLayeredMusic();
+    }
+
+    public void PlayStageMusic()
+    {
+        InitializeLayeredAudioSources();
+    }
+
+    public void SetLayeredVolume(float volume, float time)
+    {
+        DOVirtual.Float(_layeredVolume, volume, time, (x) =>
+        {
+            _layeredVolume = x;
+        });
     }
 
     public void InitializeLayeredMusic()

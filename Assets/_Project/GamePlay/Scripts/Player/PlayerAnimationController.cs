@@ -15,6 +15,12 @@ public class PlayerAnimationController : MonoBehaviour
     private const string IS_GROUNDED_PARAMETER = "IsGrounded";
     private const string VELOCITY_PARAMETER = "Velocity";
 
+    private const string SPAWN_TRIGGER = "Spawn";
+    private const string STAND_TRIGGER = "Stand";
+    private const string DIE_TRIGGER = "Die";
+    private const string RESPAWN_STAND_TRIGGER = "RespawnStand";
+    private const string DEAD_TRIGGER = "Dead";
+
     public enum LookDirection
     {
         Right,
@@ -105,27 +111,27 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void PlayStartLoop()
     {
-
+        _animator.SetTrigger(SPAWN_TRIGGER);
     }
 
     public void PlayStartAnimation()
     {
-
+        _animator.SetTrigger(STAND_TRIGGER);
     }
 
     public void PlayDeathAnimation()
     {
-
+        _animator.SetTrigger(DIE_TRIGGER);
     }
 
     public void PlayRespawnAnimation()
     {
-
+        _animator.SetTrigger(RESPAWN_STAND_TRIGGER);
     }
 
-    public void PlaySpawnLoop()
+    public void PlayDeadLoop()
     {
-
+        _animator.SetTrigger(DEAD_TRIGGER);
     }
 
     private void Update()

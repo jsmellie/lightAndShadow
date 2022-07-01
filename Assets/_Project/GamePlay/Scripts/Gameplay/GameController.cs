@@ -49,7 +49,6 @@ public class GameController : SingletonBehaviour<GameController>
     {
         await PlayerSpawnHandler.Instance.Spawn(CheckpointManager.Instance.GetCurrentCheckpoint().SpawnAnchor);
 
-        PlayerHealthController.Instance.FullHeal(); //TODO set health value by checkpoint
         CollectableManager.Instance.Spawn();        
     }
 
@@ -112,33 +111,54 @@ public class GameController : SingletonBehaviour<GameController>
 
     private async Task EnterRespawnState()
     {
+        PlayerController.Instance.SetInteractable(false);
+        PlayerController.Instance.DetectTriggers(false);
+        PlayerHealthController.Instance.SetHealthDrainPaused(true);
+
         PlayerController.Instance.GetComponent<PlayerAnimationController>().PlayDeathAnimation();
 
-        await Task.Delay(500);
+        await Task.Delay(3333);
 
-        FullScreenWipe.FadeIn(1f, async () =>
-        {
-            await SpawnPlayer();
-
-            PlayerController.Instance.GetComponent<PlayerAnimationController>().PlaySpawnLoop();
-
-            await Task.Delay(100);
-
-            FullScreenWipe.FadeOut(1f, async () =>
-            {
-                PlayerController.Instance.GetComponent<PlayerAnimationController>().PlayRespawnAnimation();
-
-                await Task.Delay(500);
-
-                await SetState(GameState.Playing);
-            });
-        });
+        AudioController.Instance.SetLayeredVolume(0, 1f);
+        FullScreenWipe.FadeIn(1f, async () => {await Respawn();});
 
         await Task.CompletedTask;
     }
 
+    private async Task Respawn()
+    {
+        PlayerHealthController.Instance.FullHeal();
+
+        await SpawnPlayer();
+
+        await Task.Delay(100);
+
+        AudioController.Instance.PlayStageMusic();
+        AudioController.Instance.SetLayeredVolume(1, 1f);
+
+        FullScreenWipe.FadeOut(1f, async () =>
+        {
+            await FinishedRespawning();
+        });
+    }
+
+    private async Task FinishedRespawning()
+    {
+        PlayerController.Instance.GetComponent<PlayerAnimationController>().PlayRespawnAnimation();
+        
+        await Task.Delay(5100);
+
+        await SetState(GameState.Playing);
+    }
+
     private void EnterCutsceneState()
     {
+        AudioController.Instance.SetLayeredVolume(0, 1f);
+
+        PlayerController.Instance.SetInteractable(false);
+        PlayerController.Instance.DetectTriggers(false);
+        PlayerHealthController.Instance.SetHealthDrainPaused(true);
+
         //play cutscene
         CutsceneController.Instance.LoadCutsceneForCheckpoint(CheckpointManager.Instance.CurrentCheckpoint, () =>
         {
@@ -157,6 +177,9 @@ public class GameController : SingletonBehaviour<GameController>
         });
     }
 
+    private bool _startedFromMenu = false;
+    private bool _startNewStageMusic = true;
+
     private async Task LoadNextScene()
     {
         AddressableSceneManager.Instance.UnloadScenes(CheckpointManager.Instance.GetScenesForCheckpoint(CheckpointManager.Instance.CurrentCheckpoint - 1));
@@ -170,8 +193,10 @@ public class GameController : SingletonBehaviour<GameController>
         await Task.Delay(1);
 
         await SpawnPlayer();
+        PlayerHealthController.Instance.FullHeal();
 
         await AudioController.Instance.SetupMusic();
+        _startNewStageMusic = true;
 
         FullScreenWipe.FadeOut(1f, () =>
         {
@@ -222,8 +247,11 @@ public class GameController : SingletonBehaviour<GameController>
                 await AudioController.Instance.SetupMusic();
 
                 await SpawnPlayer();
+                PlayerHealthController.Instance.FullHeal();
 
                 PlayerController.Instance.GetComponent<PlayerAnimationController>().PlayStartLoop();
+
+                _startedFromMenu = true;
                 break;
         }
     }
@@ -293,11 +321,31 @@ public class GameController : SingletonBehaviour<GameController>
                 break;
 
             default:
+                AudioController.Instance.SetLayeredVolume(1, 0);
 
-                PlayerController.Instance.GetComponent<PlayerAnimationController>().PlayStartAnimation();
-                AudioController.Instance.PlayStageMusic();
+                if (_startedFromMenu)
+                {
+                    _startedFromMenu = false;
+                    PlayerController.Instance.GetComponent<PlayerAnimationController>().PlayStartAnimation();
 
-                await Task.Delay(1);
+                    if (_startNewStageMusic)
+                    {
+                        _startNewStageMusic = false;
+                        AudioController.Instance.PlayNewStageMusic();
+                    }
+                    else
+                    {
+                        AudioController.Instance.PlayStageMusic();
+                    }
+
+                    await Task.Delay(2133);
+                }
+
+                if (_startNewStageMusic)
+                {
+                    _startNewStageMusic = false;
+                    AudioController.Instance.PlayNewStageMusic();
+                }
 
                 _currentGameState = GameState.Playing;
                 PlayerController.Instance.SetInteractable(true);
