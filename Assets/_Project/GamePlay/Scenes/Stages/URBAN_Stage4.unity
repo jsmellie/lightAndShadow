@@ -7093,7 +7093,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5.8900003, y: 10.760001, z: 0.2}
+  m_Size: {x: 5.8900003, y: 10.760001, z: 30}
   m_Center: {x: 0, y: -0.0000019073486, z: 0}
 --- !u!1001 &979927343
 PrefabInstance:
@@ -10674,7 +10674,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5.1699996, y: 9.799999, z: 0.2}
+  m_Size: {x: 5.1699996, y: 9.799999, z: 30}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!212 &1561930114
 SpriteRenderer:
@@ -12395,7 +12395,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 6.54, y: 7.02, z: 0.2}
+  m_Size: {x: 6.54, y: 7.02, z: 30}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!212 &1772847360
 SpriteRenderer:
@@ -13488,7 +13488,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5.599999, y: 0.64999986, z: 0.2}
+  m_Size: {x: 5.599999, y: 0.64999986, z: 30}
   m_Center: {x: 0.000015258789, y: 0, z: 0.000029325485}
 --- !u!212 &1854332715
 SpriteRenderer:
@@ -14481,7 +14481,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5.1699996, y: 9.799999, z: 0.2}
+  m_Size: {x: 5.1699996, y: 9.799999, z: 30}
   m_Center: {x: 0, y: 0, z: -0.000015087426}
 --- !u!212 &2034936439
 SpriteRenderer:
@@ -15119,7 +15119,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 10.380005, y: 9.380005, z: 0.2}
+  m_Size: {x: 10.380005, y: 9.380005, z: 30}
   m_Center: {x: 0, y: -0.000030517578, z: 0}
 --- !u!212 &2094759165
 SpriteRenderer:
@@ -15647,6 +15647,10 @@ PrefabInstance:
     - target: {fileID: 1321381019207603571, guid: afa230b460551684b83eca354381e76b, type: 3}
       propertyPath: m_Name
       value: 'Sawtooth Building '
+      objectReference: {fileID: 0}
+    - target: {fileID: 1321381019339980939, guid: afa230b460551684b83eca354381e76b, type: 3}
+      propertyPath: m_Size.z
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3245530457037151377, guid: afa230b460551684b83eca354381e76b, type: 3}
       propertyPath: m_Mesh
