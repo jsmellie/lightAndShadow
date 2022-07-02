@@ -28,15 +28,15 @@ public class PlayerSpawnHandler : SingletonBehaviour<PlayerSpawnHandler>
 
             PlayerController.Instance.SetInitialState();
 
+        }
             CameraBehaviourController cameraBehaviourController = CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).GetComponent<CameraBehaviourController>();
             cameraBehaviourController.SetPlayerTransform(_currentPlayer.transform);
             cameraBehaviourController.SetCameraBehaviourState(CameraBehaviourController.CameraBehaviourState.FollowPlayer);
-            cameraBehaviourController.SetCameraMinimumHeight(GameObject.FindObjectOfType<CinemachinePath>());
-        }
+            cameraBehaviourController.SetCameraMinimumHeight();
         _currentPlayer.transform.position = spawnAnchor.position;
 
-        CameraBehaviourController cameraController = CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).GetComponent<CameraBehaviourController>();
-        cameraController.SnapToTarget();
+     
+        cameraBehaviourController.SnapToTarget();
 
         if(_currentBugs == null)
         {

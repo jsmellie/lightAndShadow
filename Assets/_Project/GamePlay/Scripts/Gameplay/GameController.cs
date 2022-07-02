@@ -127,7 +127,7 @@ public class GameController : SingletonBehaviour<GameController>
 
     private async Task Respawn()
     {
-        PlayerHealthController.Instance.FullHeal();
+        PlayerHealthController.Instance.Respawn(70);
 
         await SpawnPlayer();
 
@@ -193,7 +193,7 @@ public class GameController : SingletonBehaviour<GameController>
         await Task.Delay(1);
 
         await SpawnPlayer();
-        PlayerHealthController.Instance.FullHeal();
+        PlayerHealthController.Instance.Respawn(70);
 
         await AudioController.Instance.SetupMusic();
         _startNewStageMusic = true;
@@ -247,7 +247,7 @@ public class GameController : SingletonBehaviour<GameController>
                 await AudioController.Instance.SetupMusic();
 
                 await SpawnPlayer();
-                PlayerHealthController.Instance.FullHeal();
+                PlayerHealthController.Instance.Respawn(70);
 
                 PlayerController.Instance.GetComponent<PlayerAnimationController>().PlayStartLoop();
 
