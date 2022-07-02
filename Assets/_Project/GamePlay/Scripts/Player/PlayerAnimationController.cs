@@ -80,7 +80,6 @@ public class PlayerAnimationController : MonoBehaviour
        
         if (!_playerMovementController.IsGrounded)
         {
-            Debug.Log("Waiting to play " + animationInfo.AnimationName);
             _waitingToPlayAnimtion = true;
         }
         else
@@ -96,7 +95,6 @@ public class PlayerAnimationController : MonoBehaviour
         _isPlayingAnimation = true;
         PlayerHealthController.Instance.FullHeal();
         PlayerHealthController.Instance.SetHealthDrainPaused(true);
-        Debug.Log("Playing " + _currentAnimationInfo.AnimationName );
         SetAnimationState(_currentAnimationInfo.AnimationState);
         SetLookDirection(_currentAnimationInfo.Direction);
         _animator.SetTrigger(_currentAnimationInfo.AnimationName);
@@ -104,10 +102,8 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void EnterMovementState()
     {
-        Debug.Log("trying to enter movement");
         if (_isPlayingAnimation)
         {
-            Debug.Log("movement success");
             _isPlayingAnimation = false;
             SetAnimationState(AnimationState.Movement);
             PlayerController.Instance.SetInteractable(true);
