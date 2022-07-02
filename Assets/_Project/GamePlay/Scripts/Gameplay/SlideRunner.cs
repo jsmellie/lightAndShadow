@@ -33,7 +33,6 @@ public class SlideRunner : MonoBehaviour
             }
 
                 _player.position = _path.EvaluatePosition(_pathTravelled);
-                Debug.Log(_player.position);
                 _pathTravelled += Time.deltaTime * _speed;
 
             if(_player.position.x > _slideEnd.position.x)
