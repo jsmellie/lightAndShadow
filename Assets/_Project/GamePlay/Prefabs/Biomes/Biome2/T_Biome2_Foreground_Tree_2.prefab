@@ -10,10 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8195471442292032181}
   - component: {fileID: 8195471442292032180}
-  - component: {fileID: 690837598004615523}
-  - component: {fileID: 8152439794164214908}
-  - component: {fileID: 2634229656059345817}
-  - component: {fileID: 3546933509362482732}
   m_Layer: 30
   m_Name: T_Biome2_Foreground_Tree_2
   m_TagString: Untagged
@@ -28,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8195471442292032179}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 124.82199, y: -64.26227, z: 244.4669}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_Children: []
@@ -86,55 +82,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!65 &690837598004615523
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8195471442292032179}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.25, y: 0.17, z: 0.2}
-  m_Center: {x: 0, y: -0.58, z: 0}
---- !u!65 &8152439794164214908
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8195471442292032179}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.58, y: 0.17, z: 0.2}
-  m_Center: {x: 0.81, y: 0.62, z: 0}
---- !u!65 &2634229656059345817
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8195471442292032179}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.05, y: 0.17, z: 0.2}
-  m_Center: {x: -0.58, y: 1.14, z: 0}
---- !u!65 &3546933509362482732
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8195471442292032179}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.01, y: 0.17, z: 0.2}
-  m_Center: {x: 0.26, y: 2.58, z: 0}

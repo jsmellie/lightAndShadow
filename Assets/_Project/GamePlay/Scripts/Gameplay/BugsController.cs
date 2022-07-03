@@ -8,7 +8,7 @@ public class BugsController : MonoBehaviour
     private const float BUGS_MOVE_SPEED = 4f;
     private const float BUGS_RADIUS_LERP_SPEED = 0.5f;
 
-    private const float MAX_BUGS_RADIUS = 43.54f;
+    private const float MAX_BUGS_RADIUS = 30f;
     private readonly Vector2 BUG_OFFSET_AMOUNT = new Vector2(6f, 1f);
     private readonly Vector2 BUG_SPEED = new Vector2(0.75f, 2.5f);
 
