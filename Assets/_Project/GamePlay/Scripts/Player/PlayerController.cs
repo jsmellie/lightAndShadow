@@ -27,7 +27,7 @@ public class PlayerController : SingletonBehaviour<PlayerController>
 
         _movementController.SetInteractable(_isInteractable);
         _animationController.SetInteractable(_isInteractable);
-        PlayerHealthController.Instance.SetHealthDrainPaused(!_isInteractable);
+        //PlayerHealthController.Instance.SetHealthDrainPaused(!_isInteractable);
         
     }
 

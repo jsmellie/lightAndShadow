@@ -83,7 +83,9 @@ public class CameraBehaviourController : MonoBehaviour
     {
         if (_cameraMinimumHeight == null)
         {
-            return 0;
+            SetCameraMinimumHeight();
+            if(_cameraMinimumHeight == null)
+                return 0;
         }
 
         float cameraXPosition = _currentPosition.x;
@@ -126,9 +128,9 @@ public class CameraBehaviourController : MonoBehaviour
         _playerTransform = player;
     }
 
-    public void SetCameraMinimumHeight(CinemachinePath path)
+    public void SetCameraMinimumHeight()
     {
-        _cameraMinimumHeight = path;
+        _cameraMinimumHeight = GameObject.FindGameObjectWithTag("MinHeight")?.GetComponent<CinemachinePath>();
     }
 
     private void Update()

@@ -98,10 +98,12 @@ public class PlayerMovementController : MonoBehaviour
         if (horizontalMovement < 0)
         {
             m_TargetVelocity.x -= m_AccelerationSpeed * Time.deltaTime;
+            PlayerHealthController.Instance.SetHealthDrainPaused(false);
         }
         else if (horizontalMovement > 0)
         {
             m_TargetVelocity.x += m_AccelerationSpeed * Time.deltaTime;
+            PlayerHealthController.Instance.SetHealthDrainPaused(false);
         }
         else
         {

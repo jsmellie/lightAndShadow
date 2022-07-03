@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class HealthToAudioConverter : MonoBehaviour
 {
-    private const int LEVEL_1_THRESHOLD = 21;
-    private const int LEVEL_2_THRESHOLD = 41;
-    private const int LEVEL_3_THRESHOLD = 61;
-    private const int LEVEL_4_THRESHOLD = 81;
+    private const int LEVEL_1_THRESHOLD = 16;
+    private const int LEVEL_2_THRESHOLD = 46;
+    private const int LEVEL_3_THRESHOLD = 71;
+    private const int LEVEL_4_THRESHOLD = 91;
 
     [SerializeField] private LayeredMusicController _layeredMusicController;
     

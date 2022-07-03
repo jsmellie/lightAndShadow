@@ -10,6 +10,7 @@ public class PlayerAnimationController : MonoBehaviour
         public LookDirection Direction;
         public Vector3 AnimationOrigin;
         public AnimationState AnimationState;
+        public bool InterruptOtherAnimations;
     }
 
     private const string IS_GROUNDED_PARAMETER = "IsGrounded";
@@ -89,10 +90,11 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void BeginAnimation()
     {
-        if (_isPlayingAnimation) return;
+        if (_isPlayingAnimation && !_currentAnimationInfo.InterruptOtherAnimations) return;
 
         _isPlayingAnimation = true;
-
+        PlayerHealthController.Instance.FullHeal();
+        PlayerHealthController.Instance.SetHealthDrainPaused(true);
         SetAnimationState(_currentAnimationInfo.AnimationState);
         SetLookDirection(_currentAnimationInfo.Direction);
         _animator.SetTrigger(_currentAnimationInfo.AnimationName);
