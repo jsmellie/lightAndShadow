@@ -37,8 +37,8 @@ public class PlayerAnimationController : MonoBehaviour
     }
 
     private LookDirection _currentLookDirection;
-    private float _currentLookRotation;
-    private float _targetLookRotation;
+    private float _currentLookRotation = 1f;
+    private float _targetLookRotation = 1f;
 
     private float _lookRotationVelocity;
     [SerializeField] private float _lookRotationAcceleration;
@@ -287,7 +287,7 @@ public class PlayerAnimationController : MonoBehaviour
                 break;
         }
 
-        _lookRotationTransform.localRotation = Quaternion.Euler(_lookRotationTransform.eulerAngles.x, _currentLookRotation, _lookRotationTransform.eulerAngles.x);
+        _lookRotationTransform.localScale = new Vector3(_currentLookRotation, _lookRotationTransform.localScale.y, _lookRotationTransform.localScale.z);
     }
 
     public void SetLookDirection(LookDirection lookDirection)
@@ -306,10 +306,10 @@ public class PlayerAnimationController : MonoBehaviour
         switch(_currentLookDirection)
         {
             case LookDirection.Right:
-                _targetLookRotation = 0;
+                _targetLookRotation = 1f;
                 break;
             case LookDirection.Left:
-                _targetLookRotation = -180;
+                _targetLookRotation = -1f;
                 break;
         }
     }

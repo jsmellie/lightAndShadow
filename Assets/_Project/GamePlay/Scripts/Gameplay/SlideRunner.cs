@@ -9,6 +9,7 @@ public class SlideRunner : MonoBehaviour
     [SerializeField] private float _speed = 1f;
     [SerializeField] private float _delay = 0f;
     [SerializeField] private Transform _slideEnd;
+    [SerializeField] private GameObject _endTriggerObject;
     
     private float _pathTravelled = 0f;
 
@@ -18,6 +19,8 @@ public class SlideRunner : MonoBehaviour
     public void StartSlide(Transform player)
     {
         _player = player;
+        _pathTravelled = 0f;
+        _endTriggerObject.SetActive(true);
         _triggered = true;
     }
 
