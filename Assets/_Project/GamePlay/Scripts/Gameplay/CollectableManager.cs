@@ -55,7 +55,7 @@ public class CollectableManager : SingletonBehaviour<CollectableManager>
                 Vector3 spawnerPosition = _spawners[i].transform.position;
                 Vector3 position = spawnerPosition;
 
-                if (_spawners[i].Collectable.CanCollect())
+                if (_spawners[i].Collectable != null && _spawners[i].Collectable.CanCollect())
                 {
                     if (_spawners[i].Collectable.IsOriginVisible())
                     {
