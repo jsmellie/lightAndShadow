@@ -15,7 +15,7 @@ public class LevelCompleteTrigger : BaseTrigger
     {
         PlayerHealthController.Instance.SetHealthDrainPaused(true);
         CheckpointManager.Instance.SaveCheckpoint(CheckpointManager.Instance.CurrentCheckpoint + 1);
-        FullScreenWipe.FadeIn(1, OnCompleteSequenceFinished);
+        FullScreenWipe.FadeToBlack(1, OnCompleteSequenceFinished);
     }
 
     private void OnCompleteSequenceFinished()

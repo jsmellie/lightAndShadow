@@ -53,7 +53,7 @@ public class FullScreenWipe : MonoBehaviour
         CheckIfWipeCompleted();
     }
 
-    public static void FadeIn(float time = 1f, OnScreenWipeCompletedDelegate onCompleteCallback = null)
+    public static void FadeToBlack(float time = 1f, OnScreenWipeCompletedDelegate onCompleteCallback = null)
     {
         s_onCompletedCallback = onCompleteCallback;
         s_wipeUpdateMethod = FadeInUpdate;
