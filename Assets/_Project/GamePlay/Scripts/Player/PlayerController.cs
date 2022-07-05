@@ -16,6 +16,11 @@ public class PlayerController : SingletonBehaviour<PlayerController>
 
     }
 
+    public bool CanPause()
+    {
+        return _animationController.CanPause();
+    }
+
     public void EnterMovementState()
     {
         _animationController.EnterMovementState();
