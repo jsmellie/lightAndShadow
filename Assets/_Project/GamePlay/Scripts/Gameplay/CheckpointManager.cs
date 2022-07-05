@@ -19,11 +19,13 @@ public class CheckpointManager : SingletonBehaviour<CheckpointManager>
 
     protected override void Initialize()
     {
+        #if UNITY_EDITOR
         if (_forcedCheckpoint >= 0)
         {
             _currentCheckpoint = _forcedCheckpoint;
         }
         else
+        #endif
         {
             _currentCheckpoint = PlayerPrefs.GetInt(CHECKPOINT_KEY, 0);
             ResetProgress(); //For playtest remove later
