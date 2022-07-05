@@ -10,7 +10,7 @@ public class PlayerStickController : MonoBehaviour
     {
         for (int i = 0; i < _stickTransforms.Count;i++)
         {
-            StickController.Instance.AddStickTarget(_stickTransforms[i]);
+            StickController.Instance.AddStickTarget(_stickTransforms[i], StickController.StickDirection.Down);
         }
     }
 }

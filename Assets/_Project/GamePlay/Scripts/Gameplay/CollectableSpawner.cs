@@ -8,6 +8,12 @@ public class CollectableSpawner : MonoBehaviour
     [SerializeField] private GameObject _collectable;
 
     private GameObject _spawnedCollectable = null;
+    private Collectable _spawnedCollectableReference;
+
+    public Collectable Collectable
+    {
+        get { return _spawnedCollectableReference; }
+    }
 
     void Start()
     {
@@ -31,6 +37,7 @@ public class CollectableSpawner : MonoBehaviour
             }
             _spawnedCollectable = Instantiate(_collectable, transform);
             _spawnedCollectable.transform.localPosition = Vector3.zero;
+            _spawnedCollectableReference = _spawnedCollectable.GetComponent<Collectable>();
         }
     }
 }
