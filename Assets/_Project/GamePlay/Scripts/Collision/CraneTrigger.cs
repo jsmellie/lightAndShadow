@@ -12,5 +12,6 @@ public class CraneTrigger : AnimationTrigger
         _lift.Elevate();
 
         base.OnTriggerEnter(collider);
+        PlayerController.Instance.DetectTriggers(true);
     }
 }
