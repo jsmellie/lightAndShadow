@@ -232,8 +232,13 @@ public class StickController : SingletonBehaviour<StickController>
             {
                 GameObject newRenderer = GameObject.Instantiate<GameObject>(_closestRenderers[0].gameObject);
                 newRenderer.transform.parent = transform;
-                _closestRenderers.Add(newRenderer.GetComponent<LineRenderer>());
-                _availableClosest.Add(newRenderer.GetComponent<LineRenderer>());
+                
+                LineRenderer renderer = newRenderer.GetComponent<LineRenderer>();
+                renderer.SetPosition(0, new Vector3(0, -1000, 0));
+                renderer.SetPosition(1, new Vector3(0, -1000, 0));
+
+                _closestRenderers.Add(renderer);
+                _availableClosest.Add(renderer);
             }
         }
 
