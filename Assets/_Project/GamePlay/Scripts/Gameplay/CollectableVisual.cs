@@ -12,7 +12,7 @@ public class CollectableVisual : MonoBehaviour
     {
         int random = Random.Range(0,_spriteOptions.Count);
         PickSprite(random);
-        StickController.Instance.AddStickTarget(_spriteStickTarget);
+        StickController.Instance.AddStickTarget(_spriteStickTarget, StickController.StickDirection.Closest);
     }
 
     private void PickSprite(int random)
