@@ -120,7 +120,7 @@ public class GameController : SingletonBehaviour<GameController>
         await Task.Delay(3333);
 
         AudioController.Instance.SetLayeredVolume(0, 1f);
-        FullScreenWipe.FadeIn(1f, async () => {await Respawn();});
+        FullScreenWipe.FadeToBlack(1f, async () => {await Respawn();});
 
         await Task.CompletedTask;
     }
@@ -168,7 +168,7 @@ public class GameController : SingletonBehaviour<GameController>
             CutsceneController.Instance.SetVideoLooping(false);
             CutsceneController.Instance.OnClipFinishedSingleAction = () =>
             {
-                FullScreenWipe.FadeIn(1f, () => 
+                FullScreenWipe.FadeToBlack(1f, () => 
                 {
                     CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
                     LoadNextScene().ContinueWith(task => Debug.LogException(task.Exception), TaskContinuationOptions.OnlyOnFaulted);
@@ -263,7 +263,7 @@ public class GameController : SingletonBehaviour<GameController>
             case 0:
                 CutsceneController.Instance.QueueCutscene1(() =>
                 {
-                    FullScreenWipe.FadeIn(1, () =>
+                    FullScreenWipe.FadeToBlack(1, () =>
                     {
                         CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
                         _currentGameState = GameState.Loading;
@@ -275,7 +275,7 @@ public class GameController : SingletonBehaviour<GameController>
             case 6:
                 CutsceneController.Instance.QueueCutscene2(() =>
                 {
-                    FullScreenWipe.FadeIn(1, () =>
+                    FullScreenWipe.FadeToBlack(1, () =>
                     {
                         CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
                         _currentGameState = GameState.Loading;
@@ -287,7 +287,7 @@ public class GameController : SingletonBehaviour<GameController>
             case 12:
                 CutsceneController.Instance.QueueCutscene3(() =>
                 {
-                    FullScreenWipe.FadeIn(1, () =>
+                    FullScreenWipe.FadeToBlack(1, () =>
                     {
                         CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
                         _currentGameState = GameState.Loading;
@@ -299,7 +299,7 @@ public class GameController : SingletonBehaviour<GameController>
             case 18:
                 CutsceneController.Instance.QueueCutscene4(() =>
                 {
-                    FullScreenWipe.FadeIn(1, () =>
+                    FullScreenWipe.FadeToBlack(1, () =>
                     {
                         CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
                         _currentGameState = GameState.Loading;
@@ -311,7 +311,7 @@ public class GameController : SingletonBehaviour<GameController>
             case 24:
                 CutsceneController.Instance.QueueCutscene5(() =>
                 {
-                    FullScreenWipe.FadeIn(1, () =>
+                    FullScreenWipe.FadeToBlack(1, () =>
                     {
                         CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
                         _currentGameState = GameState.Loading;
