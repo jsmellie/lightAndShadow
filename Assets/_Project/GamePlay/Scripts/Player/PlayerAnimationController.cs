@@ -54,6 +54,11 @@ public class PlayerAnimationController : MonoBehaviour
 
     private bool _acceptInput = true;
 
+    public bool CanPause()
+    {
+        return !_isPlayingAnimation && !_waitingToPlayAnimtion;
+    }
+
     private AnimationState _currentAnimationState = AnimationState.Movement;
 
     public void SetInteractable(bool isInteractable)

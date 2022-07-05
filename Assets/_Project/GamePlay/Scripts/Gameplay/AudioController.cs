@@ -279,6 +279,16 @@ public class AudioController : SingletonBehaviour<AudioController>
         _ = MusicTempoLoop(_loadedMusicBPM, _tempoCancellationToken.Token);
     }
 
+    public void ResyncLayeredAudio()
+    {
+        var timeSamples = _layeredAudioSources[0].timeSamples;
+        
+        for (int i = 1; i < _layeredAudioSources.Count;i++)
+        {
+            _layeredAudioSources[i].timeSamples = timeSamples;
+        }
+    }
+
     private void OnDestroy()
     {
         if (_tempoCancellationToken != null)
