@@ -28,11 +28,16 @@ public class BugsController : MonoBehaviour
     private Vector3 _targetPosition;
     private Vector3 _currentPosition;
 
+    private Particle[] _smallParticles;
+    private Particle[] _mediumParticles;
+    private Particle[] _largeParticles;
+
     private Material _scrollingBugsMaterial;
 
     [Range(0,1)]
     [SerializeField] private float _radius = 0;
     private float _targetRadius = 0;
+    private Vector3 _velocity; 
 
     private void Awake()
     {
@@ -40,11 +45,16 @@ public class BugsController : MonoBehaviour
         {
             _bugSpritePositions.Add(_bugSprites[i].transform.localPosition);
             _bugSpriteOffsets.Add(UnityEngine.Random.insideUnitCircle);
-        }        
+        }
+        _smallParticles = new Particle[_individualBugs.main.maxParticles];
+        _mediumParticles = new Particle[_mediumBugs.main.maxParticles];
+        _largeParticles = new Particle[_largeBugs.main.maxParticles];
+
     }
 
     private void FixedUpdate()
     {
+        _currentPosition = Vector3.SmoothDamp(_currentPosition, _targetPosition, ref _velocity, 0.1f);
         transform.position = _currentPosition;
 
         //_scrollingBugsMaterial.SetVector("_Offset", new Vector4(transform.position.x / transform.localScale.x, transform.position.y / transform.localScale.y, 0, 0));
@@ -66,68 +76,65 @@ public class BugsController : MonoBehaviour
 
         _bugMask.alphaCutoff = 1 - _radius;
 
-        Particle[] particles = new Particle[_individualBugs.main.maxParticles];
 
-        int numParticles = _individualBugs.GetParticles(particles);
-
+        int numParticles = _individualBugs.GetParticles(_smallParticles);
+        
         for (int i = 0; i < numParticles; i++)
         {
-            float perlinX = (Mathf.PerlinNoise(particles[i].remainingLifetime * BUG_SPEED.x, 0f) * -BUG_OFFSET_AMOUNT.x * (1 - particles[i].startSize)) + 2f - _radius;
-            float perlinY = Mathf.PerlinNoise(0f, particles[i].remainingLifetime * BUG_SPEED.y) * BUG_OFFSET_AMOUNT.y;
+            float perlinX = (Mathf.PerlinNoise(_smallParticles[i].remainingLifetime * BUG_SPEED.x, 0f) * -BUG_OFFSET_AMOUNT.x * (1 - _smallParticles[i].startSize)) + 2f - _radius;
+            float perlinY = Mathf.PerlinNoise(0f, _smallParticles[i].remainingLifetime * BUG_SPEED.y) * BUG_OFFSET_AMOUNT.y;
 
             Vector3 position = transform.position;
             position.z = -1f;
-            float perlinDirection = Mathf.PerlinNoise(particles[i].randomSeed * 0.000001f, 0.01f) * 9720f;
+            float perlinDirection = Mathf.PerlinNoise(_smallParticles[i].randomSeed * 0.000001f, 0.01f) * 9720f;
 
             position += Quaternion.Euler(0, 0, perlinDirection) * new Vector3((1 -_radius) * MAX_BUGS_RADIUS, 0, 0);
             position += Quaternion.Euler(0, 0, perlinDirection) * new Vector3(perlinX, perlinY);
-            particles[i].position = position;
+            _smallParticles[i].position = position;
         }
 
-        _individualBugs.SetParticles(particles, numParticles);
+        _individualBugs.SetParticles(_smallParticles, numParticles);
 
-        particles = new Particle[_mediumBugs.main.maxParticles];
 
-        numParticles = _mediumBugs.GetParticles(particles);
+        numParticles = _mediumBugs.GetParticles(_mediumParticles);
 
         for (int i = 0; i < numParticles;i++)
         {
-            float perlinX = (Mathf.PerlinNoise(particles[i].remainingLifetime * BUG_SPEED.x, 0f) * -BUG_OFFSET_AMOUNT.x * 0.5f) + 3.5f;
-            float perlinY = Mathf.PerlinNoise(0f, particles[i].remainingLifetime * BUG_SPEED.y) * BUG_OFFSET_AMOUNT.y;
+            float perlinX = (Mathf.PerlinNoise(_mediumParticles[i].remainingLifetime * BUG_SPEED.x, 0f) * -BUG_OFFSET_AMOUNT.x * 0.5f) + 3.5f;
+            float perlinY = Mathf.PerlinNoise(0f, _mediumParticles[i].remainingLifetime * BUG_SPEED.y) * BUG_OFFSET_AMOUNT.y;
 
             Vector3 position = transform.position;
-            float perlinDirection = Mathf.PerlinNoise(particles[i].randomSeed * 0.000001f, 0.01f) * 9620f;
+            float perlinDirection = Mathf.PerlinNoise(_mediumParticles[i].randomSeed * 0.000001f, 0.01f) * 9620f;
 
             position += Quaternion.Euler(0, 0, perlinDirection) * new Vector3((1 - _radius) * MAX_BUGS_RADIUS, 0, 0);
             position += Quaternion.Euler(0, 0, perlinDirection) * new Vector3(perlinX, perlinY);
-            particles[i].position = position;
+            _mediumParticles[i].position = position;
         }
 
-        _mediumBugs.SetParticles(particles, numParticles);
+        _mediumBugs.SetParticles(_mediumParticles, numParticles);
 
-        particles = new Particle[_largeBugs.main.maxParticles];
 
-        numParticles = _largeBugs.GetParticles(particles);
+        numParticles = _largeBugs.GetParticles(_largeParticles);
 
         for (int i = 0; i < numParticles; i++)
         {
-            float perlinX = (Mathf.PerlinNoise(particles[i].remainingLifetime * BUG_SPEED.x, 0f) * -BUG_OFFSET_AMOUNT.x * 0.5f) + 4.5f;
-            float perlinY = Mathf.PerlinNoise(0f, particles[i].remainingLifetime * BUG_SPEED.y) * BUG_OFFSET_AMOUNT.y;
+            float perlinX = (Mathf.PerlinNoise(_largeParticles[i].remainingLifetime * BUG_SPEED.x, 0f) * -BUG_OFFSET_AMOUNT.x * 0.5f) + 4.5f;
+            float perlinY = Mathf.PerlinNoise(0f, _largeParticles[i].remainingLifetime * BUG_SPEED.y) * BUG_OFFSET_AMOUNT.y;
 
             Vector3 position = transform.position;
-            float perlinDirection = Mathf.PerlinNoise(particles[i].randomSeed * 0.000001f, 0.01f) * 9520f;
+            float perlinDirection = Mathf.PerlinNoise(_largeParticles[i].randomSeed * 0.000001f, 0.01f) * 9520f;
 
             position += Quaternion.Euler(0, 0, perlinDirection) * new Vector3((1 - _radius) * MAX_BUGS_RADIUS, 0, 0);
             position += Quaternion.Euler(0, 0, perlinDirection) * new Vector3(perlinX, perlinY);
-            particles[i].position = position;
+            _largeParticles[i].position = position;
         }
 
-        _largeBugs.SetParticles(particles, numParticles);
+        _largeBugs.SetParticles(_largeParticles, numParticles);
 
         if (_playerTransform != null)
         {
             _targetPosition = _playerTransform.position;
-            _currentPosition = Vector3.Lerp(_currentPosition, _targetPosition, Time.deltaTime * BUGS_MOVE_SPEED);
+            //_currentPosition = Vector3.Lerp(_currentPosition, _targetPosition, Time.deltaTime * BUGS_MOVE_SPEED);
         }
 
         _radius = Mathf.Lerp(_radius, _targetRadius, Time.deltaTime * BUGS_RADIUS_LERP_SPEED);
