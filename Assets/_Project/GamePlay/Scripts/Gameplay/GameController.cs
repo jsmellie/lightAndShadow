@@ -136,6 +136,8 @@ public class GameController : SingletonBehaviour<GameController>
         AudioController.Instance.PlayStageMusic();
         AudioController.Instance.SetLayeredVolume(1, 1f);
 
+        AudioController.Instance.ResyncLayeredAudio();
+
         FullScreenWipe.FadeOut(1f, async () =>
         {
             await FinishedRespawning();
