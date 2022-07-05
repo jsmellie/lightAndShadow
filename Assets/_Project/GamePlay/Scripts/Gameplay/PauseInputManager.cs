@@ -11,7 +11,7 @@ public class PauseInputManager : MonoBehaviour
     {
         if(InputController.Instance.GetButtonDown(InputController.eButtons.Cancel))
         {
-            if(!PauseController.IsPaused && GameController.Instance.CanPause())
+            if(!PauseController.IsPaused && GameController.Instance.CanPause() && PlayerController.Instance.CanPause())
             {
                 GameObject.Instantiate(_pauseMenu);
                 PauseController.SetPause(true);
