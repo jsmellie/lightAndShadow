@@ -9,6 +9,7 @@ public class CornTrigger : BaseTrigger
     public override void OnTriggerEnter(Collider collider)
     {
         IsColliding = true;
+        PlayerHealthController.Instance.FullHeal();
         base.OnTriggerEnter(collider);
 
     }
