@@ -350,7 +350,7 @@ public class GameController : SingletonBehaviour<GameController>
                 }
 
                 AudioController.Instance.ResyncLayeredAudio();
-
+                
                 _currentGameState = GameState.Playing;
                 PlayerController.Instance.SetInteractable(true);
                 PlayerController.Instance.SetAnimationState(PlayerAnimationController.AnimationState.Movement);

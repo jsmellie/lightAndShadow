@@ -77,6 +77,7 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
 
     public void QueueCutscene1(Action onFinished)
     {
+        AudioController.Instance.SetupMusic();
         LoadCutscene("Cutscene1End", () =>
             {
                 OnClipFinishedSingleAction = () =>
@@ -105,6 +106,8 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
 
     public void QueueCutscene2(Action onFinished)
     {
+        AudioController.Instance.SetupMusic();
+
         LoadCutscene("Cutscene2End", () =>
             {
                 OnClipFinishedSingleAction = () =>
@@ -133,6 +136,8 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
 
     public void QueueCutscene3(Action onFinished)
     {
+        AudioController.Instance.SetupMusic();
+
         LoadCutscene("Cutscene3End", () =>
             {
                 OnClipFinishedSingleAction = () =>
@@ -161,6 +166,8 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
 
     public void QueueCutscene4(Action onFinished)
     {
+        AudioController.Instance.SetupMusic();
+
         LoadCutscene("Cutscene4End", () =>
             {
                 OnClipFinishedSingleAction = () =>
@@ -189,6 +196,8 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
 
     public void QueueCutscene5(Action onFinished)
     {
+        AudioController.Instance.SetupMusic();
+
         LoadCutscene("Cutscene5End", () =>
             {
                 OnClipFinishedSingleAction = () =>

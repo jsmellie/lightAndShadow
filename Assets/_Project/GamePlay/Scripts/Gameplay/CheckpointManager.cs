@@ -52,6 +52,11 @@ public class CheckpointManager : SingletonBehaviour<CheckpointManager>
             _registeredCheckpoints.Add(checkpointIndex, trigger);
         }
     }
+    
+    public void UnregisterCheckpoint(int checkpointIndex)
+    {
+        _registeredCheckpoints.Remove(checkpointIndex);
+    }
 
     public CheckpointTrigger GetCurrentCheckpoint()
     {

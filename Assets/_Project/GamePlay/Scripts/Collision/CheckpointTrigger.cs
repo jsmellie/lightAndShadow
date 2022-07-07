@@ -17,6 +17,14 @@ public class CheckpointTrigger : BaseTrigger
         CheckpointManager.Instance.RegisterCheckpoint(this, CheckpointIndex);
     }
 
+    void OnDestroy()
+    {
+        if(!CheckpointManager.IsInstanceNull)
+        {
+            CheckpointManager.Instance.UnregisterCheckpoint(CheckpointIndex);
+        }
+    }
+
     public override void OnTriggerEnter(Collider collider)
     {
         CheckpointManager.Instance.SaveCheckpoint(CheckpointIndex);
