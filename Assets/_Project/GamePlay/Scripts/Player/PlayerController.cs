@@ -52,5 +52,11 @@ public class PlayerController : SingletonBehaviour<PlayerController>
         _animationController.SetAnimationState(PlayerAnimationController.AnimationState.Movement);
         _triggerController.DetectTriggers(false);
         _stickController.AddSticks();
+        EnableSlow(false);
+    }
+
+    public void EnableSlow(bool isSlow)
+    {
+        _movementController.MaxSpeed = isSlow ? 0.1f : 0.2f;
     }
 }

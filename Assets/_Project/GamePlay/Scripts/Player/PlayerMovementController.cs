@@ -65,6 +65,10 @@ public class PlayerMovementController : MonoBehaviour
 		{
             return m_MaxSpeed;
         }
+        set
+        {
+            m_MaxSpeed = value;
+        }
 	}
 
 	public bool IsGrounded
