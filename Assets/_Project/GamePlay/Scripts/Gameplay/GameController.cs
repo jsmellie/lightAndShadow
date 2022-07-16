@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
@@ -24,6 +25,7 @@ public class GameController : SingletonBehaviour<GameController>
     private GameState _currentGameState = GameState.Menu;
 
     private MainMenuController _mainMenuController;
+    private BugsController _bugsController;
 
     public GameState CurrentState
     {
@@ -73,6 +75,11 @@ public class GameController : SingletonBehaviour<GameController>
         _mainMenuController = mainMenuController;
     }
 
+    public void SetBugsController(BugsController bugsController)
+    {
+        _bugsController = bugsController;
+    }
+
     public async Task SetState(GameState gameState)
     {
         switch(gameState)
@@ -117,10 +124,20 @@ public class GameController : SingletonBehaviour<GameController>
 
         PlayerController.Instance.GetComponent<PlayerAnimationController>().PlayDeathAnimation();
 
+        _bugsController.OverrideHealth = true;
+
+        DOVirtual.Float(0.95f, 1.1f, 1f, (x) =>
+        {
+            _bugsController.SetRadius(x);
+        }).SetEase(Ease.InQuad).SetDelay(2f);
+
         await Task.Delay(3333);
 
         AudioController.Instance.SetLayeredVolume(0, 1f);
-        FullScreenWipe.FadeToBlack(1f, async () => {await Respawn();});
+
+        await Task.Delay(1000);
+
+        await Respawn();
 
         await Task.CompletedTask;
     }
@@ -138,17 +155,23 @@ public class GameController : SingletonBehaviour<GameController>
 
         AudioController.Instance.ResyncLayeredAudio();
 
-        FullScreenWipe.FadeOut(1f, async () =>
-        {
-            await FinishedRespawning();
-        });
+        await Task.Delay(500);
+
+        await FinishedRespawning();
     }
 
     private async Task FinishedRespawning()
     {
         PlayerController.Instance.GetComponent<PlayerAnimationController>().PlayRespawnAnimation();
+
+        DOVirtual.Float(1.0f, 0f, 2f, (x) =>
+        {
+            _bugsController.SetRadius(x);
+        }).SetEase(Ease.InOutQuad);
         
         await Task.Delay(5100);
+
+        _bugsController.OverrideHealth = false;
 
         await SetState(GameState.Playing);
     }

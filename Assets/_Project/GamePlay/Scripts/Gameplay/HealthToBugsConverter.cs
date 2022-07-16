@@ -29,6 +29,11 @@ public class HealthToBugsConverter : MonoBehaviour
 
     private void UpdateBugsRadius(int health)
     {
+        if (_bugsController.OverrideHealth)
+        {
+            return;
+        }
+        
         foreach (int threshold in _healthRadiusDictionary.Keys)
         {
             if (health < threshold)
