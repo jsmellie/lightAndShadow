@@ -155,10 +155,9 @@ public class GameController : SingletonBehaviour<GameController>
 
         AudioController.Instance.ResyncLayeredAudio();
 
-        FullScreenWipe.FadeOut(1f, async () =>
-        {
-            await FinishedRespawning();
-        });
+        await Task.Delay(500);
+
+        await FinishedRespawning();
     }
 
     private async Task FinishedRespawning()
