@@ -37,6 +37,7 @@ public class PlayerSpawnHandler : SingletonBehaviour<PlayerSpawnHandler>
 
      
         cameraBehaviourController.SnapToTarget();
+        cameraBehaviourController.ForceCurrentPosition();
 
         if(_currentBugs == null)
         {

@@ -76,7 +76,14 @@ public class CameraBehaviourController : MonoBehaviour
         ForceTargetPosition();
 
         _currentPosition = _targetPosition;
+        _currentPosition.z = -100;
         _currentZoom = _targetZoom;
+    }
+
+    public void ForceCurrentPosition()
+    {
+        transform.position = _currentPosition;
+        _camera.orthographicSize = _currentZoom;
     }
 
     private float CalculateCameraMinHeight()

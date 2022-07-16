@@ -37,7 +37,15 @@ public class BugsController : MonoBehaviour
     [Range(0,1)]
     [SerializeField] private float _radius = 0;
     private float _targetRadius = 0;
-    private Vector3 _velocity; 
+    private Vector3 _velocity;
+
+    private bool _overrideHealth = false;
+
+    public bool OverrideHealth
+    {
+        get { return _overrideHealth; }
+        set { _overrideHealth = value; }
+    }
 
     private void Awake()
     {
@@ -50,14 +58,13 @@ public class BugsController : MonoBehaviour
         _mediumParticles = new Particle[_mediumBugs.main.maxParticles];
         _largeParticles = new Particle[_largeBugs.main.maxParticles];
 
+        GameController.Instance.SetBugsController(this);
     }
 
     private void FixedUpdate()
     {
         _currentPosition = Vector3.SmoothDamp(_currentPosition, _targetPosition, ref _velocity, 0.1f);
         transform.position = _currentPosition;
-
-        //_scrollingBugsMaterial.SetVector("_Offset", new Vector4(transform.position.x / transform.localScale.x, transform.position.y / transform.localScale.y, 0, 0));
     }
 
     private void Update()
@@ -68,14 +75,9 @@ public class BugsController : MonoBehaviour
         {
             Vector3 offset = new Vector3(Mathf.PerlinNoise(_bugSpriteOffsets[i].x + Time.time, _bugSpriteOffsets[i].x + Time.time), Mathf.PerlinNoise(_bugSpriteOffsets[i].y + Time.time, _bugSpriteOffsets[i].y + Time.time), 0) * 0.4f;
             _bugSprites[i].transform.localPosition = _bugSpritePositions[i] + offset;
-
-            //float alpha = fullRadius;
-            //fullRadius /= 1.5f;
-            //_bugSprites[i].color = new Color(0, 0, 0, alpha);
         }
 
         _bugMask.alphaCutoff = 1 - _radius;
-
 
         int numParticles = _individualBugs.GetParticles(_smallParticles);
         
@@ -95,7 +97,6 @@ public class BugsController : MonoBehaviour
 
         _individualBugs.SetParticles(_smallParticles, numParticles);
 
-
         numParticles = _mediumBugs.GetParticles(_mediumParticles);
 
         for (int i = 0; i < numParticles;i++)
@@ -112,7 +113,6 @@ public class BugsController : MonoBehaviour
         }
 
         _mediumBugs.SetParticles(_mediumParticles, numParticles);
-
 
         numParticles = _largeBugs.GetParticles(_largeParticles);
 
@@ -134,7 +134,6 @@ public class BugsController : MonoBehaviour
         if (_playerTransform != null)
         {
             _targetPosition = _playerTransform.position;
-            //_currentPosition = Vector3.Lerp(_currentPosition, _targetPosition, Time.deltaTime * BUGS_MOVE_SPEED);
         }
 
         _radius = Mathf.Lerp(_radius, _targetRadius, Time.deltaTime * BUGS_RADIUS_LERP_SPEED);
