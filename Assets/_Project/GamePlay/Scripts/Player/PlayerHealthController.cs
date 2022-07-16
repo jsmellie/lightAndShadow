@@ -7,6 +7,7 @@ public class PlayerHealthController : SingletonBehaviour<PlayerHealthController>
 {
     
     [SerializeField] private int MaxHealth = 100;
+    [SerializeField] private bool LoseHealth = false;
     private int BEATS_PER_DAMAGE = 1;
     private int MAX_SAFE_BEATS = 2;
     private int _health = 100;
@@ -75,6 +76,10 @@ public class PlayerHealthController : SingletonBehaviour<PlayerHealthController>
     {
         if(!_isPaused)
         {
+#if UNITY_EDITOR
+            if(!LoseHealth)
+                return;
+#endif
             _health -= losthealth;
             OnHealthChanged?.Invoke(_health);
             CheckDeath();
