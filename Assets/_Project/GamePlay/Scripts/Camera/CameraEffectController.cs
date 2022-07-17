@@ -12,6 +12,10 @@ public class CameraEffectController : SingletonBehaviour<CameraEffectController>
     private Color OFF = new Color(1,1,1,0);
     private Color ON = new Color(1,1,1,1);
 
+    private float _currentRainScale = 0f;
+
+    private float _targetRainScale = 0f;
+
     protected override void Initialize()
     {
        ToggleRain(false);
@@ -43,8 +47,21 @@ public class CameraEffectController : SingletonBehaviour<CameraEffectController>
         
     }
 
+    public void SetTargetRainScale(float scale)
+    {
+        _targetRainScale = scale;
+    }
+
     void Update()
     {
-        ScaleRain(Mathf.Sin(Time.time)*2);
+        if(_currentRainScale !=_targetRainScale)
+        {
+            _currentRainScale = Mathf.Lerp(_currentRainScale,_targetRainScale,0.5f);
+            if(Mathf.Abs(_targetRainScale-_currentRainScale) < 0.05f)
+            {
+                _currentRainScale = _targetRainScale;
+            }
+            ScaleRain(_currentRainScale);
+        }
     }
 }
