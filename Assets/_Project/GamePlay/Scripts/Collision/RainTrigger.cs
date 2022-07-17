@@ -6,8 +6,7 @@ public class RainTrigger : BaseTrigger
 
     public override void OnTriggerEnter(Collider collider)
     {
-        var camera = CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID);
-        camera.transform.GetChild(0).gameObject.SetActive(_enable);
+        CameraEffectController.Instance.ToggleRain(_enable);
 
         base.OnTriggerEnter(collider);
 

@@ -788,6 +788,7 @@ GameObject:
   - component: {fileID: 3146054852474452538}
   - component: {fileID: 1669141562292078949}
   - component: {fileID: -4548636138926248039}
+  - component: {fileID: 8307530944935114002}
   m_Layer: 0
   m_Name: GameplayCamera
   m_TagString: GameplayCamera
@@ -906,3 +907,21 @@ MonoBehaviour:
   _triggerLayers:
     serializedVersion: 2
     m_Bits: 67108864
+--- !u!114 &8307530944935114002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8939268856437719329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2d3b22def7fec74c9d744004b608046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rainRoot: {fileID: 7353442525408489310}
+  _rainLayers:
+  - {fileID: 9063353926188303347}
+  - {fileID: 7545249193427989328}
+  - {fileID: 7773098552347210401}
+  _darkness: {fileID: 0}
