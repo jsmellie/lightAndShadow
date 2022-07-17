@@ -52,6 +52,11 @@ public class CameraEffectController : SingletonBehaviour<CameraEffectController>
         _targetRainScale = scale;
     }
 
+    public void ToggleDarkness(bool toggle)
+    {
+        _darkness.gameObject.SetActive(toggle);
+    }
+
     void Update()
     {
         if(_currentRainScale !=_targetRainScale)
