@@ -103,9 +103,10 @@ public class CheckpointManager : SingletonBehaviour<CheckpointManager>
         {25,"MOUNTAIN_Stage1"},
         {26,"MOUNTAIN_Stage2"},
         {27,"MOUNTAIN_Stage3"},
-        {28,"MOUNTAIN_Stage4"},
-        {29,"MOUNTAIN_Stage5"},
-        {30,"IntroScene"}
+        {28,"MOUNTAIN_Stage3"},
+        {29,"MOUNTAIN_Stage4"},
+        {30,"MOUNTAIN_Stage5"},
+        {31,"IntroScene"}
     };
     private Dictionary<int, string> CHECKPOINT_SCENE_MAP = new Dictionary<int, string>
     {
@@ -137,8 +138,10 @@ public class CheckpointManager : SingletonBehaviour<CheckpointManager>
        {25,"MOUNTAIN_Stage1,MOUNTAIN_Stage2"},
        {26,"MOUNTAIN_Stage1,MOUNTAIN_Stage2,MOUNTAIN_Stage3"},
        {27,"MOUNTAIN_Stage2,MOUNTAIN_Stage3,MOUNTAIN_Stage4"},
-       {28,"MOUNTAIN_Stage3,MOUNTAIN_Stage4,MOUNTAIN_Stage5"},
-       {29,"MOUNTAIN_Stage4,MOUNTAIN_Stage5"}
+       {28,"MOUNTAIN_Stage3,MOUNTAIN_Stage4"},
+       {29,"MOUNTAIN_Stage3,MOUNTAIN_Stage4,MOUNTAIN_Stage5"},
+       {30,"MOUNTAIN_Stage4,MOUNTAIN_Stage5"},
+       {31,"IntroScene"}
     };
 
     public string GetScenesForCheckpoint(int checkPoint)
