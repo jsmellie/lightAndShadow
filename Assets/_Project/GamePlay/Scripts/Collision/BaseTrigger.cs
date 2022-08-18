@@ -8,8 +8,15 @@ public class BaseTrigger: MonoBehaviour
     public event OnTrigeredDelegate TriggerEnterEvent;
     public event OnTrigeredDelegate TriggerExitEvent;
 
+    [SerializeField] protected string _sfxToPlay = "Ding";
+
     public virtual void OnTriggerEnter(Collider collider)
     {
+        if(!string.IsNullOrEmpty(_sfxToPlay))
+        {
+            AudioController.Instance.PlaySoundEffect(_sfxToPlay,true);
+        }
+
         if (TriggerEnterEvent != null)
         {
             TriggerEnterEvent.Invoke(this, collider);
