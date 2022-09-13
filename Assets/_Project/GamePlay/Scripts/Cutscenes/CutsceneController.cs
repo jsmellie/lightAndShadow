@@ -23,7 +23,8 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
         {6, "Cutscene2"},
         {12, "Cutscene3"},
         {18, "Cutscene4"},
-        {24, "Cutscene5"}
+        {24, "Cutscene5"},
+        {31, "Cutscene1"}
     };
 
     private VideoPlayer _videoPlayer;
