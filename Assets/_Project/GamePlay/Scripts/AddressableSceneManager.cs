@@ -20,6 +20,11 @@ public class AddressableSceneManager : SingletonBehaviour<AddressableSceneManage
     {
         if(!_loadedScenes.ContainsKey(scene))
         {
+            if(mode == LoadSceneMode.Single)
+            {
+                UnloadAll();
+            }
+
             var handle = Addressables.LoadSceneAsync(scene, mode);
             if(!alwaysLoaded)
                 _loadedScenes.Add(scene,handle);
@@ -85,6 +90,20 @@ public class AddressableSceneManager : SingletonBehaviour<AddressableSceneManage
         foreach (string scene in sceneList)
         {
             UnloadScene(scene);
+        }
+    }
+
+    private void UnloadAll()
+    {
+        List<string> toRemove = new List<string>();
+        foreach (string loadedScene in _loadedScenes.Keys)
+        {
+            toRemove.Add(loadedScene);
+        }
+        
+        foreach (string unloadScene in toRemove)
+        {
+            UnloadScene(unloadScene);
         }
     }
 }
