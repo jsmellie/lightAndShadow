@@ -43,6 +43,17 @@ public class PlayerSpawnHandler : SingletonBehaviour<PlayerSpawnHandler>
         cameraBehaviourController.SnapToTarget();
         cameraBehaviourController.ForceCurrentPosition();
 
+        if(CheckpointManager.Instance.CurrentCheckpoint == 25 ||
+        CheckpointManager.Instance.CurrentCheckpoint == 26)
+        {
+            CameraEffectController.Instance.ToggleRain(true);
+            CameraEffectController.Instance.ScaleRain(CheckpointManager.Instance.CurrentCheckpoint == 25 ? 1 : 3);
+        }
+        else
+        {
+            CameraEffectController.Instance.ToggleRain(false);
+        }
+
         if(_currentBugs == null)
         {
             _currentBugs = Instantiate(_bugsPrefab);
