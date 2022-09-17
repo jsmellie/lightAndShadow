@@ -191,7 +191,7 @@ public class GameController : SingletonBehaviour<GameController>
             FullScreenWipe.FadeOut(0.5f);
             CutsceneController.Instance.PlayCutscene();
             CutsceneController.Instance.SetVideoLooping(false);
-            if(CheckpointManager.Instance.CurrentCheckpoint <= 30)
+            if(CheckpointManager.Instance.CurrentCheckpoint <= 31)
             {
 
             CutsceneController.Instance.OnClipFinishedSingleAction = () =>
