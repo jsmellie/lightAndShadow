@@ -13,6 +13,7 @@ public class LevelCompleteTrigger : BaseTrigger
 
     private void PlayLevelCompleteSequence()
     {
+        PlayerController.Instance.SetInteractable(false);
         PlayerHealthController.Instance.SetHealthDrainPaused(true);
         CheckpointManager.Instance.SaveCheckpoint(CheckpointManager.Instance.CurrentCheckpoint + 1);
         FullScreenWipe.FadeToBlack(1, OnCompleteSequenceFinished);
