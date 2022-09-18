@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e42015244575147698ee55fd48f77a08, type: 3}
+  m_Name: MountainLayeredTrackData
+  m_EditorClassIdentifier: 
+  MusicTracks:
+  - TrackPath: MountainAmbience
+    EnabledStages: 0101000000
+  - TrackPath: MountainLayer1
+    EnabledStages: 0000010101
+  - TrackPath: MountainLayer2
+    EnabledStages: 0001010101
+  - TrackPath: MountainLayer3
+    EnabledStages: 0000000001
+  - TrackPath: MountainLayer4
+    EnabledStages: 0000000101
+  - TrackPath: MountainLayer5
+    EnabledStages: 0101010101
+  BPM: 101

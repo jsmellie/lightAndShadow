@@ -14,7 +14,8 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
         {6, "Cutscene2Loop"},
         {12, "Cutscene3Loop"},
         {18, "Cutscene4Loop"},
-        {24, "Cutscene5Loop"}
+        {24, "Cutscene5Loop"},
+        {32, "Cutscene6Loop"}
     };
 
     private readonly Dictionary<int, string> CHECKPOINT_CUTSCENE = new Dictionary<int, string>()
@@ -23,7 +24,8 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
         {6, "Cutscene2"},
         {12, "Cutscene3"},
         {18, "Cutscene4"},
-        {24, "Cutscene5"}
+        {24, "Cutscene5"},
+        {32, "Cutscene6"}
     };
 
     private VideoPlayer _videoPlayer;

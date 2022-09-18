@@ -191,6 +191,9 @@ public class GameController : SingletonBehaviour<GameController>
             FullScreenWipe.FadeOut(0.5f);
             CutsceneController.Instance.PlayCutscene();
             CutsceneController.Instance.SetVideoLooping(false);
+            if(CheckpointManager.Instance.CurrentCheckpoint <= 31)
+            {
+
             CutsceneController.Instance.OnClipFinishedSingleAction = () =>
             {
                 FullScreenWipe.FadeToBlack(1f, () => 
@@ -199,6 +202,17 @@ public class GameController : SingletonBehaviour<GameController>
                     LoadNextScene().ContinueWith(task => Debug.LogException(task.Exception), TaskContinuationOptions.OnlyOnFaulted);
                 });
             };
+            }
+            else
+            {
+                CutsceneController.Instance.OnClipFinishedSingleAction = () =>
+                FullScreenWipe.FadeToBlack(1f, () => 
+                {
+                    CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
+                    CheckpointManager.Instance.ResetProgress();
+                    LoadMenu().ContinueWith(task => Debug.LogException(task.Exception), TaskContinuationOptions.OnlyOnFaulted);
+                });
+            }
         });
     }
 

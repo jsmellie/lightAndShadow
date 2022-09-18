@@ -313,11 +313,11 @@ public class AudioController : SingletonBehaviour<AudioController>
         }
         else if(checkpoint < 24)
         {
-            return "CountryLayeredTrackData"; //todo change when music exists
+            return "FoothillsLayeredTrackData";
         }
         else
         {
-            return "CountryLayeredTrackData"; //todo change when music exists
+            return "MountainLayeredTrackData";
         }
     }
 

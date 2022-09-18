@@ -268,7 +268,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: 810804793688018453, guid: 19985039edadf21468f86408ca4d82f9, type: 3}
-  m_Color: {r: 0.46371493, g: 1, b: 0.23113209, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -360,7 +360,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1, y: 1, z: 30}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &6837751860456396207
 PrefabInstance:
@@ -376,6 +376,18 @@ PrefabInstance:
     - target: {fileID: 3245579688521988910, guid: 61a1eeda69b8d432ea0bafba0b8baa2e, type: 3}
       propertyPath: m_Layer
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3630470912204816742, guid: 61a1eeda69b8d432ea0bafba0b8baa2e, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3630470912204816742, guid: 61a1eeda69b8d432ea0bafba0b8baa2e, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3630470912204816742, guid: 61a1eeda69b8d432ea0bafba0b8baa2e, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8735439916235574354, guid: 61a1eeda69b8d432ea0bafba0b8baa2e, type: 3}
       propertyPath: m_RootOrder
