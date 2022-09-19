@@ -15,5 +15,6 @@ public static class PauseController
         _isPaused = paused;
         AudioController.Instance.SetPaused(paused);
         GameController.Instance.SetState(paused ? GameController.GameState.Paused : GameController.GameState.Playing).ContinueWith(task => Debug.LogException(task.Exception), TaskContinuationOptions.OnlyOnFaulted);
+        CutsceneController.Instance.Pause(paused);
     }
 }
