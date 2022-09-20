@@ -2112,6 +2112,7 @@ GameObject:
   m_Component:
   - component: {fileID: 885200636}
   - component: {fileID: 885200635}
+  - component: {fileID: 885200637}
   m_Layer: 0
   m_Name: SetupSceneController
   m_TagString: Untagged
@@ -2133,6 +2134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _splashScreen: {fileID: 139741299}
   _splashScreen2: {fileID: 1634290091}
+  _setupInputController: {fileID: 885200637}
 --- !u!4 &885200636
 Transform:
   m_ObjectHideFlags: 0
@@ -2147,6 +2149,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &885200637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 885200634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b4a04c463b2f6a489c20410c89b700a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1037720165
 GameObject:
   m_ObjectHideFlags: 0

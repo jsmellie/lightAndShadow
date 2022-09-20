@@ -12,62 +12,113 @@ public class SetupScene : MonoBehaviour
     [SerializeField] private SpriteRenderer _splashScreen;
     [SerializeField] private SpriteRenderer _splashScreen2;
 
+    [SerializeField] private SetupInputController _setupInputController;
+
+    private bool _skipPressed = false;
+    private Coroutine _coroutine;
+
     private void Start()
     {
         _splashScreen.color = new Color(1, 1, 1, 0);
         _splashScreen2.color = new Color(1, 1, 1, 0);
-        ShowSplashScreen();
+        _coroutine = StartCoroutine(SplashScreenCoroutine());
     }
 
-    private void ShowSplashScreen()
+    private void OnDestroy()
     {
-        DOVirtual.Float(0, 1, 1.5f, (x) =>
+        if (_coroutine != null)
         {
-            _splashScreen.color = new Color(1, 1, 1, x);
-        })
-        .SetDelay(0.5f)
-        .SetEase(Ease.InOutQuad).onComplete += () =>
-        {
-            FadeSplashScreen();
-        };
+            StopCoroutine(_coroutine);
+        }
     }
 
-    private void FadeSplashScreen()
+    private void Update()
     {
-        DOVirtual.Float(1, 0, 1.5f, (x) =>
+        if (!_skipPressed && _setupInputController.GetSkipButtonDown())
         {
-            _splashScreen.color = new Color(1, 1, 1, x);
-        })
-        .SetDelay(2f)
-        .SetEase(Ease.InOutQuad).onComplete += () =>
-        {
-            ShowSplashScreen2();
-        };
+            _skipPressed = true;
+        }
     }
 
-    private void ShowSplashScreen2()
+    private IEnumerator SplashScreenCoroutine()
     {
-        DOVirtual.Float(0, 1, 1.5f, (x) =>
-        {
-            _splashScreen2.color = new Color(1, 1, 1, x);
-        })
-        .SetEase(Ease.InOutQuad).onComplete += () =>
-        {
-            FadeSplashScreen2();
-        };
-    }
+        float time = 0.5f;
+        float velocity = 0;
 
-    private void FadeSplashScreen2()
-    {
-        DOVirtual.Float(1, 0, 1.5f, (x) =>
+        while (time > 0)
         {
-            _splashScreen2.color = new Color(1, 1, 1, x);
-        })
-        .SetDelay(2f)
-        .SetEase(Ease.InOutQuad).onComplete += () =>
+            time -= Time.deltaTime;
+            yield return null;
+        }
+
+        time = 1.5f;
+        _skipPressed = false;
+
+        while (time > 0 && !_skipPressed)
         {
-            FullScreenWipe.FadeToBlack(0);
-            GameController.Instance.LoadMenu().ContinueWith(task => Debug.LogException(task.Exception), TaskContinuationOptions.OnlyOnFaulted);
-        };
+            _splashScreen.color = new Color(1, 1, 1, Mathf.SmoothDamp(_splashScreen.color.a, 1, ref velocity, 0.5f));
+            time -= Time.deltaTime;
+            yield return null;
+        }
+
+        _splashScreen.color = new Color(1, 1, 1, 1);
+
+        time = 2f;
+
+        while (time > 0 && !_skipPressed)
+        {
+            time -= Time.deltaTime;
+            yield return null;
+        }
+
+        time = 1.5f;
+        velocity = 0;
+
+        while (time > 0 && !_skipPressed)
+        {
+            _splashScreen.color = new Color(1, 1, 1, Mathf.SmoothDamp(_splashScreen.color.a, 0, ref velocity, 0.5f));
+            time -= Time.deltaTime;
+            yield return null;
+        }
+
+        _splashScreen.color = new Color(1, 1, 1, 0);
+
+        time = 1.5f;
+        velocity = 0;
+        _skipPressed = false;
+
+        while (time > 0 && !_skipPressed)
+        {
+            _splashScreen2.color = new Color(1, 1, 1, Mathf.SmoothDamp(_splashScreen2.color.a, 1, ref velocity, 0.5f));
+            time -= Time.deltaTime;
+            yield return null;
+        }
+
+        _splashScreen2.color = new Color(1, 1, 1, 1);
+
+        time = 2f;
+
+        while (time > 0 && !_skipPressed)
+        {
+            time -= Time.deltaTime;
+            yield return null;
+        }
+
+        time = 1.5f;
+        velocity = 0;
+
+        while (time > 0 && !_skipPressed)
+        {
+            _splashScreen2.color = new Color(1, 1, 1, Mathf.SmoothDamp(_splashScreen2.color.a, 0, ref velocity, 1f));
+            time -= Time.deltaTime;
+            yield return null;
+        }
+
+        _splashScreen2.color = new Color(1, 1, 1, 0);
+
+        yield return null;
+
+        FullScreenWipe.FadeToBlack(0);
+        GameController.Instance.LoadMenu().ContinueWith(task => Debug.LogException(task.Exception), TaskContinuationOptions.OnlyOnFaulted);
     }
 }
