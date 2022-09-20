@@ -8,7 +8,7 @@ public class BugsController : MonoBehaviour
     private const float BUGS_MOVE_SPEED = 4f;
     private const float BUGS_RADIUS_LERP_SPEED = 0.5f;
 
-    private const float MAX_BUGS_RADIUS = 30f;
+    private const float MAX_BUGS_RADIUS = 22.5f;
     private readonly Vector2 BUG_OFFSET_AMOUNT = new Vector2(6f, 1f);
     private readonly Vector2 BUG_SPEED = new Vector2(0.75f, 2.5f);
 
@@ -38,6 +38,8 @@ public class BugsController : MonoBehaviour
     [SerializeField] private float _radius = 0;
     private float _targetRadius = 0;
     private Vector3 _velocity;
+    private float _xVelocity;
+    private float _yVelocity;
 
     private bool _overrideHealth = false;
 
@@ -63,7 +65,9 @@ public class BugsController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _currentPosition = Vector3.SmoothDamp(_currentPosition, _targetPosition, ref _velocity, 0.1f);
+        float xPosition = Mathf.SmoothDamp(_currentPosition.x, _targetPosition.x, ref _xVelocity, 0.1f);
+        float yPosition = Mathf.SmoothDamp(_currentPosition.y, _targetPosition.y, ref _yVelocity, 0.3f);
+        _currentPosition = new Vector3(xPosition, yPosition, _targetPosition.z);
         transform.position = _currentPosition;
     }
 
