@@ -8,7 +8,9 @@ public class GrabTrigger : AnimationTrigger
 
     public override void OnTriggerEnter(Collider collider)
     {
-        _pickup.SetParent(PlayerController.Instance.transform);
+        Transform hand = PlayerController.Instance.GetHand();
+        _pickup.SetParent(hand);
+        _pickup.localPosition = Vector3.zero;
 
         base.OnTriggerEnter(collider);
     }

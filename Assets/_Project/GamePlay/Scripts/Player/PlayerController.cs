@@ -9,6 +9,8 @@ public class PlayerController : SingletonBehaviour<PlayerController>
     [SerializeField] private PlayerTriggerController _triggerController;
     [SerializeField] private PlayerStickController _stickController;
 
+    [SerializeField] private Transform _handPoint;
+
     private bool _isInteractable = false;
 
     protected override void Initialize()
@@ -58,5 +60,9 @@ public class PlayerController : SingletonBehaviour<PlayerController>
     public void EnableSlow(bool isSlow)
     {
         _movementController.MaxSpeed = isSlow ? 0.1f : 0.2f;
+    }
+    public Transform GetHand()
+    {
+        return _handPoint;
     }
 }
