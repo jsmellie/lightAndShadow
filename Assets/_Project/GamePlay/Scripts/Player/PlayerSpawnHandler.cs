@@ -35,9 +35,7 @@ public class PlayerSpawnHandler : SingletonBehaviour<PlayerSpawnHandler>
             cameraBehaviourController.SetCameraMinimumHeight();
         _currentPlayer.transform.position = spawnAnchor.position;
 
-            CameraEffectController.Instance.ToggleDarkness(CheckpointManager.Instance.CurrentCheckpoint == 28 ||
-            CheckpointManager.Instance.CurrentCheckpoint == 29 ||
-            CheckpointManager.Instance.CurrentCheckpoint == 30 );
+            CameraEffectController.Instance.ToggleDarkness(CheckpointManager.Instance.CurrentCheckpoint >= 28);
 
      
         cameraBehaviourController.SnapToTarget();

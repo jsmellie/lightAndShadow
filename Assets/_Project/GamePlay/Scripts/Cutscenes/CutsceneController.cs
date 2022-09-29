@@ -241,6 +241,18 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
         _videoPlayer.Play();
     }
 
+    public void Pause(bool pause)
+    {
+        if(_videoPlayer.isPlaying && pause)
+        {
+            _videoPlayer.Pause();
+        }
+        else if (_videoPlayer.isPaused && !pause)
+        {
+            _videoPlayer.Play();
+        }
+    }
+
     public async void LoadCutscene(string key, Action onLoadComplete = null)
     {
         _nextClip = Addressables.LoadAssetAsync<VideoClip>(key);

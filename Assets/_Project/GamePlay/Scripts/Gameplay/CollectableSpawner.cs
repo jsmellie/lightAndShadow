@@ -40,4 +40,10 @@ public class CollectableSpawner : MonoBehaviour
             _spawnedCollectableReference = _spawnedCollectable.GetComponent<Collectable>();
         }
     }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(transform.position, 3);
+    }
 }

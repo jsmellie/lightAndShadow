@@ -36,15 +36,25 @@ public class AnimationTrigger : BaseTrigger
             animationInfo.InterruptOtherAnimations = _interruptOtherAnimations;
 
             playerAnimationController.PlayAnimation(animationInfo, _forcePosition);
-
+        PlayerHealthController.Instance.OnDeath -= ResetOnDeath;
+        PlayerHealthController.Instance.OnDeath += ResetOnDeath;
         }
 
         base.OnTriggerEnter(collider);
         gameObject.SetActive(false); 
     }
+    protected virtual void OnDestroy()
+    {
+        if(!PlayerHealthController.IsInstanceNull)
+            PlayerHealthController.Instance.OnDeath -= ResetOnDeath;
+    }
 
     public override void OnTriggerExit(Collider collider)
     {
         base.OnTriggerExit(collider);
+    }
+        private void ResetOnDeath()
+    {
+        gameObject.SetActive(true);
     }
 }
