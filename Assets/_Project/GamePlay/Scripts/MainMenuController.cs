@@ -96,7 +96,9 @@ public class MainMenuController : MonoBehaviour
     private void LoadGameScene()
     {
         _isInteractable = false;
-
+#if !DISABLESTEAMWORKS
+        Steamworks.SteamUserStats.SetAchievement("TheStart");
+#endif
         DOVirtual.Float(1, 0, 1f, (x) =>
         {
             _buttons.alpha = x;

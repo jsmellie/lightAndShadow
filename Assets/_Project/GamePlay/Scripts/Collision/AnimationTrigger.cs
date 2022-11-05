@@ -12,6 +12,8 @@ public class AnimationTrigger : BaseTrigger
     [SerializeField] private bool _interruptOtherAnimations;
 
     [SerializeField] private bool _forcePosition;
+    [SerializeField] private string _achievementName = "";
+
 
     public override void OnTriggerEnter(Collider collider)
     {
@@ -36,7 +38,11 @@ public class AnimationTrigger : BaseTrigger
             animationInfo.InterruptOtherAnimations = _interruptOtherAnimations;
 
             playerAnimationController.PlayAnimation(animationInfo, _forcePosition);
-        PlayerHealthController.Instance.OnDeath -= ResetOnDeath;
+#if !DISABLESTEAMWORKS
+            if (!string.IsNullOrEmpty(_achievementName))
+                Steamworks.SteamUserStats.SetAchievement(_achievementName);
+#endif
+            PlayerHealthController.Instance.OnDeath -= ResetOnDeath;
         PlayerHealthController.Instance.OnDeath += ResetOnDeath;
         }
 
