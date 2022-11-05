@@ -19,7 +19,7 @@ public class StickThis : MonoBehaviour
         StickController.Instance.AddStickTarget(transform, _stickDirection);
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (_moveIt)
         {
