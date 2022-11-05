@@ -17198,6 +17198,7 @@ MonoBehaviour:
   _lookDirection: 0
   _interruptOtherAnimations: 0
   _forcePosition: 0
+  _achievementName: 
   _slider: {fileID: 1792901251}
 --- !u!65 &1185285098
 BoxCollider:
@@ -18174,6 +18175,10 @@ PrefabInstance:
     - target: {fileID: 6142493373192746723, guid: 73c005264350e3b47b64f2d83d97fb4d, type: 3}
       propertyPath: _animationName
       value: 1-5_stop
+      objectReference: {fileID: 0}
+    - target: {fileID: 6142493373192746723, guid: 73c005264350e3b47b64f2d83d97fb4d, type: 3}
+      propertyPath: _achievementName
+      value: 1-5
       objectReference: {fileID: 0}
     - target: {fileID: 6142493373192746723, guid: 73c005264350e3b47b64f2d83d97fb4d, type: 3}
       propertyPath: _interruptOtherAnimations
