@@ -65,7 +65,7 @@ public class MainMenuController : MonoBehaviour
         _creditsPanel.GetComponent<CanvasGroup>().alpha = 0;
 
         GameController.Instance.SetMainMenuController(this);
-
+        AudioController.Instance.PlayMusic("MenuMusic", true);
         if (CheckpointManager.Instance.CurrentCheckpoint == 0)
         {
             _title.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
@@ -99,6 +99,8 @@ public class MainMenuController : MonoBehaviour
 #if !DISABLESTEAMWORKS
         Steamworks.SteamUserStats.SetAchievement("TheStart");
 #endif
+
+        AudioController.Instance.PlayMusic("", false);
         DOVirtual.Float(1, 0, 1f, (x) =>
         {
             _buttons.alpha = x;

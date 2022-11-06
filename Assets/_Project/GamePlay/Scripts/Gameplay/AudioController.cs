@@ -149,6 +149,13 @@ public class AudioController : SingletonBehaviour<AudioController>
 
     public void PlayMusic(string clipName, bool crossfade)
     {
+        if (string.IsNullOrEmpty(clipName))
+        {
+            _musicAudioSources[_currentMusicAudioSource].DOFade(0,0.75f);
+            return;
+        }
+
+
         AudioDatabaseEntry clip = _audioDatabase.GetClip(clipName);
 
         int nextAudioSource = 0;
