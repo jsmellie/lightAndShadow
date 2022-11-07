@@ -266,6 +266,7 @@ public class MainMenuController : MonoBehaviour
             case MainMenuState.Resources:
                 FadeOutMain(0.5f);
                 _resourcesPanel.SetCurrentOption(ResourcesMenuPanel.ResourcesMenuOption.Back);
+                _resourcesPanel.GetComponentInChildren<AutoScroller>().BackToTop();
                 FadeInPanel(_resourcesPanel.GetComponent<CanvasGroup>(), 0.5f, () => { _resourcesPanel.SetInteractable(true); });
                 break;
             case MainMenuState.Credits:
