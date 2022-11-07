@@ -8,6 +8,7 @@ public class GameCompleteTrigger : BaseTrigger
     public override void OnTriggerEnter(Collider collider)
     {
         base.OnTriggerEnter(collider);
+        gameObject.SetActive(false);
         PlayLevelCompleteSequence();
     }
 
