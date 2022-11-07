@@ -40,7 +40,10 @@ public class AnimationTrigger : BaseTrigger
             playerAnimationController.PlayAnimation(animationInfo, _forcePosition);
 #if !DISABLESTEAMWORKS
             if (!string.IsNullOrEmpty(_achievementName))
+            {
                 Steamworks.SteamUserStats.SetAchievement(_achievementName);
+                Steamworks.SteamUserStats.StoreStats();
+            }
 #endif
             PlayerHealthController.Instance.OnDeath -= ResetOnDeath;
         PlayerHealthController.Instance.OnDeath += ResetOnDeath;

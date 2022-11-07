@@ -96,9 +96,14 @@ public class MainMenuController : MonoBehaviour
     private void LoadGameScene()
     {
         _isInteractable = false;
+        if(SteamManager.Initialized)
+        {
+
 #if !DISABLESTEAMWORKS
         Steamworks.SteamUserStats.SetAchievement("TheStart");
+        Steamworks.SteamUserStats.StoreStats();
 #endif
+        }
 
         AudioController.Instance.PlayMusic("", false);
         DOVirtual.Float(1, 0, 1f, (x) =>
