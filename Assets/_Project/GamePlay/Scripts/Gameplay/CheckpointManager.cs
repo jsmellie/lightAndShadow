@@ -64,6 +64,11 @@ public class CheckpointManager : SingletonBehaviour<CheckpointManager>
         return null;
     }
 
+    public bool IsAtVideoCheckpoint()
+    {
+        return _currentCheckpoint == 0 || _currentCheckpoint == 6 || _currentCheckpoint == 12 || _currentCheckpoint == 18 || _currentCheckpoint == 24 || _currentCheckpoint == 32;
+    }
+
     [ContextMenu("Reset Progress")]
     public void ResetProgress()
     {

@@ -243,13 +243,16 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
 
     public void Pause(bool pause)
     {
-        if(_videoPlayer.isPlaying && pause)
+        if (CheckpointManager.Instance.IsAtVideoCheckpoint())
         {
-            _videoPlayer.Pause();
-        }
-        else if (_videoPlayer.isPaused && !pause)
-        {
-            _videoPlayer.Play();
+            if (_videoPlayer.isPlaying && pause)
+            {
+                _videoPlayer.Pause();
+            }
+            else if (_videoPlayer.isPaused && !pause)
+            {
+                _videoPlayer.Play();
+            }
         }
     }
 

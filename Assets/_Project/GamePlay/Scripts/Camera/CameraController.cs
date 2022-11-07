@@ -25,7 +25,6 @@ public class CameraController : SingletonBehaviour<CameraController>
         uiCamera.transform.parent = transform;
         videoCamera.transform.parent = transform;
         videoCamera.gameObject.SetActive(false);
-        gameCamera.gameObject.SetActive(false);
         _loadedCameras.Add(GAMEPLAY_CAMERA_ID, gameCamera);
         _loadedCameras.Add(UI_CAMERA_ID, uiCamera);
         _loadedCameras.Add(VIDEO_CAMERA_ID, videoCamera);
