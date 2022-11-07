@@ -266,6 +266,7 @@ public class MainMenuController : MonoBehaviour
             case MainMenuState.Credits:
                 FadeOutMain(0.5f);
                 _creditsPanel.SetCurrentOption(CreditsMenuPanel.CreditsMenuOption.Back);
+                _creditsPanel.GetComponentInChildren<AutoScroller>().BackToTop();
                 FadeInPanel(_creditsPanel.GetComponent<CanvasGroup>(), 0.5f, () => { _creditsPanel.SetInteractable(true); });
                 break;
         }
