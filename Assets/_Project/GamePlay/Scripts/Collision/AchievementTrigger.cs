@@ -9,7 +9,7 @@ public class AchievementTrigger : BaseTrigger
     public override void OnTriggerEnter(Collider collider)
     {
 #if !DISABLESTEAMWORKS
-        if (!string.IsNullOrEmpty(_achievementName))
+        if (SteamManager.Initialized && !string.IsNullOrEmpty(_achievementName))
         {
             Steamworks.SteamUserStats.SetAchievement(_achievementName);
             Steamworks.SteamUserStats.StoreStats();

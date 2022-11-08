@@ -7,7 +7,7 @@ public class CheckpointManager : SingletonBehaviour<CheckpointManager>
 
     [SerializeField] private int _forcedCheckpoint = -1;
 
-    private string CHECKPOINT_KEY = "CHECKPOINT";
+    private string CHECKPOINT_KEY = "LSCHECKPOINT";
     private int _currentCheckpoint = 0;
 
     private Dictionary<int, CheckpointTrigger> _registeredCheckpoints = new Dictionary<int, CheckpointTrigger>();

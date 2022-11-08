@@ -15,6 +15,13 @@ public class GameCompleteTrigger : BaseTrigger
     private void PlayLevelCompleteSequence()
     {
         PlayerHealthController.Instance.SetHealthDrainPaused(true);
+#if !DISABLESTEAMWORKS
+        if (SteamManager.Initialized)
+        {
+            Steamworks.SteamUserStats.SetAchievement("TheEnd");
+            Steamworks.SteamUserStats.StoreStats();
+        }
+#endif
         CheckpointManager.Instance.SaveCheckpoint(CheckpointManager.Instance.CurrentCheckpoint + 1);
         FullScreenWipe.FadeToBlack(1, OnCompleteSequenceFinished);
     }

@@ -39,7 +39,7 @@ public class AnimationTrigger : BaseTrigger
 
             playerAnimationController.PlayAnimation(animationInfo, _forcePosition);
 #if !DISABLESTEAMWORKS
-            if (!string.IsNullOrEmpty(_achievementName))
+            if (SteamManager.Initialized && !string.IsNullOrEmpty(_achievementName))
             {
                 Steamworks.SteamUserStats.SetAchievement(_achievementName);
                 Steamworks.SteamUserStats.StoreStats();
