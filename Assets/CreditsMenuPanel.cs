@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
+using UnityEngine.UI;
 
 public class CreditsMenuPanel : MonoBehaviour
 {
@@ -12,13 +14,36 @@ public class CreditsMenuPanel : MonoBehaviour
     [SerializeField] private MainMenuController _mainMenuController;
     [SerializeField] private MenuInputController _menuInputController;
 
+    [SerializeField] private RectTransform _creditsSectionParent;
+    [SerializeField] private RectTransform _layoutGroup;
+
     private CreditsMenuOption _currentOption = CreditsMenuOption.Back;
 
     private bool _isInteractable = false;
 
+    private bool _isLoaded = false;
+
     public void SetInteractable(bool interactable)
     {
         _isInteractable = interactable;
+    }
+
+    private void Awake()
+    {
+        if (!_isLoaded)
+        {
+            _isLoaded = true;
+            CreditsSection creditsSectionPrefab = Resources.Load<CreditsSection>("CreditsSection");
+            List<CreditsSectionData> creditsSections = JsonConvert.DeserializeObject<List<CreditsSectionData>>(Resources.Load<TextAsset>("CreditsData").text);
+            foreach (CreditsSectionData data in creditsSections)
+            {
+                CreditsSection section = GameObject.Instantiate<CreditsSection>(creditsSectionPrefab);
+                section.GetComponent<RectTransform>().SetParent(_creditsSectionParent);
+                section.SetData(data);
+            }
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_layoutGroup);
+        }
     }
 
     private void Update()

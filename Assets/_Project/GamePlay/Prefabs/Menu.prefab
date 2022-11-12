@@ -1209,6 +1209,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SettingsPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 5812460518938660538, guid: e072012e14b9ed34eaebf23d2631971a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e072012e14b9ed34eaebf23d2631971a, type: 3}
 --- !u!1 &5214471148678849832 stripped
@@ -1254,6 +1258,10 @@ PrefabInstance:
     - target: {fileID: 1742472659171892028, guid: d53a490af4d8e7a41b257b5d4a6ad2d5, type: 3}
       propertyPath: m_Name
       value: ResourcesPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 1742472659171892028, guid: d53a490af4d8e7a41b257b5d4a6ad2d5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1742472659171892031, guid: d53a490af4d8e7a41b257b5d4a6ad2d5, type: 3}
       propertyPath: m_Pivot.x
@@ -1380,9 +1388,17 @@ PrefabInstance:
       propertyPath: _menuInputController
       value: 
       objectReference: {fileID: 3878857838684419734}
+    - target: {fileID: 1682815613256460106, guid: a881492cf9f7fea40b2c01068b591d9e, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4710792684695138317, guid: a881492cf9f7fea40b2c01068b591d9e, type: 3}
       propertyPath: m_Name
       value: CreditsPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 4710792684695138317, guid: a881492cf9f7fea40b2c01068b591d9e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6774140488631816319, guid: a881492cf9f7fea40b2c01068b591d9e, type: 3}
       propertyPath: m_Pivot.x
@@ -1466,6 +1482,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6774140488631816319, guid: a881492cf9f7fea40b2c01068b591d9e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7859666570501142329, guid: a881492cf9f7fea40b2c01068b591d9e, type: 3}
+      propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

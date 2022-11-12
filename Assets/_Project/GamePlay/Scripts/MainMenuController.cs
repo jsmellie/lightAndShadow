@@ -189,25 +189,25 @@ public class MainMenuController : MonoBehaviour
         }
     }
 
-    private void NextOption()
+    private void NextOption(bool wrapAround = false)
     {
         if ((int)_currentOption < (int)MainMenuOption.Quit)
         {
             SetCurrentOption((MainMenuOption)((int)_currentOption + 1));
         }
-        else
+        else if (wrapAround)
         {
             SetCurrentOption(MainMenuOption.Play);
         }
     }
 
-    private void PreviousOption()
+    private void PreviousOption(bool wrapAround = false)
     {
         if ((int)_currentOption > (int)MainMenuOption.Play)
         {
             SetCurrentOption((MainMenuOption)((int)_currentOption - 1));
         }
-        else
+        else if (wrapAround)
         {
             SetCurrentOption(MainMenuOption.Quit);
         }
@@ -266,7 +266,6 @@ public class MainMenuController : MonoBehaviour
             case MainMenuState.Resources:
                 FadeOutMain(0.5f);
                 _resourcesPanel.SetCurrentOption(ResourcesMenuPanel.ResourcesMenuOption.Back);
-                _resourcesPanel.GetComponentInChildren<AutoScroller>().BackToTop();
                 FadeInPanel(_resourcesPanel.GetComponent<CanvasGroup>(), 0.5f, () => { _resourcesPanel.SetInteractable(true); });
                 break;
             case MainMenuState.Credits:
