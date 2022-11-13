@@ -197,25 +197,25 @@ public class SettingsMenuPanel : MonoBehaviour
         }
     }
 
-    private void NextOption()
+    private void NextOption(bool wrapAround = false)
     {
         if ((int)_currentOption < (int)SettingsMenuOption.Back)
         {
             SetCurrentOption((SettingsMenuOption)((int)_currentOption + 1));
         }
-        else
+        else if (wrapAround)
         {
             SetCurrentOption(SettingsMenuOption.Music);
         }
     }
 
-    private void PreviousOption()
+    private void PreviousOption(bool wrapAround = false)
     {
         if ((int)_currentOption > (int)SettingsMenuOption.Music)
         {
             SetCurrentOption((SettingsMenuOption)((int)_currentOption - 1));
         }
-        else
+        else if (wrapAround)
         {
             SetCurrentOption(SettingsMenuOption.Back);
         }

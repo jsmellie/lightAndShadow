@@ -82,25 +82,25 @@ public class PauseMenuController : MonoBehaviour
         }
     }
 
-    private void NextOption()
+    private void NextOption(bool wrapAround = false)
     {
         if ((int)_currentOption < (int)PauseMenuOption.Quit)
         {
             SetCurrentOption((PauseMenuOption)((int)_currentOption + 1));
         }
-        else
+        else if (wrapAround)
         {
             SetCurrentOption(PauseMenuOption.Resume);
         }
     }
 
-    private void PreviousOption()
+    private void PreviousOption(bool wrapAround = false)
     {
         if ((int)_currentOption > (int)PauseMenuOption.Resume)
         {
             SetCurrentOption((PauseMenuOption)((int)_currentOption - 1));
         }
-        else
+        else if (wrapAround)
         {
             SetCurrentOption(PauseMenuOption.Quit);
         }

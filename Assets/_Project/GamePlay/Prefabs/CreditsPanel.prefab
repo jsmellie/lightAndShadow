@@ -35,11 +35,11 @@ RectTransform:
   m_Father: {fileID: 6774140488631816319}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 49.17}
-  m_SizeDelta: {x: 400, y: 580}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -50}
+  m_SizeDelta: {x: 1200, y: 666.4}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &7653985148159598730
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.392}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.7490196}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -129,40 +129,41 @@ MonoBehaviour:
       value: 1
       inSlope: 0
       outSlope: 0
-      tangentMode: 34
+      tangentMode: 69
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 1.0223335
+      time: 2
       value: 1
       inSlope: -0
-      outSlope: -0.027803935
-      tangentMode: 5
+      outSlope: -0.017857144
+      tangentMode: 69
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 19.0054
+      time: 58
       value: 0
-      inSlope: -0.027803935
+      inSlope: -0.017857144
       outSlope: 0
-      tangentMode: 65
+      tangentMode: 69
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 20
+      time: 60
       value: 0
-      inSlope: 0
+      inSlope: -0
       outSlope: 0
-      tangentMode: 34
+      tangentMode: 69
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
+    m_PreInfinity: 1
+    m_PostInfinity: 1
     m_RotationOrder: 4
+  _group: {fileID: 637472023185413835}
 --- !u!1 &3065824772344939881
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,7 +174,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7859666570501142329}
   - component: {fileID: 5527736007260526925}
-  - component: {fileID: 175550602964291908}
+  - component: {fileID: 1579221853468041844}
+  - component: {fileID: 2607856231551252314}
+  - component: {fileID: 637472023185413835}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -195,11 +198,11 @@ RectTransform:
   m_Father: {fileID: 3664717205814521307}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 2020}
-  m_SizeDelta: {x: 0, y: 2600}
-  m_Pivot: {x: 0, y: 1}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &5527736007260526925
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -208,7 +211,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3065824772344939881}
   m_CullTransparentMesh: 1
---- !u!114 &175550602964291908
+--- !u!114 &1579221853468041844
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -217,107 +220,49 @@ MonoBehaviour:
   m_GameObject: {fileID: 3065824772344939881}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: "\n\n\n\n\n<size=28>Light & Shadow\r</size>\n\r\nDesigned, Produced, and
-    Directed by\r\nRobin Careless\r\n\r\nProduced by\r\nSequoia Erickson\r\n\r\nLead
-    Developer and Project Manager\r\nJeff Ghadban\r\n\r\nDevelopers\r\nAlexi Bay\r\nJeremy
-    Smellie\r\n\r\nTechnical Artist\r\nHoang-Quan Pham\r\n\r\nAsset Artists\r\nBrad
-    Harley\r\nLochlan Cox\r\nAvery Shellenberg\r\nQuinn Hall\r\nRobin Careless\r\n\r\nHead
-    of Audio and Sound Design\r\nDoug Sowten\r\n\r\nLead Composer and Assistant Head
-    Audio\r\nJake Morris\r\n\r\nLead Cutscene Puppeteer\r\nSequoia Erickson\r\n\r\nCutscene
-    Puppeteers\r\nAnne Barber\r\nBrad Harley\r\nLochlan Cox\r\n\r\nCutscene Cinematographer\r\nArani
-    Muthucumarasamy\r\n\r\nMental Health Consultants\r\nCatherine Howe\r\nMolly McGregor\r\n\r\nThe
-    \u201CShadow Squad\u201D Youth Advisory Committee\r\nLiv Barton\r\nSasha Bonser\r\nDeborah
-    Chong\r\nMicah Chong\r\nMylo Dunbar\r\nSimon Harding\r\nWalker Hounsell\r\nAnita
-    Jiang\r\nRowan MacGillvray\r\nEmrys Nadjewski\r\nEmma Russell-Trione\r\nSam Wilkinson\r\n\r\nSpecial
-    Thanks to\r\nAnna Binswanger-Healy\r\nJenn Burton-Aulbrook\r\nIan Campbell\r\nKelly
-    Careless\r\nLeah Careless\r\nJenny and Steve Erickson\r\nAimee Louise Ghadban\r\nKevin
-    and Julia Ghadban\r\nMax Ghadban\r\nAlex Kavanagh\r\nEthan Penney\r\nAnd all
-    of the Health Care Professionals, \r\nboth body and mental. \r\n\r\nBased on
-    \u201CPo's Climb\u201D by Sequoia Erickson\r\n\r\nMade in Unity\r\n\r\nGenerously
-    funded in part by The Canada Council for the Arts and The Ontario Arts Council\r\n\r\nIn
-    Loving Memory of Catherine Howe\r\n\r\nIn Collaboration with Shadowland Theatre\r\n\r\nA
-    Product of Flawed Designs\r<size=126><align=right>\n<sprite name=\"Logo1\"><size=68>\n\n<sprite
-    name=\"Logo4\"><size=85>\n\n<sprite name=\"Logo5\"><size=150>\n<sprite name=\"Logo2\"><size=190>\n<sprite
-    name=\"Logo3\">"
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e4b59884a1e1ad64e8a3400bf924138d, type: 2}
-  m_sharedMaterial: {fileID: -5616960817741669450, guid: e4b59884a1e1ad64e8a3400bf924138d, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 11400000, guid: 8558e8251df670344a9fc3a19fded5a2, type: 2}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 1
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 1
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 50
+    m_Bottom: 50
+  m_ChildAlignment: 1
+  m_Spacing: 65
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
+--- !u!114 &2607856231551252314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3065824772344939881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 2
+  m_VerticalFit: 2
+--- !u!225 &637472023185413835
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3065824772344939881}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &3441846939052063296
 GameObject:
   m_ObjectHideFlags: 0
@@ -433,7 +378,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4710792684695138317}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -461,6 +406,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mainMenuController: {fileID: 0}
   _menuInputController: {fileID: 0}
+  _creditsSectionParent: {fileID: 7859666570501142329}
+  _layoutGroup: {fileID: 7859666570501142329}
 --- !u!225 &7313461049992311342
 CanvasGroup:
   m_ObjectHideFlags: 0
