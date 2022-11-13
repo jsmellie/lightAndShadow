@@ -12,6 +12,8 @@ public class AutoScroller : MonoBehaviour
     [SerializeField] private CanvasGroup _group;
 
     private float _timer = 0f;
+    private bool _isFading = false;
+
     private void Start()
     {
         _curve.postWrapMode = WrapMode.Loop;
@@ -22,22 +24,27 @@ public class AutoScroller : MonoBehaviour
     {
         if (fade)
         {
+            _timer = 59.8f;
             DOVirtual.Float(1, 0, 0.5f, (x) =>
             {
                 _group.alpha = x;
             })
             .SetEase(Ease.InOutQuad).OnComplete(() =>
             {
-                _timer = -0.5f;
+                _timer = 0.1f;
                 DOVirtual.Float(0, 1, 0.5f, (x) =>
                 {
                     _group.alpha = x;
                 })
-                .SetEase(Ease.InOutQuad);
+                .SetEase(Ease.InOutQuad).OnComplete(() =>
+                {
+                    _isFading = false;
+                });
             });
         }
         else
         {
+            _isFading = false;
             _timer = 0;
         }
     }
@@ -47,13 +54,20 @@ public class AutoScroller : MonoBehaviour
     {
         if (_scrollRect.gameObject.activeInHierarchy)
         {
-            _timer += Time.deltaTime;
-            _scrollRect.verticalNormalizedPosition = _curve.Evaluate(_timer);
-
-            if (_timer >= 60f)
+            if (!_isFading)
             {
-                BackToTop(true);
+                if (_timer + Time.deltaTime >= 60f)
+                {
+                    _isFading = true;
+                    BackToTop(true);
+                }
+                else
+                {
+                    _timer += Time.deltaTime;
+                }
             }
+
+            _scrollRect.verticalNormalizedPosition = _curve.Evaluate(_timer);
         }
     }
 }
