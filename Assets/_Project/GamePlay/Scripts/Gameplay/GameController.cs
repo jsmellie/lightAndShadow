@@ -264,7 +264,7 @@ public class GameController : SingletonBehaviour<GameController>
                 _waitingForCutscene = true;
 
                 CutsceneController.Instance.LoopMainMenu(CheckpointManager.Instance.CurrentCheckpoint, CutsceneLoaded);
-                //CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(false);
+                CameraController.Instance.GetCamera(CameraController.GAMEPLAY_CAMERA_ID).gameObject.SetActive(false);
                 CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(true);
 
                 while (_waitingForCutscene)
