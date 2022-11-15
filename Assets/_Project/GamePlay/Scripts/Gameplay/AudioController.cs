@@ -129,6 +129,11 @@ public class AudioController : SingletonBehaviour<AudioController>
 
     public void PlaySoundEffect(string clipName, bool isOneShot = false)
     {
+        if(clipName.Equals("Note"))
+        {
+            clipName += UnityEngine.Random.Range(1, 5);
+        }
+
         AudioDatabaseEntry clip = _audioDatabase.GetClip(clipName);
         AudioSource source = _oneShotAudioSource;
 
