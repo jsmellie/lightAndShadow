@@ -22,6 +22,7 @@ public class GameCompleteTrigger : BaseTrigger
             Steamworks.SteamUserStats.StoreStats();
         }
 #endif
+        AudioController.Instance.PlayMusic("", false);
         CheckpointManager.Instance.SaveCheckpoint(CheckpointManager.Instance.CurrentCheckpoint + 1);
         FullScreenWipe.FadeToBlack(1, OnCompleteSequenceFinished);
     }

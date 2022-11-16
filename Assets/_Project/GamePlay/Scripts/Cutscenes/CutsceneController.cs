@@ -225,6 +225,33 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
                 };
             });
     }
+    public void QueueCutscene6(Action onFinished)
+    {
+        LoadCutscene("Cutscene6End", () =>
+        {
+            OnClipFinishedSingleAction = () =>
+            {
+                OnClipFinishedSingleAction = () =>
+                {
+                    OnClipFinishedSingleAction = () =>
+                    {
+                        onFinished?.Invoke();
+                    };
+
+                    PlayCutscene();
+                    SetVideoLooping(false);
+                };
+
+                PlayCutscene();
+                SetVideoLooping(false);
+
+                LoadCutscene("Cutscene6", () =>
+                {
+
+                });
+            };
+        });
+    }
 
     public void PlayCutscene()
     {

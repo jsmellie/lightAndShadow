@@ -35,11 +35,11 @@ public class FullScreenWipe : MonoBehaviour
         if (s_timeLeft > 0)
         {
             s_timeLeft -= Time.deltaTime;
-            CheckIfWipeCompleted();
             if (s_wipeUpdateMethod != null)
             {
                 s_wipeUpdateMethod(1 - (s_timeLeft / s_animationLength));
             }
+            CheckIfWipeCompleted();
         }
     }
 

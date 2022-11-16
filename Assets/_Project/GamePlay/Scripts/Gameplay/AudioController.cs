@@ -31,6 +31,7 @@ public class AudioController : SingletonBehaviour<AudioController>
     private int _currentBeat = 0;
     private float _loadedMusicBPM = 0;
     private float _layeredVolume = 1;
+    private string _currentAmbienceTrack = "";
 
     private int _lastLoadedCheckpoint = -1;
 
@@ -152,7 +153,7 @@ public class AudioController : SingletonBehaviour<AudioController>
         }
     }
 
-    public void PlayMusic(string clipName, bool crossfade)
+    public void PlayMusic(string clipName, bool crossfade, float volume = 1)
     {
         if (string.IsNullOrEmpty(clipName))
         {
@@ -180,13 +181,13 @@ public class AudioController : SingletonBehaviour<AudioController>
             _musicAudioSources[_currentMusicAudioSource].DOFade(0, 1);
 
             _musicAudioSources[nextAudioSource].volume = 0;
-            _musicAudioSources[nextAudioSource].DOFade(1, 1);
+            _musicAudioSources[nextAudioSource].DOFade(volume, 1);
         }
         else
         {
             _musicAudioSources[_currentMusicAudioSource].Stop();
 
-            _musicAudioSources[nextAudioSource].volume = 1;
+            _musicAudioSources[nextAudioSource].volume = volume;
         }
 
         _musicAudioSources[nextAudioSource].Play();
@@ -198,6 +199,7 @@ public class AudioController : SingletonBehaviour<AudioController>
     {
         _lastLoadedCheckpoint = CheckpointManager.Instance.CurrentCheckpoint;
         _loadedMusicBPM = trackData.BPM;
+        _currentAmbienceTrack = trackData.AmbientTrackPath;
         _previousLoadedLayeredMusic = new Dictionary<int, AudioClip>(_loadedLayeredMusic);
         _loadedLayeredMusic.Clear();
 
@@ -245,6 +247,11 @@ public class AudioController : SingletonBehaviour<AudioController>
     public void PlayStageMusic()
     {
         InitializeLayeredAudioSources();
+    }
+
+    public void PlayStageAmbience()
+    {
+        PlayMusic(_currentAmbienceTrack, true, 0.3f);
     }
 
     public void SetLayeredVolume(float volume, float time)
@@ -299,6 +306,7 @@ public class AudioController : SingletonBehaviour<AudioController>
         {
             _layeredAudioSources[i].timeSamples = timeSamples;
         }
+        PlayStageAmbience();
     }
 
     private void OnDestroy()

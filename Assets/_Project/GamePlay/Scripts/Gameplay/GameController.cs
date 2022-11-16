@@ -261,6 +261,7 @@ public class GameController : SingletonBehaviour<GameController>
             case 12:
             case 18:
             case 24:
+            case 32:
                 _waitingForCutscene = true;
 
                 CutsceneController.Instance.LoopMainMenu(CheckpointManager.Instance.CurrentCheckpoint, CutsceneLoaded);
@@ -355,6 +356,18 @@ public class GameController : SingletonBehaviour<GameController>
                         CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
                         _currentGameState = GameState.Loading;
                         LoadNextScene().ContinueWith(task => Debug.LogException(task.Exception), TaskContinuationOptions.OnlyOnFaulted);
+                    });
+                });
+                break;
+            case 32:
+                CutsceneController.Instance.QueueCutscene6(() =>
+                {
+                    FullScreenWipe.FadeToBlack(1, () =>
+                    {
+                        CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID).gameObject.SetActive(false);
+                        CheckpointManager.Instance.ResetProgress();
+                        _currentGameState = GameState.Loading;
+                        LoadMenu().ContinueWith(task => Debug.LogException(task.Exception), TaskContinuationOptions.OnlyOnFaulted);
                     });
                 });
                 break;

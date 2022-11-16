@@ -28,6 +28,10 @@ public class CheckpointManager : SingletonBehaviour<CheckpointManager>
         #endif
         {
             _currentCheckpoint = PlayerPrefs.GetInt(CHECKPOINT_KEY, 0);
+            if (_currentCheckpoint > 32)
+            {
+                ResetProgress();
+            }
         }
     }
 

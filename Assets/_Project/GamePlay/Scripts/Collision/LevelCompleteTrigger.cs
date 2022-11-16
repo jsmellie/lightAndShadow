@@ -15,6 +15,7 @@ public class LevelCompleteTrigger : BaseTrigger
     {
         PlayerController.Instance.SetInteractable(false);
         PlayerHealthController.Instance.SetHealthDrainPaused(true);
+        AudioController.Instance.PlayMusic("", false);
         CheckpointManager.Instance.SaveCheckpoint(CheckpointManager.Instance.CurrentCheckpoint + 1);
         FullScreenWipe.FadeToBlack(1, OnCompleteSequenceFinished);
     }
