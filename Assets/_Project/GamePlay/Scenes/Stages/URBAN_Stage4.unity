@@ -13959,6 +13959,7 @@ GameObject:
   - component: {fileID: 1484971559}
   - component: {fileID: 1484971561}
   - component: {fileID: 1484971560}
+  - component: {fileID: 1484971562}
   m_Layer: 10
   m_Name: skyline
   m_TagString: Untagged
@@ -14044,6 +14045,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!65 &1484971562
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1484971558}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.45, y: 15.67, z: 0.2}
+  m_Center: {x: -39.8, y: 0.8, z: 0}
 --- !u!1001 &1485009099
 PrefabInstance:
   m_ObjectHideFlags: 0
