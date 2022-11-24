@@ -263,8 +263,10 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
         _currentClip = _nextClip;
 
         _videoCamera = CameraController.Instance.GetCamera(CameraController.VIDEO_CAMERA_ID);
+        float volume = PlayerPrefs.GetInt("MUSIC_VOLUME", 4) * 0.25f;
         _videoPlayer.targetCamera = _videoCamera;
         _videoPlayer.clip = _currentClip.Result;
+        _videoPlayer.SetDirectAudioVolume(0, volume);
         _videoPlayer.Play();
     }
 
