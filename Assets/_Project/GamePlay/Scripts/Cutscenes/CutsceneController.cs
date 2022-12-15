@@ -53,7 +53,7 @@ public class CutsceneController : SingletonBehaviour<CutsceneController>
         {
             OnClipFinishedSingleAction = () =>
             {
-                _videoPlayer.frame = 2;
+                _videoPlayer.frame = 0;
             };
 
             onLoaded?.Invoke();
