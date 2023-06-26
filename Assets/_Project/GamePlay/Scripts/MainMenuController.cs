@@ -165,6 +165,11 @@ public class MainMenuController : MonoBehaviour
             PreviousOption();
             return;
         }
+
+        if(Input.GetKeyDown(KeyCode.F11))
+        {
+            CheckpointManager.Instance.ResetProgress(); //Secret feature for demo 
+        }
     }
 
     private void SelectMenuOption()
